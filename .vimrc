@@ -1,5 +1,8 @@
 "compatible	behave very Vi compatible (not advisable)
 set nocp	"cp
+"autowrite	automatically write a file when leaving a modified buffer
+set aw "noaw
+
 language bg_BG.UTF-8
 "set langmenu=lang/bg_BG.UTF-8
 set encoding=utf-8
@@ -28,7 +31,6 @@ set nocursorcolumn
 "smartindent    do clever autoindenting (local to buffer)
 set si
 syntax enable
-colorscheme apprentice
 "preserveindent Preserve kind of whitespace when changing indent    (local to buffer) set pi "nopi
 "Vim will wrap long lines at a character in 'breakat' rather than at the last character that fits on the screen.
 set pi "nopi
@@ -65,7 +67,7 @@ set spelllang=en
 set tag+=./.tags,./.TAGS,.tags,.TAGS
    
 if has("gui_running")
-    set guifont=Monospace\ 16
+    set guifont=Monospace\ 14
     runtime! mswin.vim 
   "set ch=2		" Make command line two lines high
   set guioptions-=T  "remove toolbar http://vim.wikia.com/wiki/Hide_toolbar_or_menus_to_see_more_text
@@ -98,7 +100,8 @@ set hidden
 set nobomb
 "foldmethod folding type: "manual", "indent", "expr", "marker" or "syntax" (local to window)
 set fdm=syntax
-
+set complete-=i " Searching includes can be slow
+set statusline=2    "always show a status line
 
 "Manage my plugins using vim-plug https://github.com/junegunn/vim-plug
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
@@ -117,9 +120,19 @@ call plug#begin('~/.vim/plugged')
     Plug 'scrooloose/syntastic'
     Plug 'ctrlpvim/ctrlp.vim'
     Plug 'jdonaldson/vaxe'
-    Plug 'vim-airline/vim-airline'
-    AirlineTheme {tmuxline}
-    Plug 'vim-airline/vim-airline-themes'
+    Plug 'tomasr/molokai'
+"    Plug 'vim-airline/vim-airline'
+"    Plug 'vim-airline/vim-airline-themes'
+"    AirlineTheme molokai
+"    Plug 'kadimisetty/vim-simplebar'
+    Plug 'powerline/powerline'
+    Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp dancer highlight-all-pragmas moose test-more try-tiny' }
+    Plug 'jiangmiao/auto-pairs' 
 " Add plugins to &runtimepath
 call plug#end()
+" commands depending on loaded plgins
+" colorscheme is loaded via a plugin managed by vim-plug
+colorscheme molokai "apprentice
+"display	include "lastline" to show the last line even if it doesn't fit. include "uhex" to show unprintable characters as a hex number
+set display=lastline
 "set keymap=bulgarian-phonetic
