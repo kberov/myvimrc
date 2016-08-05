@@ -4,24 +4,17 @@ set nocp	"cp
 "autowrite	automatically write a file when leaving a modified buffer
 set aw "noaw
 
+" Various language settings. For each of them check :help thesetting
 language bg_BG.UTF-8
 set langmenu=bg_BG.UTF-8
 set encoding=utf-8
-
-" works only for commands issued in normal mode after issuing set keymap=bulgarian-phonetic
-set langmap=АБЦДЕФГХИЙКЛМНОПЯРСТУЖВѝЪЗ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,абцдефгхийклмнопярст;abcdefghijklmnopqrst,уu,жv,вw,ьx,ъз;yz
 set fileencodings=ucs-bom,utf-8,cp1251,cp1250,latin1
+
 filetype plugin on
 " automatically expand the filetyes submenu
 
 "insertmode	use Insert mode as the default mode
 set noim	"im
-
-" The following applies only to the current buffer and affects only Insert
-" mode. The commands that you type in Normal mode are not affected. The result
-" is that when you have a keyboard with Latin letters you can type e.g.
-" Bulgarian letters without switching keyboard layouts. Unfortunately
-"set keymap=bulgarian-phonetic
 
 "backupdir  list of directories to put backup files in
 set bdir=~/tmp,/tmp,/WINDOWS/TEMP
@@ -56,7 +49,7 @@ set linebreak
 set wildmenu
 set wildchar=<Tab>
 set wildmode=list:full
-set wildignore=tags,.git,_build,blib,.svn,*.o,*.obj
+set wildignore=tags,.git,_build,blib,.svn,*.o,*.obj,*.pmc
 
 "expandtab  expand <Tab> to spaces in Insert mode (local to buffer)
 set et  "noet
@@ -88,11 +81,12 @@ set tag+=./.tags,./.TAGS,.tags,.TAGS
    
 if has("gui_running")
     set guifont=Monospace\ 14
-    runtime! mswin.vim 
-  "set ch=2		" Make command line two lines high
-  set guioptions-=T  "remove toolbar http://vim.wikia.com/wiki/Hide_toolbar_or_menus_to_see_more_text
-  " Maximize gvim window.
-  set lines=999 columns=999
+    "runtime! mswin.vim 
+    "set ch=2		" Make command line two lines high
+    "remove toolbar http://vim.wikia.com/wiki/Hide_toolbar_or_menus_to_see_more_text
+    set guioptions-=T  
+    " Maximize gvim window.
+    set lines=999 columns=999
 end
 
 " Don't save hidden and unloaded buffers in sessions.
@@ -104,7 +98,7 @@ set sessionoptions-=buffers
 " Now you can do :fin {partial-filename}<Tab> to quickly find and open files
 " deep under the current directory.
 " No CtrlP required. See also http://goo.gl/yJtGVa
-set path+=,**
+set path+=.,**,* 
 "history: how many command lines are remembered:
 set hi=200
 
@@ -144,7 +138,7 @@ call plug#begin('~/.vim/plugged')
     let g:NERDTreeDirArrowCollapsible = '▾'
     let s:dirArrows = ''
     "to open NERDTree with Ctrl+o
-    map <C-o> :NERDTreeToggle<CR> 
+    map <C-n> :NERDTreeToggle<CR> 
     Plug 'scrooloose/nerdtree' " , { 'on': 'NERDTreeToggle' }
     let g:instant_markdown_autostart = 1
     "Plug 'suan/vim-instant-markdown'
@@ -163,7 +157,7 @@ call plug#begin('~/.vim/plugged')
 "    Plug 'kadimisetty/vim-simplebar'
 "    Plug 'powerline/powerline'
     Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp dancer highlight-all-pragmas moose test-more try-tiny' }
-    Plug 'jiangmiao/auto-pairs' 
+    "Plug 'jiangmiao/auto-pairs' "Note! Disallows entering чшщ. Todo: think how to solve 
     " TypeScript support
     " let g:typescript_compiler_binary = '/home/berov/opt/node/bin/tsc'
     " autocmd FileType typescript :set makeprg="$HOME/opt/node/bin/tsc"
@@ -176,14 +170,19 @@ call plug#end()
 " commands depending on loaded plgins
 " colorscheme is loaded via a plugin managed by vim-plug
 colorscheme molokai "apprentice
+
 "display	include "lastline" to show the last line even if it doesn't fit. include "uhex" to show unprintable characters as a hex number
 set display=lastline
-"set keymap=bulgarian-phonetic
 
+" Load bg keyboard and switch back to no keymap, so later if I need to enter
+" bulgarian letters I can just press CTRL-^ to switch to INSERT(lang) as
+" opposed to just INSERT See https://is.gd/AfU1df
+set keymap=bulgarian-phonetic
+"not switched on by default
+set iminsert=0 imsearch=-1
 " pandoc , markdown
 command! -nargs=* RunSilent
       \ | execute ':silent !'.'<args>'
       \ | execute ':redraw!'
 nmap <Leader>pc :RunSilent pandoc -o ~/tmp/vim-pandoc-out.html %<CR>
 nmap <Leader>pp :RunSilent xdg-open ~/tmp/vim-pandoc-out.html<CR>
-
