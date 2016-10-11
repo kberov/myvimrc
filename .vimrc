@@ -180,6 +180,10 @@ set display=lastline
 set keymap=bulgarian-phonetic
 "not switched on by default
 set iminsert=0 imsearch=-1
+"alias unnamed register to the + register, which is the X Window clipboard.
+"http://vim.wikia.com/wiki/Accessing_the_system_clipboard
+set clipboard^=unnamedplus
+
 " pandoc , markdown
 command! -nargs=* RunSilent
       \ | execute ':silent !'.'<args>'
