@@ -180,9 +180,15 @@ set display=lastline
 set keymap=bulgarian-phonetic
 "not switched on by default
 set iminsert=0 imsearch=-1
+
 "alias unnamed register to the + register, which is the X Window clipboard.
 "http://vim.wikia.com/wiki/Accessing_the_system_clipboard
 set clipboard^=unnamedplus
+
+"http://stackoverflow.com/questions/3446320/in-vim-how-to-map-save-to-ctrl-s#3448551
+noremap <silent> <C-S>          :update<CR>
+vnoremap <silent> <C-S>         <C-C>:update<CR>
+inoremap <silent> <C-S>         <C-O>:update<CR>
 
 " pandoc , markdown
 command! -nargs=* RunSilent
