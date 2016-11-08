@@ -87,6 +87,10 @@ if has("gui_running")
     set guioptions-=T  
     " Maximize gvim window.
     set lines=999 columns=999
+    "http://stackoverflow.com/questions/3446320/in-vim-how-to-map-save-to-ctrl-s#3448551
+    noremap <silent> <C-S>          :update<CR>
+    vnoremap <silent> <C-S>         <C-C>:update<CR>
+    inoremap <silent> <C-S>         <C-O>:update<CR>
 end
 
 " Don't save hidden and unloaded buffers in sessions.
@@ -185,10 +189,6 @@ set iminsert=0 imsearch=-1
 "http://vim.wikia.com/wiki/Accessing_the_system_clipboard
 set clipboard^=unnamedplus
 
-"http://stackoverflow.com/questions/3446320/in-vim-how-to-map-save-to-ctrl-s#3448551
-noremap <silent> <C-S>          :update<CR>
-vnoremap <silent> <C-S>         <C-C>:update<CR>
-inoremap <silent> <C-S>         <C-O>:update<CR>
 
 " pandoc , markdown
 command! -nargs=* RunSilent
