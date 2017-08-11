@@ -10,6 +10,7 @@ set langmenu=bg_BG.UTF-8
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp1251,cp1250,latin1
 
+set rtp+=$HOME/.vim/plugged/vim-go/syntax/
 filetype plugin on
 " automatically expand the filetyes submenu
 
@@ -80,7 +81,8 @@ set spelllang=en
 set tag+=./.tags,./.TAGS,.tags,.TAGS
    
 if has("gui_running")
-    set guifont=Monospace\ 14
+    set guifont=Monospace\ 16
+    set linespace=5 "more vertical space between lines
     "runtime! mswin.vim 
     "set ch=2		" Make command line two lines high
     "remove toolbar http://vim.wikia.com/wiki/Hide_toolbar_or_menus_to_see_more_text
@@ -137,43 +139,67 @@ call plug#begin('~/.vim/plugged')
     let g:session_autosave = 'yes'
     let g:session_autoload = 'no'
     Plug 'xolox/vim-misc' | Plug 'xolox/vim-session'
-    let g:NERDTreeGlyphReadOnly='ro'
-    let g:NERDTreeDirArrowExpandable = '▸'
-    let g:NERDTreeDirArrowCollapsible = '▾'
-    let s:dirArrows = ''
-    "to open NERDTree with Ctrl+o
-    map <C-n> :NERDTreeToggle<CR> 
+"    let g:NERDTreeGlyphReadOnly='ro'
+"    let g:NERDTreeDirArrowExpandable = '▸'
+"    let g:NERDTreeDirArrowCollapsible = '▾'
+"    let s:dirArrows = ''
+"    "to open NERDTree with Ctrl+n
+"    map <C-n> :NERDTreeToggle<CR> 
     Plug 'scrooloose/nerdtree' " , { 'on': 'NERDTreeToggle' }
-    let g:instant_markdown_autostart = 1
-    "Plug 'suan/vim-instant-markdown'
-	Plug 'tpope/vim-vinegar' "Press '-' to open the directory of the current file
-    Plug 'tpope/vim-fugitive' "Use Git
-    "Plug 'fholgado/minibufexpl.vim'
-    "Plug '~/Downloads/Vim/taglist_46'
-    "Plug 'majutsushi/tagbar'
-    "Plug 'scrooloose/syntastic'
-    Plug 'ctrlpvim/ctrlp.vim' "Pres Ctrl-p to open any file under the current directory
-    "Plug 'jdonaldson/vaxe' "Haxe support
-    Plug 'tomasr/molokai'  "Pretty theme"
-    "Plug 'vim-airline/vim-airline' "Pretty statusbar
-    "Plug 'vim-airline/vim-airline-themes'
-"    AirlineTheme molokai
+"    let g:instant_markdown_autostart = 1
+"    "Plug 'suan/vim-instant-markdown'
+"	Plug 'tpope/vim-vinegar' "Press '-' to open the directory of the current file
+"    Plug 'tpope/vim-fugitive' "Use Git
+"    "Plug 'fholgado/minibufexpl.vim'
+"    "Plug '~/Downloads/Vim/taglist_46'
+    Plug 'majutsushi/tagbar'
+"    "Plug 'scrooloose/syntastic'
+     Plug 'ctrlpvim/ctrlp.vim' "Pres Ctrl-p to open any file under the current directory
+"    Plug 'jdonaldson/vaxe' "Haxe support
+"    Plug 'tomasr/molokai'  "Pretty theme"
+"    Plug 'vim-airline/vim-airline' "Pretty statusbar
+"    Plug 'vim-airline/vim-airline-themes'
+""    AirlineTheme molokai
 "    Plug 'kadimisetty/vim-simplebar'
 "    Plug 'powerline/powerline'
-    Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp dancer highlight-all-pragmas moose test-more try-tiny' }
-    "Plug 'jiangmiao/auto-pairs' "Note! Disallows entering чшщ. Todo: think how to solve 
+"    Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp dancer highlight-all-pragmas moose test-more try-tiny' }
+"    Plug 'jiangmiao/auto-pairs' "Note! Disallows entering чшщ. Todo: think how to solve 
     " TypeScript support
-    " let g:typescript_compiler_binary = '/home/berov/opt/node/bin/tsc'
-    " autocmd FileType typescript :set makeprg="$HOME/opt/node/bin/tsc"
-    " Plug 'leafgarland/typescript-vim'
-    "autocmd FileType typescript setlocal completeopt+=menu,preview
-    "Plug 'Quramy/tsuquyomi'
-
+"    Plug 'leafgarland/typescript-vim'
+"    autocmd FileType typescript setlocal completeopt+=menu,preview
+"    Plug 'HerringtonDarkholme/yats.vim'
+"    Plug 'Quramy/tsuquyomi'
+"    Plug 'clausreinke/typescript-tools.vim', { 'do': 'npm install' }
+"    Plug 'Shougo/vimproc.vim'
+    " Rust support
+"    Plug 'rust-lang/rust.vim'
+"    let g:rustfmt_autosave = 1
+"	let g:rustfmt_options = '--ideal_width=90 fn_call_width=90 write_mode=Replace'
+"    Plug 'timonv/vim-cargo'
+"    Plug 'racer-rust/vim-racer' " See help for options: https://github.com/racer-rust/vim-racer
+    set hidden
+"    let g:racer_cmd = "racer"
+"    let g:racer_experimental_completer = 1
+"    au FileType rust nmap gd <Plug>(rust-def)
+"    au FileType rust nmap gs <Plug>(rust-def-split)
+"    au FileType rust nmap gx <Plug>(rust-def-vertical)
+"    au FileType rust nmap <leader>gd <Plug>(rust-doc)
+    " End Rust support
+    " Start Swift Support
+"    Plug 'toyamarinyon/vim-swift'
+    "Better JS support https://github.com/nodejs/node/wiki/Vim-Plugins
+    "Enhanced JavaScript Syntax for Vim
+    Plug 'jelera/vim-javascript-syntax'
+    "To disable automatic checking and only check when the file is written: 
+    let JSHintUpdateWriteOnly=1
+    "http://jshint.com/docs/
+    Plug 'wookiehangover/jshint.vim'
+    Plug 'fatih/vim-go'
 " Add plugins to &runtimepath
 call plug#end()
 " commands depending on loaded plgins
 " colorscheme is loaded via a plugin managed by vim-plug
-colorscheme molokai "apprentice
+colorscheme murphy "slate molokai apprentice
 
 "display	include "lastline" to show the last line even if it doesn't fit. include "uhex" to show unprintable characters as a hex number
 set display=lastline
@@ -196,3 +222,32 @@ command! -nargs=* RunSilent
       \ | execute ':redraw!'
 nmap <Leader>pc :RunSilent pandoc -o ~/tmp/vim-pandoc-out.html %<CR>
 nmap <Leader>pp :RunSilent xdg-open ~/tmp/vim-pandoc-out.html<CR>
+let qore_highlight_all=1
+
+let g:tagbar_type_go = {
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+\ }
