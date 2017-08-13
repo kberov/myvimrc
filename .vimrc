@@ -50,13 +50,18 @@ set linebreak
 set wildmenu
 set wildchar=<Tab>
 set wildmode=list:full
-set wildignore=tags,.git,_build,blib,.svn,*.o,*.obj,*.pmc
-
+set wildignore+=tags,.git,_build,blib,.svn,*.o,*.obj,*.pmc,*/tmp/*,*.so,*.swp
+set wildignore+=bin/**,*.zip,backup/**,dump,*.tmp,*.min.js
+set wildignore+=*.png,*.PNG,*.JPG,*.jpg,*.JPEG,*.jpeg,*.GIF,*.gif,*.pdf,*.PDF
+set wildignore+=node_modules/**,vendor/**,coverage/**,tmp/**,rdoc/**,*.BACKUP.*
+set wildignore+=*.BASE.*,*.LOCAL.*,*.REMOTE.*,.sass-cache/**
 "expandtab  expand <Tab> to spaces in Insert mode (local to buffer)
 set et  "noet
 
 "Case insensitive search in documents. I nearly always want this!
 set ignorecase
+"Override the 'ignorecase' option if the search pattern contains upper case characters.
+set smartcase
 
 "Influences the working of <BS>, <Del>, CTRL-W and CTRL-U in Insert mode.
 set backspace=indent,eol,start
@@ -144,7 +149,9 @@ call plug#begin('~/.vim/plugged')
 "    let g:NERDTreeDirArrowCollapsible = '▾'
 "    let s:dirArrows = ''
 "    "to open NERDTree with Ctrl+n
-"    map <C-n> :NERDTreeToggle<CR> 
+"   If "mapleader" is not set or empty, a backslash is used instead.  The
+"   below mapping  means \O (press backslash(\) then Shift+o)
+    map <Leader>O :NERDTreeToggle<CR>
     Plug 'scrooloose/nerdtree' " , { 'on': 'NERDTreeToggle' }
 "    let g:instant_markdown_autostart = 1
 "    "Plug 'suan/vim-instant-markdown'
@@ -199,7 +206,7 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 " commands depending on loaded plgins
 " colorscheme is loaded via a plugin managed by vim-plug
-colorscheme murphy "slate molokai apprentice
+colorscheme desert "murphy slate molokai apprentice
 
 "display	include "lastline" to show the last line even if it doesn't fit. include "uhex" to show unprintable characters as a hex number
 set display=lastline
@@ -222,6 +229,16 @@ command! -nargs=* RunSilent
       \ | execute ':redraw!'
 nmap <Leader>pc :RunSilent pandoc -o ~/tmp/vim-pandoc-out.html %<CR>
 nmap <Leader>pp :RunSilent xdg-open ~/tmp/vim-pandoc-out.html<CR>
+
+" Press \+f and go to the prepared command line to modify the search pattern.
+" Replace **/* with **/*.%:e to search only in files of the same type:
+map <Leader>f :vimgrep! /*/gj **/*.%:e <Bar> cw<C-Left><C-Left><C-Left><C-Left>
+
+"Press \+f+f to search in all files for the current word (the word under the
+"cursor) and open the list of found occurences (quickfix)
+map <Leader>ff :execute "vimgrep /" . expand("<cword>") . "/gj **/*".expand("%:e") <Bar> cw<CR>
+
+
 let qore_highlight_all=1
 
 let g:tagbar_type_go = {
