@@ -87,6 +87,8 @@ set tag+=./.tags,./.TAGS,.tags,.TAGS
    
 if has("gui_running")
     set guifont=Monospace\ 16
+    "set guifont=PT\ Mono:h18 "on MAC
+
     set linespace=5 "more vertical space between lines
     "runtime! mswin.vim 
     "set ch=2		" Make command line two lines high
