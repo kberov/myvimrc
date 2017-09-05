@@ -270,3 +270,10 @@ let g:tagbar_type_go = {
 	\ 'ctagsbin'  : 'gotags',
 	\ 'ctagsargs' : '-sort -silent'
 \ }
+
+"Alt+leftarrow will go one window left, etc.
+"See http://vim.wikia.com/wiki/Switch_between_Vim_window_splits_easily
+nmap <silent> <A-Up> :wincmd k<CR>
+nmap <silent> <A-Down> :wincmd j<CR>
+nmap <silent> <A-Left> :wincmd h<CR>
+nmap <silent> <A-Right> :wincmd l<CR>
