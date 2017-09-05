@@ -55,8 +55,6 @@ set wildignore+=bin/**,*.zip,backup/**,dump,*.tmp,*.min.js
 set wildignore+=*.png,*.PNG,*.JPG,*.jpg,*.JPEG,*.jpeg,*.GIF,*.gif,*.pdf,*.PDF
 set wildignore+=node_modules/**,vendor/**,coverage/**,tmp/**,rdoc/**,*.BACKUP.*
 set wildignore+=*.BASE.*,*.LOCAL.*,*.REMOTE.*,.sass-cache/**
-"expandtab  expand <Tab> to spaces in Insert mode (local to buffer)
-set et  "noet
 
 "Case insensitive search in documents. I nearly always want this!
 set ignorecase
@@ -75,7 +73,9 @@ set modelines=5
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+"expandtab  expand <Tab> to spaces in Insert mode (local to buffer)
 set expandtab
+
 "set statusline=%F%m%r%h%w\ F=%{&ff}\ T=%y\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 
 set spell
@@ -110,8 +110,10 @@ set sessionoptions-=buffers
 " Search recursively for filenames!
 " Now you can do :fin {partial-filename}<Tab> to quickly find and open files
 " deep under the current directory.
-" No CtrlP required. See also http://goo.gl/yJtGVa
+" No CtrlP required. 
+" See also https://stackoverflow.com/questions/16082991/vim-switching-between-files-rapidly-using-vanilla-vim-no-plugins
 set path+=.,**,* 
+
 "history: how many command lines are remembered:
 set hi=200
 
@@ -150,16 +152,18 @@ call plug#begin('~/.vim/plugged')
 "    let g:NERDTreeDirArrowExpandable = '▸'
 "    let g:NERDTreeDirArrowCollapsible = '▾'
 "    let s:dirArrows = ''
-"    "to open NERDTree with Ctrl+n
+"   to open NERDTree...
 "   If "mapleader" is not set or empty, a backslash is used instead.  The
 "   below mapping  means \O (press backslash(\) then Shift+o)
     map <Leader>O :NERDTreeToggle<CR>
     Plug 'scrooloose/nerdtree' " , { 'on': 'NERDTreeToggle' }
 "    let g:instant_markdown_autostart = 1
 "    "Plug 'suan/vim-instant-markdown'
+"   The following can be just achieved by using the command ":ex"
 "	Plug 'tpope/vim-vinegar' "Press '-' to open the directory of the current file
 "    Plug 'tpope/vim-fugitive' "Use Git
 "    "Plug 'fholgado/minibufexpl.vim'
+"   Use a pluging from some arbitrary directory
 "    "Plug '~/Downloads/Vim/taglist_46'
     Plug 'majutsushi/tagbar'
 "    "Plug 'scrooloose/syntastic'
@@ -215,7 +219,7 @@ set display=lastline
 
 " Load bg keyboard and switch back to no keymap, so later if I need to enter
 " bulgarian letters I can just press CTRL-^ to switch to INSERT(lang) as
-" opposed to just INSERT See https://is.gd/AfU1df
+" opposed to just INSERT See https://stackoverflow.com/questions/3776728
 set keymap=bulgarian-phonetic
 "not switched on by default
 set iminsert=0 imsearch=-1
@@ -240,8 +244,6 @@ map <Leader>f :vimgrep! /*/gj **/*.%:e <Bar> cw<C-Left><C-Left><C-Left><C-Left>
 "cursor) and open the list of found occurences (quickfix)
 map <Leader>ff :execute "vimgrep /" . expand("<cword>") . "/gj **/*".expand("%:e") <Bar> cw<CR>
 
-
-let qore_highlight_all=1
 
 let g:tagbar_type_go = {
 	\ 'ctagstype' : 'go',
