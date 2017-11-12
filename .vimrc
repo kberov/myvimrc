@@ -55,6 +55,8 @@ set wildignore+=bin/**,*.zip,backup/**,dump,*.tmp,*.min.js
 set wildignore+=*.png,*.PNG,*.JPG,*.jpg,*.JPEG,*.jpeg,*.GIF,*.gif,*.pdf,*.PDF
 set wildignore+=node_modules/**,vendor/**,coverage/**,tmp/**,rdoc/**,*.BACKUP.*
 set wildignore+=*.BASE.*,*.LOCAL.*,*.REMOTE.*,.sass-cache/**
+"expandtab  expand <Tab> to spaces in Insert mode (local to buffer)
+set et  "noet
 
 "Case insensitive search in documents. I nearly always want this!
 set ignorecase
@@ -73,12 +75,10 @@ set modelines=5
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-"expandtab  expand <Tab> to spaces in Insert mode (local to buffer)
 set expandtab
-
 "set statusline=%F%m%r%h%w\ F=%{&ff}\ T=%y\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 
-set spell
+"set spell
 " default language for spellchecking. use another: setlocal spelllang=bg
 set spelllang=en
 
@@ -86,9 +86,8 @@ set spelllang=en
 set tag+=./.tags,./.TAGS,.tags,.TAGS
    
 if has("gui_running")
-    set guifont=Monospace\ 16
+    set guifont=Monospace\ 14
     "set guifont=PT\ Mono:h18 "on MAC
-
     set linespace=5 "more vertical space between lines
     "runtime! mswin.vim 
     "set ch=2		" Make command line two lines high
@@ -110,10 +109,8 @@ set sessionoptions-=buffers
 " Search recursively for filenames!
 " Now you can do :fin {partial-filename}<Tab> to quickly find and open files
 " deep under the current directory.
-" No CtrlP required. 
-" See also https://stackoverflow.com/questions/16082991/vim-switching-between-files-rapidly-using-vanilla-vim-no-plugins
+" No CtrlP required. See also http://goo.gl/yJtGVa
 set path+=.,**,* 
-
 "history: how many command lines are remembered:
 set hi=200
 
@@ -152,18 +149,16 @@ call plug#begin('~/.vim/plugged')
 "    let g:NERDTreeDirArrowExpandable = '▸'
 "    let g:NERDTreeDirArrowCollapsible = '▾'
 "    let s:dirArrows = ''
-"   to open NERDTree...
+"   to open NERDTree ...
 "   If "mapleader" is not set or empty, a backslash is used instead.  The
 "   below mapping  means \O (press backslash(\) then Shift+o)
     map <Leader>O :NERDTreeToggle<CR>
     Plug 'scrooloose/nerdtree' " , { 'on': 'NERDTreeToggle' }
 "    let g:instant_markdown_autostart = 1
 "    "Plug 'suan/vim-instant-markdown'
-"   The following can be just achieved by using the command ":ex"
 "	Plug 'tpope/vim-vinegar' "Press '-' to open the directory of the current file
-"    Plug 'tpope/vim-fugitive' "Use Git
+    Plug 'tpope/vim-fugitive' "Use Git
 "    "Plug 'fholgado/minibufexpl.vim'
-"   Use a pluging from some arbitrary directory
 "    "Plug '~/Downloads/Vim/taglist_46'
     Plug 'majutsushi/tagbar'
 "    "Plug 'scrooloose/syntastic'
@@ -174,7 +169,7 @@ call plug#begin('~/.vim/plugged')
 "    Plug 'vim-airline/vim-airline-themes'
 ""    AirlineTheme molokai
 "    Plug 'kadimisetty/vim-simplebar'
-"    Plug 'powerline/powerline'
+    Plug 'powerline/powerline'
 "    Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp dancer highlight-all-pragmas moose test-more try-tiny' }
 "    Plug 'jiangmiao/auto-pairs' "Note! Disallows entering чшщ. Todo: think how to solve 
     " TypeScript support
@@ -190,7 +185,6 @@ call plug#begin('~/.vim/plugged')
 "	let g:rustfmt_options = '--ideal_width=90 fn_call_width=90 write_mode=Replace'
 "    Plug 'timonv/vim-cargo'
 "    Plug 'racer-rust/vim-racer' " See help for options: https://github.com/racer-rust/vim-racer
-    set hidden
 "    let g:racer_cmd = "racer"
 "    let g:racer_experimental_completer = 1
 "    au FileType rust nmap gd <Plug>(rust-def)
@@ -208,6 +202,17 @@ call plug#begin('~/.vim/plugged')
     "http://jshint.com/docs/
     Plug 'wookiehangover/jshint.vim'
     Plug 'fatih/vim-go'
+    Plug 'othree/html5.vim'
+    Plug 'sirver/ultisnips'
+    Plug 'honza/vim-snippets'
+    let g:UltiSnipsUsePythonVersion = 3
+    let g:UltiSnipsExpandTrigger="<tab>"
+    let g:UltiSnipsJumpForwardTrigger="<c-b>"
+    let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
 " Add plugins to &runtimepath
 call plug#end()
 " commands depending on loaded plgins
@@ -219,7 +224,7 @@ set display=lastline
 
 " Load bg keyboard and switch back to no keymap, so later if I need to enter
 " bulgarian letters I can just press CTRL-^ to switch to INSERT(lang) as
-" opposed to just INSERT See https://stackoverflow.com/questions/3776728
+" opposed to just INSERT See https://is.gd/AfU1df
 set keymap=bulgarian-phonetic
 "not switched on by default
 set iminsert=0 imsearch=-1
@@ -227,7 +232,8 @@ set iminsert=0 imsearch=-1
 "alias unnamed register to the + register, which is the X Window clipboard.
 "http://vim.wikia.com/wiki/Accessing_the_system_clipboard
 set clipboard^=unnamedplus
-
+"https://stackoverflow.com/questions/677986/vim-copy-selection-to-os-x-clipboard#680271
+"set clipboard=unnamed
 
 " pandoc , markdown
 command! -nargs=* RunSilent
@@ -236,14 +242,27 @@ command! -nargs=* RunSilent
 nmap <Leader>pc :RunSilent pandoc -o ~/tmp/vim-pandoc-out.html %<CR>
 nmap <Leader>pp :RunSilent xdg-open ~/tmp/vim-pandoc-out.html<CR>
 
+"   If "mapleader" is not set or empty, a backslash is used instead.
 " Press \+f and go to the prepared command line to modify the search pattern.
 " Replace **/* with **/*.%:e to search only in files of the same type:
 map <Leader>f :vimgrep! /*/gj **/*.%:e <Bar> cw<C-Left><C-Left><C-Left><C-Left>
 
-"Press \+f+f to search in all files for the current word (the word under the
+"Press \+f+f to search/find in all files for the current word (the word under the
 "cursor) and open the list of found occurences (quickfix)
+"Example: find usages of a method in all files
 map <Leader>ff :execute "vimgrep /" . expand("<cword>") . "/gj **/*".expand("%:e") <Bar> cw<CR>
 
+"copy current file name to the system clipboard
+"cf stands for "current filename"
+map <Leader>cf :let @+=expand('%:p')<CR>
+
+"Navigating among opened files (buffers)
+" Switch to alternate file
+map <C-Tab> :bnext<cr>
+map <C-S-Tab> :bprevious<cr>
+nmap b] :bnext<cr>
+map [b :bprevious<cr>
+map <Leader>b :b  
 
 let g:tagbar_type_go = {
 	\ 'ctagstype' : 'go',
@@ -273,9 +292,24 @@ let g:tagbar_type_go = {
 	\ 'ctagsargs' : '-sort -silent'
 \ }
 
-"Alt+leftarrow will go one window left, etc.
+"Ctrl+leftarrow will go one window left, etc.
 "See http://vim.wikia.com/wiki/Switch_between_Vim_window_splits_easily
-nmap <silent> <A-Up> :wincmd k<CR>
-nmap <silent> <A-Down> :wincmd j<CR>
-nmap <silent> <A-Left> :wincmd h<CR>
-nmap <silent> <A-Right> :wincmd l<CR>
+map <silent> <C-Up> :wincmd k<CR>
+map <silent> <C-Down> :wincmd j<CR>
+map <silent> <C-Left> :wincmd h<CR>
+map <silent> <C-Right> :wincmd l<CR>
+
+"Move entire line up and down https://stackoverflow.com/questions/741814
+noremap <c-s-up> :call feedkeys( line('.')==1 ? '' : 'ddkP' )<CR>
+noremap <c-s-down> ddp
+
+" Comment / uncomment regions of lines
+" https://stackoverflow.com/questions/1676632/
+" Commenting with #:
+" 1. visually select the text rows (using V as usual)
+" 2. :norm i#
+" Uncommenting #:
+" 1. visually select the text as before (or type gv to re-select the previous selection)
+" 2. :norm x
+" This deletes the first character of each line. If I had used a 2-char comment such as //
+" then I'd simply do :norm xx to delete both chars. 
