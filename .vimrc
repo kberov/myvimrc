@@ -2,6 +2,7 @@
 set nocp	"cp
 
 "autowrite	automatically write a file when leaving a modified buffer
+"This allows us to use :make or :GoBuild or !perl -c without saving the file
 set aw "noaw
 
 " Various language settings. For each of them check :help thesetting
@@ -86,7 +87,7 @@ set spelllang=en
 set tag+=./.tags,./.TAGS,.tags,.TAGS
    
 if has("gui_running")
-    set guifont=Monospace\ 14
+    set guifont=Monospace\ 16
     "set guifont=PT\ Mono:h18 "on MAC
     set linespace=5 "more vertical space between lines
     "runtime! mswin.vim 
@@ -99,6 +100,11 @@ if has("gui_running")
     noremap <silent> <C-S>          :update<CR>
     vnoremap <silent> <C-S>         <C-C>:update<CR>
     inoremap <silent> <C-S>         <C-O>:update<CR>
+    "http://vim.wikia.com/wiki/Toggle_Insert-Normal_Mode_via_ctrl-space
+    " Press i to enter insert mode, and ii to exit.
+    inoremap ii <Esc>
+    " Switch between insert and normal mode using Ctrl+left arrow
+    inoremap <C-L> &insertmode ? <C-L> : <Esc>
 end
 
 " Don't save hidden and unloaded buffers in sessions.
@@ -133,7 +139,7 @@ set nobomb
 "set fdm=syntax
 
 set complete-=i " Searching includes can be slow
-set laststatus=2    "always show a status line
+"set laststatus=2    "always show a status line
 
 "Manage my plugins using vim-plug https://github.com/junegunn/vim-plug
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
@@ -165,12 +171,22 @@ call plug#begin('~/.vim/plugged')
      Plug 'ctrlpvim/ctrlp.vim' "Pres Ctrl-p to open any file under the current directory
 "    Plug 'jdonaldson/vaxe' "Haxe support
 "    Plug 'tomasr/molokai'  "Pretty theme"
-"    Plug 'vim-airline/vim-airline' "Pretty statusbar
-"    Plug 'vim-airline/vim-airline-themes'
-""    AirlineTheme molokai
+    Plug 'vim-airline/vim-airline' "Pretty statusbar
+    Plug 'vim-airline/vim-airline-themes'
+    let g:airline#extensions#keymap#enabled = 0
+    " For the following to work, I needed to `sudo apt-get install fonts-powerline`
+    " See https://github.com/powerline/fonts
+    let g:airline_powerline_fonts = 1
+    AirlineTheme jellybeans
 "    Plug 'kadimisetty/vim-simplebar'
-    Plug 'powerline/powerline'
-"    Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp dancer highlight-all-pragmas moose test-more try-tiny' }
+"    Plug 'powerline/powerline'
+    Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp mason highlight-all-pragmas moose test-more try-tiny' }
+    Plug 'yko/mojo.vim'
+    "Highlight embedded Perl code in __DATA__ sections of your Perl files.
+    let mojo_highlight_data = 1
+    "Don't highlight html inside __DATA__ templates - Perl code only.
+    "let mojo_disable_html = 1
+
 "    Plug 'jiangmiao/auto-pairs' "Note! Disallows entering чшщ. Todo: think how to solve 
     " TypeScript support
 "    Plug 'leafgarland/typescript-vim'
@@ -187,10 +203,6 @@ call plug#begin('~/.vim/plugged')
 "    Plug 'racer-rust/vim-racer' " See help for options: https://github.com/racer-rust/vim-racer
 "    let g:racer_cmd = "racer"
 "    let g:racer_experimental_completer = 1
-"    au FileType rust nmap gd <Plug>(rust-def)
-"    au FileType rust nmap gs <Plug>(rust-def-split)
-"    au FileType rust nmap gx <Plug>(rust-def-vertical)
-"    au FileType rust nmap <leader>gd <Plug>(rust-doc)
     " End Rust support
     " Start Swift Support
 "    Plug 'toyamarinyon/vim-swift'
@@ -209,15 +221,16 @@ call plug#begin('~/.vim/plugged')
     let g:UltiSnipsExpandTrigger="<tab>"
     let g:UltiSnipsJumpForwardTrigger="<c-b>"
     let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+    " If you want :UltiSnipsEdit to split your window.
+    let g:UltiSnipsEditSplit="vertical"
 
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+    Plug 'Valloric/YouCompleteMe'
 
 " Add plugins to &runtimepath
 call plug#end()
 " commands depending on loaded plgins
 " colorscheme is loaded via a plugin managed by vim-plug
-colorscheme desert "murphy slate molokai apprentice
+colorscheme jellybeans "distinguished industry desert murphy slate molokai apprentice
 
 "display	include "lastline" to show the last line even if it doesn't fit. include "uhex" to show unprintable characters as a hex number
 set display=lastline
@@ -242,7 +255,7 @@ command! -nargs=* RunSilent
 nmap <Leader>pc :RunSilent pandoc -o ~/tmp/vim-pandoc-out.html %<CR>
 nmap <Leader>pp :RunSilent xdg-open ~/tmp/vim-pandoc-out.html<CR>
 
-"   If "mapleader" is not set or empty, a backslash is used instead.
+" If "mapleader" is not set or empty, a backslash is used instead.
 " Press \+f and go to the prepared command line to modify the search pattern.
 " Replace **/* with **/*.%:e to search only in files of the same type:
 map <Leader>f :vimgrep! /*/gj **/*.%:e <Bar> cw<C-Left><C-Left><C-Left><C-Left>
@@ -261,9 +274,27 @@ map <Leader>cf :let @+=expand('%:p')<CR>
 map <C-Tab> :bnext<cr>
 map <C-S-Tab> :bprevious<cr>
 nmap b] :bnext<cr>
-map [b :bprevious<cr>
+nmap b[ :bprevious<cr>
+nmap [b :bprevious<cr>
+nmap ]b :bnext<cr>
 map <Leader>b :b  
 
+"some shortcuts to make it easier to jump between errors in quickfix list
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+"Delete and not Cut - replacing text multiple times
+"https://stackoverflow.com/questions/11993851
+"Delete in normal mode.
+nnoremap <leader>d "_d
+"Delete in visual mode
+vnoremap <leader>d "_d
+"Replace in visual mode
+vnoremap <leader>p "_dP
+
+"https://github.com/fatih/vim-go-tutorial#quick-setup
+"all lists will be of type quickfix:
+let g:go_list_type = "quickfix"
 let g:tagbar_type_go = {
 	\ 'ctagstype' : 'go',
 	\ 'kinds'     : [
@@ -303,7 +334,7 @@ map <silent> <C-Right> :wincmd l<CR>
 noremap <c-s-up> :call feedkeys( line('.')==1 ? '' : 'ddkP' )<CR>
 noremap <c-s-down> ddp
 
-" Comment / uncomment regions of lines
+" Comment/uncomment regions of lines
 " https://stackoverflow.com/questions/1676632/
 " Commenting with #:
 " 1. visually select the text rows (using V as usual)
@@ -313,3 +344,5 @@ noremap <c-s-down> ddp
 " 2. :norm x
 " This deletes the first character of each line. If I had used a 2-char comment such as //
 " then I'd simply do :norm xx to delete both chars. 
+"
+ 
