@@ -31,7 +31,9 @@ set title   "notitl
 
 "hilight current cursor line and cursor column
 set cursorline
-set nocursorcolumn
+if has("gui_running")
+set cursorcolumn
+end
 
 "smartindent    do clever autoindenting (local to buffer)
 set si
@@ -85,7 +87,8 @@ set spelllang=en
 
 "tags list of file names to search for tags (global or local to buffer)
 set tag+=./.tags,./.TAGS,.tags,.TAGS
-   
+" See: http://vim.wikia.com/wiki/Browsing_programs_with_tags
+
 if has("gui_running")
     set guifont=Monospace\ 16
     "set guifont=PT\ Mono:h18 "on MAC
@@ -105,6 +108,8 @@ if has("gui_running")
     inoremap ii <Esc>
     " Switch between insert and normal mode using Ctrl+left arrow
     inoremap <C-L> &insertmode ? <C-L> : <Esc>
+    " Expand the syntax menu
+    "let do_syntax_sel_menu = 1|runtime! synmenu.vim|aunmenu &Syntax.&Show\ filetypes\ in\ menu
 end
 
 " Don't save hidden and unloaded buffers in sessions.
@@ -115,7 +120,7 @@ set sessionoptions-=buffers
 " Search recursively for filenames!
 " Now you can do :fin {partial-filename}<Tab> to quickly find and open files
 " deep under the current directory.
-" No CtrlP required. See also http://goo.gl/yJtGVa
+" No CtrlP required. See also https://stackoverflow.com/questions/16082991
 set path+=.,**,* 
 "history: how many command lines are remembered:
 set hi=200
@@ -158,8 +163,9 @@ call plug#begin('~/.vim/plugged')
 "   to open NERDTree ...
 "   If "mapleader" is not set or empty, a backslash is used instead.  The
 "   below mapping  means \O (press backslash(\) then Shift+o)
-    map <Leader>O :NERDTreeToggle<CR>
     Plug 'scrooloose/nerdtree' " , { 'on': 'NERDTreeToggle' }
+    map <Leader>O :NERDTreeToggle<CR>
+    map <Leader>nf :NERDTreeFind<CR>
 "    let g:instant_markdown_autostart = 1
 "    "Plug 'suan/vim-instant-markdown'
 "	Plug 'tpope/vim-vinegar' "Press '-' to open the directory of the current file
@@ -167,19 +173,22 @@ call plug#begin('~/.vim/plugged')
 "    "Plug 'fholgado/minibufexpl.vim'
 "    "Plug '~/Downloads/Vim/taglist_46'
     Plug 'majutsushi/tagbar'
+    "Tagbar window will automatically close when you jump to a tag.
+    let g:tagbar_autoclose = 1
+    nnoremap <silent> <F9> :TagbarToggle<CR>
+    nnoremap <silent> <Leader>t :TagbarToggle<CR>
 "    "Plug 'scrooloose/syntastic'
      Plug 'ctrlpvim/ctrlp.vim' "Pres Ctrl-p to open any file under the current directory
 "    Plug 'jdonaldson/vaxe' "Haxe support
 "    Plug 'tomasr/molokai'  "Pretty theme"
-    Plug 'vim-airline/vim-airline' "Pretty statusbar
-    Plug 'vim-airline/vim-airline-themes'
+"    Plug 'vim-airline/vim-airline' "Pretty statusbar
+"    Plug 'vim-airline/vim-airline-themes'
     let g:airline#extensions#keymap#enabled = 0
     " For the following to work, I needed to `sudo apt-get install fonts-powerline`
     " See https://github.com/powerline/fonts
     let g:airline_powerline_fonts = 1
-    AirlineTheme jellybeans
+    let g:airline_theme='jellybeans'
 "    Plug 'kadimisetty/vim-simplebar'
-"    Plug 'powerline/powerline'
     Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp mason highlight-all-pragmas moose test-more try-tiny' }
     Plug 'yko/mojo.vim'
     "Highlight embedded Perl code in __DATA__ sections of your Perl files.
@@ -229,9 +238,11 @@ call plug#begin('~/.vim/plugged')
 " Add plugins to &runtimepath
 call plug#end()
 " commands depending on loaded plgins
+
+if has("gui_running")
 " colorscheme is loaded via a plugin managed by vim-plug
 colorscheme jellybeans "distinguished industry desert murphy slate molokai apprentice
-
+end
 "display	include "lastline" to show the last line even if it doesn't fit. include "uhex" to show unprintable characters as a hex number
 set display=lastline
 
@@ -333,6 +344,7 @@ map <silent> <C-Right> :wincmd l<CR>
 "Move entire line up and down https://stackoverflow.com/questions/741814
 noremap <c-s-up> :call feedkeys( line('.')==1 ? '' : 'ddkP' )<CR>
 noremap <c-s-down> ddp
+
 
 " Comment/uncomment regions of lines
 " https://stackoverflow.com/questions/1676632/
