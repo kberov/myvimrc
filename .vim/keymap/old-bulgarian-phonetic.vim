@@ -27,8 +27,10 @@
 "        ¤, €, ‰, †, ‡, and ¶.
 "     –  The characters from the old Bulgarian alphabet which are not present
 "        today in the alphabet. These are:
-"        S ѕ, І і, Ѹ ѹ Ꙋ ꙋ, Ѡ ѡ, Ѣ ѣ, Ꙗ ꙗ, Ѥ ѥ, Ѧ ѧ, Ѩ ѩ, Ѫ ѫ, Ѭ ѭ, Ѯ ѯ, Ѱ ѱ
+"        Sѕ / Ꙃ ꙃ, І і / Ї ї, Ѹ ѹ / Ꙋ ꙋ, Ѡ ѡ, Ѣ ѣ, Ꙗ ꙗ, Ѥ ѥ, Ѧ ѧ, Ѩ ѩ, Ѫ ѫ, Ѭ ѭ, Ѯ ѯ, Ѱ ѱ
 "        Ѳ ѳ, Ѵ ѵ Ѷ ѷ, Ҁ ҁ, Ѿ ѿ
+"        The letters and the order in which they are put in the table below
+"        are taken from https://bg.wikipedia.org/wiki/Старобългарска_азбука
 "
 " The keymap also defines key combinations for grave and acute accents.
 " (Grave accent is used in Bulgarian, acute in Russian, but both accents
@@ -52,8 +54,12 @@ D       Д       CYRILLIC CAPITAL LETTER DE
 E       Е       CYRILLIC CAPITAL LETTER IE
 E::     Ё       CYRILLIC CAPITAL LETTER IO
 V       Ж       CYRILLIC CAPITAL LETTER ZHE
+DZ      S       CYRILLIC CAPITAL LETTER DZE
+DZZ     Ꙃ       CYRILLIC CAPITAL LETTER DZELO
 Z       З       CYRILLIC CAPITAL LETTER ZE
 I       И       CYRILLIC CAPITAL LETTER I
+I.      І       CYRILLIC CAPITAL LETTER BYELORUSSIAN-UKRAINIAN I
+I:      Ї       CYRILLIC CAPITAL LETTER YI
 J       Й       CYRILLIC CAPITAL LETTER SHORT I
 K       К       CYRILLIC CAPITAL LETTER KA
 L       Л       CYRILLIC CAPITAL LETTER EL
@@ -64,6 +70,8 @@ P       П       CYRILLIC CAPITAL LETTER PE
 R       Р       CYRILLIC CAPITAL LETTER ER
 S       С       CYRILLIC CAPITAL LETTER ES
 T       Т       CYRILLIC CAPITAL LETTER TE
+OU      Ѹ       CYRILLIC CAPITAL LETTER UK
+UK      Ꙋ       CYRILLIC CAPITAL LETTER MONOGRAPH UK
 U       У       CYRILLIC CAPITAL LETTER U
 F       Ф       CYRILLIC CAPITAL LETTER EF
 H       Х       CYRILLIC CAPITAL LETTER HA
@@ -87,8 +95,12 @@ d       д       CYRILLIC SMALL LETTER DE
 e       е       CYRILLIC SMALL LETTER IE
 e::     ё       CYRILLIC SMALL LETTER IO
 v       ж       CYRILLIC SMALL LETTER ZHE
+dz      ѕ       CYRILLIC SMALL LETTER DZE
+dzz     ꙃ       CYRILLIC SMALL LETTER DZELO
 z       з       CYRILLIC SMALL LETTER ZE
 i       и       CYRILLIC SMALL LETTER I
+i.      і       CYRILLIC SMALL LETTER BYELORUSSIAN-UKRAINIAN I
+i:      ї       CYRILLIC SMALL LETTER YI
 j       й       CYRILLIC SMALL LETTER SHORT I
 k       к       CYRILLIC SMALL LETTER KA
 l       л       CYRILLIC SMALL LETTER EL
@@ -99,6 +111,8 @@ p       п       CYRILLIC SMALL LETTER PE
 r       р       CYRILLIC SMALL LETTER ER
 s       с       CYRILLIC SMALL LETTER ES
 t       т       CYRILLIC SMALL LETTER TE
+ou      ѹ       CYRILLIC SMALL LETTER UK
+uk      ꙋ       CYRILLIC SMALL LETTER MONOGRAPH UK
 u       у       CYRILLIC SMALL LETTER U
 f       ф       CYRILLIC SMALL LETTER EF
 h       х       CYRILLIC SMALL LETTER HA
