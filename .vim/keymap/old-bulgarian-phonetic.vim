@@ -5,9 +5,9 @@
 " правопис”, but after discovering the possibilities, I decided to add all the
 " missing letters from the old alphabet.
 
-" Maintainer:   Krasimir Berov <berov@cpan.org>
-" URI:
-" Last Changed: 2018 February 18
+" Maintainer: Krasimir Berov <berov@cpan.org>
+" URI: https://raw.githubusercontent.com/kberov/myvimrc/master/.vim/keymap/old-bulgarian-phonetic.vim
+" Last Changed: 2018 February 23
 
 " This keymap corresponds to what is called "phonetic layout" in Bulgaria:
 " Cyrillic letters tend to be mapped to their Latin homophones wherever
@@ -27,8 +27,8 @@
 "        ¤, €, ‰, †, ‡, and ¶.
 "     –  The characters from the old Bulgarian alphabet which are not present
 "        today in the alphabet. These are:
-"        Sѕ / Ꙃ ꙃ, І і / Ї ї, Ѹ ѹ / Ꙋ ꙋ, Ѡ ѡ, Ѣ ѣ, Ꙗ ꙗ, Ѥ ѥ, Ѧ ѧ, Ѩ ѩ, Ѫ ѫ, Ѭ ѭ, Ѯ ѯ, Ѱ ѱ
-"        Ѳ ѳ, Ѵ ѵ Ѷ ѷ, Ҁ ҁ, Ѿ ѿ
+"        Sѕ / Ꙃ ꙃ, І і / Ї ї, Ѹ ѹ / Ꙋ ꙋ, Ѡ ѡ, Ѣ ѣ, Ꙗ ꙗ, Ѥ ѥ, Ѧ ѧ, Ѩ ѩ, Ѫ ѫ, Ѭ ѭ,
+"         Ѯ ѯ, Ѱ ѱ, Ѳ ѳ, Ѵ ѵ Ѷ ѷ, Ҁ ҁ, Ѿ ѿ
 "        The letters and the order in which they are put in the table below
 "        are taken from https://bg.wikipedia.org/wiki/Старобългарска_азбука
 "
@@ -43,9 +43,9 @@
 
 scriptencoding utf-8
 
-let b:keymap_name = "oldpho"
-
+let b:keymap_name="oldpho"
 loadkeymap
+"mappings from bulgarian-phonetic - copied and pasted
 A       А       CYRILLIC CAPITAL LETTER A
 B       Б       CYRILLIC CAPITAL LETTER BE
 W       В       CYRILLIC CAPITAL LETTER VE
@@ -54,12 +54,8 @@ D       Д       CYRILLIC CAPITAL LETTER DE
 E       Е       CYRILLIC CAPITAL LETTER IE
 E::     Ё       CYRILLIC CAPITAL LETTER IO
 V       Ж       CYRILLIC CAPITAL LETTER ZHE
-DZ      S       CYRILLIC CAPITAL LETTER DZE
-DZZ     Ꙃ       CYRILLIC CAPITAL LETTER DZELO
 Z       З       CYRILLIC CAPITAL LETTER ZE
 I       И       CYRILLIC CAPITAL LETTER I
-I.      І       CYRILLIC CAPITAL LETTER BYELORUSSIAN-UKRAINIAN I
-I:      Ї       CYRILLIC CAPITAL LETTER YI
 J       Й       CYRILLIC CAPITAL LETTER SHORT I
 K       К       CYRILLIC CAPITAL LETTER KA
 L       Л       CYRILLIC CAPITAL LETTER EL
@@ -70,12 +66,9 @@ P       П       CYRILLIC CAPITAL LETTER PE
 R       Р       CYRILLIC CAPITAL LETTER ER
 S       С       CYRILLIC CAPITAL LETTER ES
 T       Т       CYRILLIC CAPITAL LETTER TE
-OU      Ѹ       CYRILLIC CAPITAL LETTER UK
-UK      Ꙋ       CYRILLIC CAPITAL LETTER MONOGRAPH UK
 U       У       CYRILLIC CAPITAL LETTER U
 F       Ф       CYRILLIC CAPITAL LETTER EF
 H       Х       CYRILLIC CAPITAL LETTER HA
-WT      Ѡ       CYRILLIC CAPITAL LETTER OMEGA
 C       Ц       CYRILLIC CAPITAL LETTER TSE
 ~       Ч       CYRILLIC CAPITAL LETTER CHE
 {       Ш       CYRILLIC CAPITAL LETTER SHA
@@ -83,23 +76,9 @@ C       Ц       CYRILLIC CAPITAL LETTER TSE
 Y       Ъ       CYRILLIC CAPITAL LETTER HARD SIGN
 YI      Ы       CYRILLIC CAPITAL LETTER YERU
 X       Ь       CYRILLIC CAPITAL LETTER SOFT SIGN
-EQ      Ѣ       CYRILLIC CAPITAL LETTER YAT 
 YE      Э       CYRILLIC CAPITAL LETTER REVERSED E
 |       Ю       CYRILLIC CAPITAL LETTER YU
 Q       Я       CYRILLIC CAPITAL LETTER YA
-IA      Ꙗ       CYRILLIC CAPITAL LETTER IOTIFIED A
-IE      Ѥ       CYRILLIC CAPITAL LETTER IOTIFIED E
-EN      Ѧ       CYRILLIC CAPITAL LETTER LITTLE YUS
-IEN     Ѩ       CYRILLIC CAPITAL LETTER IOTIFIED LITTLE YUS
-YA      Ѫ       CYRILLIC CAPITAL LETTER BIG YUS
-IYA     Ѭ       CYRILLIC CAPITAL LETTER IOTIFIED BIG YUS
-KS      Ѯ       CYRILLIC CAPITAL LETTER KSI
-PS      Ѱ       CYRILLIC CAPITAL LETTER PSI
-TH      Ѳ       CYRILLIC CAPITAL LETTER FITA
-IV      Ѵ       CYRILLIC CAPITAL LETTER IZHITSA
-IVI     Ѷ       CYRILLIC CAPITAL LETTER IZHITSA WITH DOUBLE GRAVE ACCENT
-CO      Ҁ       CYRILLIC CAPITAL LETTER KOPPA
-OT      Ѿ       CYRILLIC CAPITAL LETTER OT
 a       а       CYRILLIC SMALL LETTER A
 b       б       CYRILLIC SMALL LETTER BE
 w       в       CYRILLIC SMALL LETTER VE
@@ -108,12 +87,8 @@ d       д       CYRILLIC SMALL LETTER DE
 e       е       CYRILLIC SMALL LETTER IE
 e::     ё       CYRILLIC SMALL LETTER IO
 v       ж       CYRILLIC SMALL LETTER ZHE
-dz      ѕ       CYRILLIC SMALL LETTER DZE
-dzz     ꙃ       CYRILLIC SMALL LETTER DZELO
 z       з       CYRILLIC SMALL LETTER ZE
 i       и       CYRILLIC SMALL LETTER I
-i.      і       CYRILLIC SMALL LETTER BYELORUSSIAN-UKRAINIAN I
-i:      ї       CYRILLIC SMALL LETTER YI
 j       й       CYRILLIC SMALL LETTER SHORT I
 k       к       CYRILLIC SMALL LETTER KA
 l       л       CYRILLIC SMALL LETTER EL
@@ -124,12 +99,9 @@ p       п       CYRILLIC SMALL LETTER PE
 r       р       CYRILLIC SMALL LETTER ER
 s       с       CYRILLIC SMALL LETTER ES
 t       т       CYRILLIC SMALL LETTER TE
-ou      ѹ       CYRILLIC SMALL LETTER UK
-uk      ꙋ       CYRILLIC SMALL LETTER MONOGRAPH UK
 u       у       CYRILLIC SMALL LETTER U
 f       ф       CYRILLIC SMALL LETTER EF
 h       х       CYRILLIC SMALL LETTER HA
-wt      ѡ       CYRILLIC SMALL LETTER OMEGA
 c       ц       CYRILLIC SMALL LETTER TSE
 `       ч       CYRILLIC SMALL LETTER CHE
 [       ш       CYRILLIC SMALL LETTER SHA
@@ -137,23 +109,9 @@ c       ц       CYRILLIC SMALL LETTER TSE
 y       ъ       CYRILLIC SMALL LETTER HARD SIGN
 yi      ы       CYRILLIC SMALL LETTER YERU
 x       ь       CYRILLIC SMALL LETTER SOFT SIGN
-eq      ѣ       CYRILLIC SMALL LETTER YAT
 ye      э       CYRILLIC SMALL LETTER REVERSED E
 \\      ю       CYRILLIC SMALL LETTER YU
 q       я       CYRILLIC SMALL LETTER YA
-ia      ꙗ       CYRILLIC SMALL LETTER IOTIFIED A
-ie      ѥ       CYRILLIC SMALL LETTER IOTIFIED E
-en      ѧ       CYRILLIC SMALL LETTER LITTLE YUS
-ien     ѩ       CYRILLIC SMALL LETTER IOTIFIED LITTLE YUS
-ya      ѫ       CYRILLIC SMALL LETTER BIG YUS
-iya     ѭ       CYRILLIC SMALL LETTER IOTIFIED BIG YUS
-ks      ѯ       CYRILLIC SMALL LETTER KSI
-ps      ѱ       CYRILLIC SMALL LETTER PSI
-th      ѳ       CYRILLIC SMALL LETTER FITA
-iv      ѵ       CYRILLIC SMALL LETTER IZHITSA
-ivi     ѷ       CYRILLIC SMALL LETTER IZHITSA WITH DOUBLE GRAVE ACCENT
-co      ҁ       CYRILLIC SMALL LETTER KOPPA
-ot      ѿ       CYRILLIC SMALL LETTER OT
 !!      §       SECTION SIGN (PARAGRAPH SIGN)
 ##      №       NUMERO SIGN
 --      –       EN DASH
@@ -183,3 +141,47 @@ $$      €       EURO SIGN
 " to the immediate right of that letter.
 ^`      <char-0x300>    COMBINING GRAVE ACCENT
 ^'      <char-0x301>    COMBINING ACUTE ACCENT
+"My added letters
+DZ      S       CYRILLIC CAPITAL LETTER DZE
+DZZ     Ꙃ       CYRILLIC CAPITAL LETTER DZELO
+I.      І       CYRILLIC CAPITAL LETTER BYELORUSSIAN-UKRAINIAN I
+I:      Ї       CYRILLIC CAPITAL LETTER YI
+OU      Ѹ       CYRILLIC CAPITAL LETTER UK
+UK      Ꙋ       CYRILLIC CAPITAL LETTER MONOGRAPH UK
+WT      Ѡ       CYRILLIC CAPITAL LETTER OMEGA
+EQ      Ѣ       CYRILLIC CAPITAL LETTER YAT 
+IA      Ꙗ       CYRILLIC CAPITAL LETTER IOTIFIED A
+IE      Ѥ       CYRILLIC CAPITAL LETTER IOTIFIED E
+EN      Ѧ       CYRILLIC CAPITAL LETTER LITTLE YUS
+IEN     Ѩ       CYRILLIC CAPITAL LETTER IOTIFIED LITTLE YUS
+YA      Ѫ       CYRILLIC CAPITAL LETTER BIG YUS
+IYA     Ѭ       CYRILLIC CAPITAL LETTER IOTIFIED BIG YUS
+KS      Ѯ       CYRILLIC CAPITAL LETTER KSI
+PS      Ѱ       CYRILLIC CAPITAL LETTER PSI
+TH      Ѳ       CYRILLIC CAPITAL LETTER FITA
+IV      Ѵ       CYRILLIC CAPITAL LETTER IZHITSA
+IVI     Ѷ       CYRILLIC CAPITAL LETTER IZHITSA WITH DOUBLE GRAVE ACCENT
+CO      Ҁ       CYRILLIC CAPITAL LETTER KOPPA
+OT      Ѿ       CYRILLIC CAPITAL LETTER OT
+dz      ѕ       CYRILLIC SMALL LETTER DZE
+dzz     ꙃ       CYRILLIC SMALL LETTER DZELO
+i.      і       CYRILLIC SMALL LETTER BYELORUSSIAN-UKRAINIAN I
+i:      ї       CYRILLIC SMALL LETTER YI
+ou      ѹ       CYRILLIC SMALL LETTER UK
+uk      ꙋ       CYRILLIC SMALL LETTER MONOGRAPH UK
+wt      ѡ       CYRILLIC SMALL LETTER OMEGA
+eq      ѣ       CYRILLIC SMALL LETTER YAT
+ia      ꙗ       CYRILLIC SMALL LETTER IOTIFIED A
+ie      ѥ       CYRILLIC SMALL LETTER IOTIFIED E
+en      ѧ       CYRILLIC SMALL LETTER LITTLE YUS
+ien     ѩ       CYRILLIC SMALL LETTER IOTIFIED LITTLE YUS
+ya      ѫ       CYRILLIC SMALL LETTER BIG YUS
+iya     ѭ       CYRILLIC SMALL LETTER IOTIFIED BIG YUS
+ks      ѯ       CYRILLIC SMALL LETTER KSI
+ps      ѱ       CYRILLIC SMALL LETTER PSI
+th      ѳ       CYRILLIC SMALL LETTER FITA
+iv      ѵ       CYRILLIC SMALL LETTER IZHITSA
+ivi     ѷ       CYRILLIC SMALL LETTER IZHITSA WITH DOUBLE GRAVE ACCENT
+co      ҁ       CYRILLIC SMALL LETTER KOPPA
+ot      ѿ       CYRILLIC SMALL LETTER OT
+
