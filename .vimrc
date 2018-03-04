@@ -247,5 +247,5 @@ noremap <c-s-down> ddp
 " Type  :help index
 " For a list of all defined maps in vimrc and by Vim plugins type :map
 "
-so ~/.vim/myplugins.vim 
+runtime myplugins.vim 
 
