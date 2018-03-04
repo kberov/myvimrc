@@ -18,7 +18,7 @@ nmap - :Ex<CR>
 
 " Using Plugins. I tend to reduce Plugins usage by learning more of the VIM
 " features
-"Manage my plugins using vim-plug https://github.com/junegunn/vim-plug
+" Manage my plugins using vim-plug https://github.com/junegunn/vim-plug
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 "    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " Make sure you use single quotes
@@ -28,10 +28,6 @@ call plug#begin('~/.vim/plugged')
     let g:session_autosave = 'yes'
     let g:session_autoload = 'no'
     Plug 'xolox/vim-misc' | Plug 'xolox/vim-session'
-"    let g:NERDTreeGlyphReadOnly='ro'
-"    let g:NERDTreeDirArrowExpandable = '▸'
-"    let g:NERDTreeDirArrowCollapsible = '▾'
-"    let s:dirArrows = ''
 "   to open NERDTree ...
 "   If 'mapleader' is not set or empty, a backslash is used instead.  The
 "   below mapping  means \O (press backslash(\) then Shift+o)
@@ -50,25 +46,16 @@ call plug#begin('~/.vim/plugged')
     nnoremap <silent> <Leader>t :TagbarToggle<CR>
     Plug 'altercation/vim-colors-solarized'
     "Plug 'scrooloose/syntastic'
-     Plug 'ctrlpvim/ctrlp.vim' "Pres Ctrl-p to open any file under the current directory
+    Plug 'ctrlpvim/ctrlp.vim' "Pres Ctrl-p to open any file under the current directory
 "    Plug 'jdonaldson/vaxe' "Haxe support
-"    Plug 'tomasr/molokai'  "Pretty theme"
-"    Plug 'vim-airline/vim-airline' "Pretty statusbar
-"    Plug 'vim-airline/vim-airline-themes'
-    "let g:airline#extensions#keymap#enabled = 0
-    " For the following to work, I needed to `sudo apt-get install fonts-powerline`
-    " See https://github.com/powerline/fonts
-    "let g:airline_powerline_fonts = 1
-    "let g:airline_theme='jellybeans'
 "    Plug 'kadimisetty/vim-simplebar'
-    "Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp mason highlight-all-pragmas moose test-more try-tiny' }
+    Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp mason highlight-all-pragmas moose test-more try-tiny' }
     Plug 'yko/mojo.vim'
     "Highlight embedded Perl code in __DATA__ sections of your Perl files.
     let mojo_highlight_data = 1
     "Don't highlight html inside __DATA__ templates - Perl code only.
     "let mojo_disable_html = 1
 
-"    Plug 'jiangmiao/auto-pairs' "Note! Disallows entering чшщ. Todo: think how to solve 
     " TypeScript support
 "    Plug 'leafgarland/typescript-vim'
 "    autocmd FileType typescript setlocal completeopt+=menu,preview
@@ -94,7 +81,7 @@ call plug#begin('~/.vim/plugged')
     "let JSHintUpdateWriteOnly=1
     "http://jshint.com/docs/
     "Plug 'wookiehangover/jshint.vim'
-    "Plug 'fatih/vim-go'
+    Plug 'fatih/vim-go'
     Plug 'othree/html5.vim'
     "Plug 'sirver/ultisnips'
     "Plug 'honza/vim-snippets'
@@ -159,7 +146,7 @@ let g:tagbar_type_go = {
 "let Tlist_Use_Right_Window = 1
 "nnoremap <silent> <Leader>t :TlistToggle<CR>
 "
-
+" Settings to support extended patterns for perl in ctags in tagbar
 let g:tagbar_type_perl = {
     \ 'ctagstype' : 'perl',
     \ 'kinds'     : [
