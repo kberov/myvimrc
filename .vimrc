@@ -1,12 +1,18 @@
+" Set all settings to default and be ready to apply my own settings
+set all&
+
 "compatible	behave very Vi compatible (not advisable)
 set nocp	"cp
 
+set background=dark
+syntax enable
 
 "autowrite	automatically write a file when leaving a modified buffer
 "This allows us to use :make or :GoBuild or !perl -c without saving the file
 set aw "noaw
+
 "Setting this option also implies that Vim behaves like 'autowrite' has been set.
-" Important!!! this will save all files even if you quit using qa!
+" Important!!! the following will save all files even if you quit using qa!
 "set autowriteall "noawa
 
 " Various language settings. For each of them check :help thesetting
@@ -15,7 +21,11 @@ set langmenu=bg_BG.UTF-8
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp1251,cp1250,latin1
 
-"set rtp+=$HOME/.vim/plugged/vim-go/syntax/
+" Enable loading the plugin files for specific file types.
+" If filetype detection was not switched on yet, it will be as well. This
+" actually loads the file "ftplugin.vim" in 'runtimepath'. The result is that
+" when a file is edited its plugin file is loaded (if there is one for the
+" detected filetype). |filetype-plugin|
 filetype plugin on
 
 "insertmode	use Insert mode as the default mode
@@ -37,7 +47,6 @@ set cursorline
 
 "smartindent    do clever autoindenting (local to buffer)
 set si
-syntax enable
 
 "preserveindent Preserve kind of whitespace when changing indent. (local to buffer)
 set pi "nopi
@@ -74,6 +83,8 @@ set wildignore+=*.BASE.*,*.LOCAL.*,*.REMOTE.*,.sass-cache/**
 set ignorecase
 "Override the 'ignorecase' option if the search pattern contains upper case characters.
 set smartcase
+" While typing a search command, show where the pattern, as it was typed so far, matches.
+set incsearch
 
 "Influences the working of <BS>, <Del>, CTRL-W and CTRL-U in Insert mode.
 set backspace=indent,eol,start
@@ -95,7 +106,7 @@ set expandtab
 set spelllang=en
 
 "tags list of file names to search for tags (global or local to buffer)
-set tag+=./.tags,./.TAGS,.tags,.TAGS
+set tags+=./.tags,./.TAGS,.tags,.TAGS,./**/tags
 " See: http://vim.wikia.com/wiki/Browsing_programs_with_tags
 
 " Don't save hidden and unloaded buffers in sessions.
@@ -107,7 +118,7 @@ set sessionoptions-=buffers
 " Now you can do :fin {partial-filename}<Tab> to quickly find and open files
 " deep under the current directory.
 " No CtrlP required. See also https://stackoverflow.com/questions/16082991
-set path+=.,**,* 
+set path=,./**,**,* 
 "history: how many command lines are remembered:
 set hi=200
 
@@ -131,104 +142,13 @@ set nobomb
 
 set complete-=i " Searching includes can be slow
 set laststatus=2    "always show a status line
-colorscheme industry  "jellybeans distinguished industry desert murphy slate molokai apprentice
-"Manage my plugins using vim-plug https://github.com/junegunn/vim-plug
-" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-"    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-" Make sure you use single quotes
-call plug#begin('~/.vim/plugged')
-    " Group dependencies
-    "session plugin
-    let g:session_autosave = 'yes'
-    let g:session_autoload = 'no'
-    Plug 'xolox/vim-misc' | Plug 'xolox/vim-session'
-"    let g:NERDTreeGlyphReadOnly='ro'
-"    let g:NERDTreeDirArrowExpandable = '▸'
-"    let g:NERDTreeDirArrowCollapsible = '▾'
-"    let s:dirArrows = ''
-"   to open NERDTree ...
-"   If 'mapleader' is not set or empty, a backslash is used instead.  The
-"   below mapping  means \O (press backslash(\) then Shift+o)
-    Plug 'scrooloose/nerdtree' " , { 'on': 'NERDTreeToggle' }
-    map <Leader>O :NERDTreeToggle<CR>
-    map <Leader>nf :NERDTreeFind<CR>
-"    let g:instant_markdown_autostart = 1
-"    "Plug 'suan/vim-instant-markdown'
-"	Plug 'tpope/vim-vinegar' "Press '-' to open the directory of the current file
-    Plug 'tpope/vim-fugitive' "Use Git
-"    "Plug 'fholgado/minibufexpl.vim'
-"    "Plug '~/Downloads/Vim/taglist_46'
-    Plug 'majutsushi/tagbar'
-    "Tagbar window will automatically close when you jump to a tag.
-    let g:tagbar_autoclose = 1
-    nnoremap <silent> <Leader>t :TagbarToggle<CR>
-    "Plug 'scrooloose/syntastic'
-     Plug 'ctrlpvim/ctrlp.vim' "Pres Ctrl-p to open any file under the current directory
-"    Plug 'jdonaldson/vaxe' "Haxe support
-"    Plug 'tomasr/molokai'  "Pretty theme"
-"    Plug 'vim-airline/vim-airline' "Pretty statusbar
-"    Plug 'vim-airline/vim-airline-themes'
-    "let g:airline#extensions#keymap#enabled = 0
-    " For the following to work, I needed to `sudo apt-get install fonts-powerline`
-    " See https://github.com/powerline/fonts
-    "let g:airline_powerline_fonts = 1
-    "let g:airline_theme='jellybeans'
-"    Plug 'kadimisetty/vim-simplebar'
-    "Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp mason highlight-all-pragmas moose test-more try-tiny' }
-    Plug 'yko/mojo.vim'
-    "Highlight embedded Perl code in __DATA__ sections of your Perl files.
-    let mojo_highlight_data = 1
-    "Don't highlight html inside __DATA__ templates - Perl code only.
-    "let mojo_disable_html = 1
-
-"    Plug 'jiangmiao/auto-pairs' "Note! Disallows entering чшщ. Todo: think how to solve 
-    " TypeScript support
-"    Plug 'leafgarland/typescript-vim'
-"    autocmd FileType typescript setlocal completeopt+=menu,preview
-"    Plug 'HerringtonDarkholme/yats.vim'
-"    Plug 'Quramy/tsuquyomi'
-"    Plug 'clausreinke/typescript-tools.vim', { 'do': 'npm install' }
-"    Plug 'Shougo/vimproc.vim'
-    " Rust support
-"    Plug 'rust-lang/rust.vim'
-"    let g:rustfmt_autosave = 1
-"	let g:rustfmt_options = '--ideal_width=90 fn_call_width=90 write_mode=Replace'
-"    Plug 'timonv/vim-cargo'
-"    Plug 'racer-rust/vim-racer' " See help for options: https://github.com/racer-rust/vim-racer
-"    let g:racer_cmd = "racer"
-"    let g:racer_experimental_completer = 1
-    " End Rust support
-    " Start Swift Support
-"    Plug 'toyamarinyon/vim-swift'
-    "Better JS support https://github.com/nodejs/node/wiki/Vim-Plugins
-    "Enhanced JavaScript Syntax for Vim
-    " Plug 'jelera/vim-javascript-syntax'
-    "To disable automatic checking and only check when the file is written: 
-    "let JSHintUpdateWriteOnly=1
-    "http://jshint.com/docs/
-    "Plug 'wookiehangover/jshint.vim'
-    "Plug 'fatih/vim-go'
-    Plug 'othree/html5.vim'
-    "Plug 'sirver/ultisnips'
-    "Plug 'honza/vim-snippets'
-    "let g:UltiSnipsUsePythonVersion = 3
-    "let g:UltiSnipsExpandTrigger="<tab>"
-    "let g:UltiSnipsJumpForwardTrigger="<c-b>"
-    "let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-    " If you want :UltiSnipsEdit to split your window.
-    "let g:UltiSnipsEditSplit="vertical"
-
-    "Plug 'Valloric/YouCompleteMe'
-
-" Add plugins to &runtimepath
-call plug#end()
-" commands depending on loaded plgins
 
 " Load bg keyboard and switch back to no keymap, so later if I need to enter
 " bulgarian letters I can just press CTRL-^ to switch to INSERT(lang) as
 " opposed to just INSERT
 " See https://stackoverflow.com/questions/3776728/#3777557 
 " See also /usr/share/vim/vim74/keymap/bulgarian-phonetic.vim 
+" my keymap old-bulgarian-phonetic from ~/.vim/keymap/
 set keymap=old-bulgarian-phonetic
 "not switched on by default
 set iminsert=0 imsearch=-1
@@ -245,18 +165,16 @@ set clipboard^=unnamedplus
 "https://stackoverflow.com/questions/677986/vim-copy-selection-to-os-x-clipboard#680271
 "set clipboard=unnamed
 
-
 " Normally the quickfix window is at the bottom of the screen.  If there are
 " vertical splits, it's at the bottom of the rightmost column of windows.  To
 " make it always occupy the full width:
 botright cwindow
 
-" pandoc , markdown
-command! -nargs=* RunSilent
-      \ | execute ':silent !'.'<args>'
-      \ | execute ':redraw!'
-nmap <Leader>pc :RunSilent pandoc -o ~/tmp/vim-pandoc-out.html %<CR>
-nmap <Leader>pp :RunSilent xdg-open ~/tmp/vim-pandoc-out.html<CR>
+" When on, ":autocmd", shell and write commands are not allowed in ".vimrc"
+" and ".exrc" in the current directory and map commands are displayed.
+set secure
+
+" Some mappings
 
 " If "mapleader" is not set or empty, a backslash is used instead.
 " Press \+f and go to the prepared command line to modify the search pattern.
@@ -298,37 +216,6 @@ vnoremap <leader>d "_d
 "Replace in visual mode
 vnoremap <leader>p "_dP
 
-"https://github.com/fatih/vim-go-tutorial#quick-setup
-"all lists will be of type quickfix:
-let g:go_list_type = "quickfix"
-let g:tagbar_type_go = {
-	\ 'ctagstype' : 'go',
-	\ 'kinds'     : [
-		\ 'p:package',
-		\ 'i:imports:1',
-		\ 'c:constants',
-		\ 'v:variables',
-		\ 't:types',
-		\ 'n:interfaces',
-		\ 'w:fields',
-		\ 'e:embedded',
-		\ 'm:methods',
-		\ 'r:constructor',
-		\ 'f:functions'
-	\ ],
-	\ 'sro' : '.',
-	\ 'kind2scope' : {
-		\ 't' : 'ctype',
-		\ 'n' : 'ntype'
-	\ },
-	\ 'scope2kind' : {
-		\ 'ctype' : 't',
-		\ 'ntype' : 'n'
-	\ },
-	\ 'ctagsbin'  : 'gotags',
-	\ 'ctagsargs' : '-sort -silent'
-\ }
-
 "Ctrl+leftarrow (or Ctrl+h) will go one window left, etc.
 "See http://vim.wikia.com/wiki/Switch_between_Vim_window_splits_easily
 map <silent> <C-Up> :wincmd k<CR>
@@ -340,11 +227,9 @@ map <silent> <C-j> :wincmd j<CR>
 map <silent> <C-h> :wincmd h<CR>
 map <silent> <C-l> :wincmd l<CR>
 
-
 "Move entire line up and down https://stackoverflow.com/questions/741814
 noremap <c-s-up> :call feedkeys( line('.')==1 ? '' : 'ddkP' )<CR>
 noremap <c-s-down> ddp
-
 
 " Comment/uncomment regions of lines
 " https://stackoverflow.com/questions/1676632/
@@ -362,32 +247,5 @@ noremap <c-s-down> ddp
 " Type  :help index
 " For a list of all defined maps in vimrc and by Vim plugins type :map
 "
-" Settings for the Taglist plugin
-"let Tlist_Close_On_Select = 1
-"let Tlist_Show_One_File = 1
-"let Tlist_Compact_Format = 1
-"let Tlist_Sort_Type = "name"
-"let Tlist_Use_Right_Window = 1
-"nnoremap <silent> <Leader>t :TlistToggle<CR>
-"
+so ~/.vim/myplugins.vim 
 
-let g:tagbar_type_perl = {
-    \ 'ctagstype' : 'perl',
-    \ 'kinds'     : [
-        \ 'p:package:0:0',
-        \ 'w:roles:0:0',
-        \ 'e:extends:0:0',
-        \ 'u:uses:0:0',
-        \ 'r:requires:0:0',
-        \ 'o:ours:0:0',
-        \ 'a:properties:0:0',
-        \ 'b:aliases:0:0',
-        \ 'h:helpers:0:0',
-        \ 's:subroutines:0:0',
-        \ 'd:POD:1:0'
-    \ ]
-\ }
-
-" When on, ":autocmd", shell and write commands are not allowed in ".vimrc"
-" and ".exrc" in the current directory and map commands are displayed.
-set secure
