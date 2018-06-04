@@ -38,13 +38,14 @@ call plug#begin('~/.vim/plugged')
 "    "Plug 'suan/vim-instant-markdown'
 "	Plug 'tpope/vim-vinegar' "Press '-' to open the directory of the current file
     Plug 'tpope/vim-fugitive' "Use Git
+" Show current branch in status line
+set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
 "    "Plug 'fholgado/minibufexpl.vim'
 "    "Plug '~/Downloads/Vim/taglist_46'
     Plug 'majutsushi/tagbar'
     "Tagbar window will automatically close when you jump to a tag.
     let g:tagbar_autoclose = 1
     nnoremap <silent> <Leader>t :TagbarToggle<CR>
-    Plug 'altercation/vim-colors-solarized'
     "Plug 'scrooloose/syntastic'
     Plug 'ctrlpvim/ctrlp.vim' "Pres Ctrl-p to open any file under the current directory
 "    Plug 'jdonaldson/vaxe' "Haxe support
@@ -92,12 +93,56 @@ call plug#begin('~/.vim/plugged')
     " If you want :UltiSnipsEdit to split your window.
     "let g:UltiSnipsEditSplit="vertical"
 
+    "Plug '~/.vim/plugged/dbext_2600'
     "Plug 'Valloric/YouCompleteMe'
-
+" Colorschemes:
+    Plug 'nightsense/vimspectr'
+    Plug 'altercation/vim-colors-solarized'
+    Plug 'fcpg/vim-farout'
+    Plug 'kadekillary/skull-vim'
+    Plug 'kadekillary/Turtles'
+    Plug 'dracula/vim', { 'as': 'dracula' }
+    Plug 'chriskempson/base16-vim'
+    Plug 'JarrodCTaylor/spartan'
+    " https://superuser.com/questions/921920
+    " Display trailing spaces in vim
+    Plug 'vim-scripts/ShowTrailingWhitespace'
 " Add plugins to &runtimepath
 call plug#end()
 " commands depending on loaded plgins
-colorscheme solarized  "jellybeans distinguished industry desert murphy slate molokai apprentice
+" colorscheme solarized  "jellybeans distinguished industry desert murphy slate molokai apprentice
+" To load a random dark theme during the night, random light theme during the day:
+if strftime("%H") < 7 || strftime("%H") >= 19
+  set background=dark
+  let themes = [
+    \ 'vimspectr0-dark'   , 'vimspectr0-dark'    , 'vimspectr30-dark'  ,
+    \ 'vimspectr60-dark'  , 'vimspectr90-dark'   , 'vimspectr120-dark' ,
+    \ 'vimspectr150-dark' , 'vimspectr180-dark'  , 'vimspectr210-dark' ,
+    \ 'vimspectr240-dark' , 'vimspectr270-dark'  , 'vimspectr300-dark' ,
+    \ 'vimspectr330-dark' , 'vimspectrgrey-dark',
+    \ 'blue', 'darkblue', 'desert', 'distinguished',
+    \ 'heman', 'elflord', 'evening', 'jellybeans', 'koehler', 'murphy',
+    \ 'pablo', 'ron', 'slate', 'solarized', 'torte', 'farout', 'skull',
+    \ 'spartan', 'thermopylae', 'dracula', 'base16-3024', 'base16-apathy',
+    \ 'base16-ashes', 'base16-atelier-dune', 'base16-atelier-heath'
+    \ ]
+else
+  set background=light
+  let themes = [
+    \ 'vimspectr0-light'  , 'vimspectr0-light'   , 'vimspectr30-light' ,
+    \ 'vimspectr60-light' , 'vimspectr90-light'  , 'vimspectr120-light',
+    \ 'vimspectr150-light', 'vimspectr180-light' , 'vimspectr210-light',
+    \ 'vimspectr240-light', 'vimspectr270-light' , 'vimspectr300-light',
+    \ 'vimspectr330-light', 'vimspectrgrey-light',
+    \ 'default', 'delek', 'morning', 'peachpuff', 'shine', 'solarized',
+    \ 'zellner', 'base16-atelier-dune-light', 'base16-cupertino',
+    \ 'base16-atelier-heath-light'
+    \ ]
+endif
+exe 'colorscheme '.themes[localtime() % len(themes)]
+":help ShowTrailingWhitespace CONFIGURATION
+highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
+
 " pandoc , markdown
 command! -nargs=* RunSilent
       \ | execute ':silent !'.'<args>'
@@ -161,6 +206,7 @@ let g:tagbar_type_perl = {
         \ 'h:helpers:0:0',
         \ 's:subroutines:0:0',
         \ 'd:POD:1:0'
-    \ ]
+    \ ],
+	\ 'ctagsbin'  : '~/bin/perl_ctags_for_tagbar'
 \ }
 
