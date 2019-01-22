@@ -3,11 +3,11 @@
 " Netrw settings; See https://shapeshed.com/vim-netrw/
 let g:netrw_banner = 0 " remove the mostly useless banner
 let g:netrw_liststyle = 3 " tree view
-" The following always opens the new file in the previous window, which                                                                                       
+" The following always opens the new file in the previous window, which
 " happens to be annoying when you want to open the file in the same window.
 " So for now we use "P" when we wont to open it in the previous window
 let g:netrw_browse_split = 0 "4 - open in previous window like NERDTree
-let g:netrw_winsize = 20 " % -  in percentage 
+let g:netrw_winsize = 20 " % -  in percentage
 let g:netrw_list_hide = &wildignore "ignore the same files as wildignore
 "    augroup ProjectDrawer "launch it right after you’ve entered Vim
 "      autocmd!
@@ -34,6 +34,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'scrooloose/nerdtree' " , { 'on': 'NERDTreeToggle' }
     map <Leader>O :NERDTreeToggle<CR>
     map <Leader>nf :NERDTreeFind<CR>
+    let NERDTreeIgnore=['^\.git', '\~$']
 "    let g:instant_markdown_autostart = 1
 "    "Plug 'suan/vim-instant-markdown'
 "	Plug 'tpope/vim-vinegar' "Press '-' to open the directory of the current file
@@ -48,6 +49,12 @@ set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
     nnoremap <silent> <Leader>t :TagbarToggle<CR>
     "Plug 'scrooloose/syntastic'
     Plug 'ctrlpvim/ctrlp.vim' "Pres Ctrl-p to open any file under the current directory
+    Plug 'yssl/QFEnter' " Open items from Vim's quickfix or location list wherever you wish.
+    " If you're a CtrlP user, for instance, you might like these for familiarity:
+    let g:qfenter_keymap = {}
+    let g:qfenter_keymap.vopen = ['<C-v>']
+    let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
+    let g:qfenter_keymap.topen = ['<C-t>']
 "    Plug 'jdonaldson/vaxe' "Haxe support
 "    Plug 'kadimisetty/vim-simplebar'
     Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp mason highlight-all-pragmas moose test-more try-tiny' }
@@ -58,12 +65,13 @@ set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
     "let mojo_disable_html = 1
 
     " TypeScript support
-"    Plug 'leafgarland/typescript-vim'
-"    autocmd FileType typescript setlocal completeopt+=menu,preview
-"    Plug 'HerringtonDarkholme/yats.vim'
-"    Plug 'Quramy/tsuquyomi'
-"    Plug 'clausreinke/typescript-tools.vim', { 'do': 'npm install' }
-"    Plug 'Shougo/vimproc.vim'
+    Plug 'leafgarland/typescript-vim'
+    autocmd FileType typescript setlocal completeopt+=menu,preview
+    Plug 'HerringtonDarkholme/yats.vim'
+    "Plug 'Quramy/tsuquyomi'
+    Plug 'clausreinke/typescript-tools.vim', { 'do': 'npm install' }
+    " Plug 'Shougo/vimproc.vim'
+
     " Rust support
 "    Plug 'rust-lang/rust.vim'
 "    let g:rustfmt_autosave = 1
@@ -75,14 +83,14 @@ set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
     " End Rust support
     " Start Swift Support
 "    Plug 'toyamarinyon/vim-swift'
-    "Better JS support https://github.com/nodejs/node/wiki/Vim-Plugins
-    "Enhanced JavaScript Syntax for Vim
-    " Plug 'jelera/vim-javascript-syntax'
-    "To disable automatic checking and only check when the file is written: 
-    "let JSHintUpdateWriteOnly=1
-    "http://jshint.com/docs/
-    "Plug 'wookiehangover/jshint.vim'
-    Plug 'fatih/vim-go'
+    Plug 'pangloss/vim-javascript'
+    " React JSX support
+    Plug 'mxw/vim-jsx'
+    let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+
+    "Plug 'fatih/vim-go'
+    " vim-go requires Vim 7.4.2009 or Neovim 0.3.1, but you're using an older version.
+    "let g:go_version_warning = 0
     Plug 'othree/html5.vim'
     "Plug 'sirver/ultisnips'
     "Plug 'honza/vim-snippets'
@@ -99,7 +107,6 @@ set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
     Plug 'nightsense/vimspectr'
     Plug 'altercation/vim-colors-solarized'
     Plug 'fcpg/vim-farout'
-    Plug 'kadekillary/skull-vim'
     Plug 'kadekillary/Turtles'
     Plug 'dracula/vim', { 'as': 'dracula' }
     Plug 'chriskempson/base16-vim'
@@ -112,34 +119,28 @@ call plug#end()
 " commands depending on loaded plgins
 " colorscheme solarized  "jellybeans distinguished industry desert murphy slate molokai apprentice
 " To load a random dark theme during the night, random light theme during the day:
-if strftime("%H") < 7 || strftime("%H") >= 19
-  set background=dark
-  let themes = [
-    \ 'vimspectr0-dark'   , 'vimspectr0-dark'    , 'vimspectr30-dark'  ,
-    \ 'vimspectr60-dark'  , 'vimspectr90-dark'   , 'vimspectr120-dark' ,
-    \ 'vimspectr150-dark' , 'vimspectr180-dark'  , 'vimspectr210-dark' ,
-    \ 'vimspectr240-dark' , 'vimspectr270-dark'  , 'vimspectr300-dark' ,
-    \ 'vimspectr330-dark' , 'vimspectrgrey-dark',
-    \ 'blue', 'darkblue', 'desert', 'distinguished',
-    \ 'heman', 'elflord', 'evening', 'jellybeans', 'koehler', 'murphy',
-    \ 'pablo', 'ron', 'slate', 'solarized', 'torte', 'farout', 'skull',
-    \ 'spartan', 'thermopylae', 'dracula', 'base16-3024', 'base16-apathy',
-    \ 'base16-ashes', 'base16-atelier-dune', 'base16-atelier-heath'
-    \ ]
-else
-  set background=light
-  let themes = [
-    \ 'vimspectr0-light'  , 'vimspectr0-light'   , 'vimspectr30-light' ,
-    \ 'vimspectr60-light' , 'vimspectr90-light'  , 'vimspectr120-light',
-    \ 'vimspectr150-light', 'vimspectr180-light' , 'vimspectr210-light',
-    \ 'vimspectr240-light', 'vimspectr270-light' , 'vimspectr300-light',
-    \ 'vimspectr330-light', 'vimspectrgrey-light',
-    \ 'default', 'delek', 'morning', 'peachpuff', 'shine', 'solarized',
-    \ 'zellner', 'base16-atelier-dune-light', 'base16-cupertino',
-    \ 'base16-atelier-heath-light'
-    \ ]
+if has("gui_running")
+    if strftime("%H") < 7 || strftime("%H") >= 19
+      set background=dark
+      let themes = [
+        \ 'vimspectrgrey-dark',
+        \ 'blue', 'darkblue', 'desert', 'distinguished',
+        \ 'heman', 'elflord', 'evening', 'jellybeans', 'koehler', 'murphy',
+        \ 'pablo', 'ron', 'slate', 'solarized', 'torte', 'farout',
+        \ 'spartan', 'thermopylae', 'dracula', 'base16-3024', 'base16-apathy',
+        \ 'base16-ashes', 'base16-atelier-dune', 'base16-atelier-heath'
+        \ ]
+    else
+      set background=light
+      let themes = [
+        \ 'vimspectrgrey-light',
+        \ 'default', 'delek', 'morning', 'peachpuff', 'shine', 'solarized',
+        \ 'zellner', 'base16-atelier-dune-light', 'base16-cupertino',
+        \ 'base16-atelier-heath-light'
+        \ ]
+    endif
+    exe 'colorscheme '.themes[localtime() % len(themes)]
 endif
-exe 'colorscheme '.themes[localtime() % len(themes)]
 ":help ShowTrailingWhitespace CONFIGURATION
 highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
 
@@ -205,8 +206,10 @@ let g:tagbar_type_perl = {
         \ 'b:aliases:0:0',
         \ 'h:helpers:0:0',
         \ 's:subroutines:0:0',
+        \ 'm:private_subroutines:0:0',
+        \ 't:old_private_subroutines:0:0',
         \ 'd:POD:1:0'
     \ ],
-	\ 'ctagsbin'  : '~/bin/perl_ctags_for_tagbar'
+	\ 'ctagsbin'  : 'perl_ctags_for_tagbar'
 \ }
 

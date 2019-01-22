@@ -3,7 +3,7 @@
 " colorscheme is loaded via a plugin managed by vim-plug
 "colorscheme  peachpuff "koehler distinguished industry desert murphy slate molokai apprentice
 "set cursorcolumn
-set guifont=Monospace\ 16,Courier\ New\ 16
+set guifont=Liberation\ Mono\ 17
 "set guifont=PT\ Mono:h18 "on MAC
 "set linespace=5 "more vertical space between lines
 " Add some common mappings used in GUI programs Copy, Paste Save

@@ -96,17 +96,23 @@ set backspace=indent,eol,start
 " Set some session options
 " Cross-platform sessions
 set sessionoptions+=unix,slash,resize
+" Don't save hidden and unloaded buffers in sessions.
+set sessionoptions-=buffers
+" Persist options and mappings although it can corrupt sessions.
+set sessionoptions+=options
 
 " If 'modeline' is on 'modelines' gives the number of lines that is checked
 " for set commands.
 set modeline
 set modelines=5
 
-" Use four spaces for indentation
-set tabstop=8
-set softtabstop=4
-set shiftwidth=4
-set expandtab
+" Use four spaces for indentation:
+set tabstop=4     " columns width used when a \t character is displayed;
+set softtabstop=4 " insert that columns width \t and/or \s to simulate tab
+                  " stops at this width;
+set shiftwidth=4  " the size of an indent in columns;
+set expandtab     " the tab key (in insert mode) will insert \s instead of \t;
+                  " to insert \t press CTRL-Q then TAB.
 
 " set statusline=%F%m%r%h%w\ F=%{&ff}\ T=%y\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 
@@ -118,10 +124,6 @@ set spelllang=en
 set tags+=../**/tags
 " See: http://vim.wikia.com/wiki/Browsing_programs_with_tags
 
-" Don't save hidden and unloaded buffers in sessions.
-"set sessionoptions-=buffers
-" Persist options and mappings although it can corrupt sessions.
-"set sessionoptions+=options
 
 " Search recursively for filenames!
 " Now you can do :fin {partial-filename}<Tab> to quickly find and open files
@@ -134,7 +136,8 @@ set hi=100
 
 
 "When 'off', a buffer is unloaded when it is |abandon|ed.  When 'on', a buffer becomes hidden when it is |abandon|ed.
-set hidden
+" Uncomment to keep files in memory after they are abndonned.
+"set hidden
 "
 "bomb prepend a Byte Order Mark to the file (local to buffer)
 set nobomb
@@ -143,6 +146,9 @@ set nobomb
 "set fdm=syntax
 set complete-=i " do not scan included files for completions because it slows
                 " down autocompletion with large codebases
+set complete-=t " Do not scan tags. Use i_CTRL-X_CTRL-].
+set showfulltag " show both the tag name and a tidied-up form of the search
+	        " pattern (if there is one) as possible matches.
 set laststatus=2    "always show a status line
 
 " Load bg keyboard and switch back to no keymap, so later if I need to enter
@@ -168,9 +174,6 @@ set clipboard^=unnamedplus
 "https://stackoverflow.com/questions/677986/vim-copy-selection-to-os-x-clipboard#680271
 "set clipboard=unnamed
 
-" When on, ":autocmd", shell and write commands are not allowed in ".vimrc"
-" and ".exrc" in the current directory and map commands are displayed.
-set secure
 
 " Some mappings
 "
@@ -189,9 +192,11 @@ set secure
 nnoremap <leader>ev :split $MYVIMRC<cr>
 
 " Press \+f and go to the prepared command line to modify the search pattern.
+" The cursor is positioned conveniently between the search deleimiters // like
+" this /|/.
 " **/*.%:e searches only in files of the same type as the current file:
 " Use **/*.pm to search only in *.pm files.
-map <Leader>f :noautocmd vimgrep! /*/gj **/*.* <Bar> cw<C-Left><C-Left><C-Left><C-Left>
+map <Leader>f :noautocmd vimgrep! //gj **/*.* <Bar> cw<C-Left><C-Left><C-Left><C-Left><Right>
 
 " Press \ff to search/find in all files of the same type for the current
 " word (the word under the cursor) and open the list of found occurences
@@ -209,9 +214,9 @@ map <Leader>cft :let @+=expand('%:t')<CR>
 "map <C-Tab> :bnext<cr>
 "map <C-S-Tab> :bprevious<cr>
 nmap b] :bnext<cr>
+nmap ]b :bnext<cr>
 nmap b[ :bprevious<cr>
 nmap [b :bprevious<cr>
-nmap ]b :bnext<cr>
 map <Leader>b :b
 
 "Differs from 'j' when lines wrap, and when used with an operator, because it's not linewise.
@@ -229,6 +234,11 @@ nnoremap <leader>d "_d
 vnoremap <leader>d "_d
 "Replace in visual mode
 vnoremap <leader>p "_dP
+
+" Update/Save the file
+nnoremap <silent> <leader>w  :update<CR>
+vnoremap <silent> <leader>w  <C-C>:update<CR>
+inoremap <silent> <leader>w  <C-O>:update<CR>
 
 " To quickly switch/jump to windows
 " Ctrl+leftarrow (or Ctrl+h) will go one window left, etc.
@@ -262,10 +272,20 @@ map <silent> <C-l> :wincmd l<CR>
 " See https://stackoverflow.com/questions/5596548
 nnoremap t :tabnew %:h<cr>
 
+" Move up and down in autocomplete with j and k
+:inoremap <expr> j pumvisible() ? '<C-n>' : 'j'
+:inoremap <expr> k pumvisible() ? '<C-p>' : 'k'
 
 "Move entire line up and down https://stackoverflow.com/questions/741814
 noremap <c-s-up> :call feedkeys( line('.')==1 ? '' : 'ddkP' )<CR>
 noremap <c-s-down> ddp
+
+" https://andrew.stwrt.ca/posts/project-specific-vimrc/
+" Enable usage of .exrc or .vimrc per project
+set exrc
+" When on, ":autocmd", shell and write commands are not allowed in ".vimrc"
+" and ".exrc" in the current directory and map commands are displayed.
+set secure
 
 " Comment/uncomment regions of lines
 " https://stackoverflow.com/questions/1676632/
@@ -286,3 +306,6 @@ runtime myabbreviations.vim
 runtime myplugins.vim
 " echom "(>^.^<)"
 
+"https://vimhelp.appspot.com/term.txt.html#xterm-bracketed-paste
+"https://unix.stackexchange.com/questions/196098/copy-paste-in-xfce4-terminal-adds-0-and-1
+set t_BE=
