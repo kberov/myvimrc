@@ -192,7 +192,7 @@ set clipboard^=unnamedplus
 nnoremap <leader>ev :split $MYVIMRC<cr>
 
 " Press \+f and go to the prepared command line to modify the search pattern.
-" The cursor is positioned conveniently between the search deleimiters // like
+" The cursor is positioned conveniently between the search delimiters // like
 " this /|/.
 " **/*.%:e searches only in files of the same type as the current file:
 " Use **/*.pm to search only in *.pm files.
@@ -309,3 +309,4 @@ runtime myplugins.vim
 "https://vimhelp.appspot.com/term.txt.html#xterm-bracketed-paste
 "https://unix.stackexchange.com/questions/196098/copy-paste-in-xfce4-terminal-adds-0-and-1
 set t_BE=
+
