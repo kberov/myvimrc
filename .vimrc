@@ -32,9 +32,12 @@ filetype plugin on
 set noim	"im
 
 "backupdir  list of directories to put backup files in
+"Empty means that no backup file will be created ('patchmode' is impossible!).
+"Writing may fail because of this.
 set bdir=~/tmp,/tmp,/WINDOWS/TEMP
 
 "directory  list of directories for the swap file
+"Empty means that no swap file will be used (recovery is impossible!).
 set dir=~/tmp,/tmp,/WINDOWS/TEMP
 
 "show the line number for each line  (local to window)
@@ -58,7 +61,7 @@ set pi "nopi
 " character that fits on the screen. Unlike 'wrapmargin' and 'textwidth', this
 " does not insert <EOL>s in the file, it only affects the way the file is
 " displayed, not its contents.
-let breakat=" -+:,.?"
+let breakat=" >+:,.?"
 set linebreak "nolinebreak
 
 " When 'wildmenu' is on, command-line completion operates in an enhanced mode.
@@ -135,7 +138,8 @@ set path=./**,*
 set hi=100
 
 
-"When 'off', a buffer is unloaded when it is |abandon|ed.  When 'on', a buffer becomes hidden when it is |abandon|ed.
+" When 'off', a buffer is unloaded when it is |abandon|ed.  When 'on', a
+" buffer becomes hidden when it is |abandon|ed.
 " Uncomment to keep files in memory after they are abndonned.
 "set hidden
 "
@@ -144,12 +148,12 @@ set nobomb
 
 " foldmethod folding type: "manual", "indent", "expr", "marker" or "syntax" (local to window)
 "set fdm=syntax
-set complete-=i " do not scan included files for completions because it slows
-                " down autocompletion with large codebases
-set complete-=t " Do not scan tags. Use i_CTRL-X_CTRL-].
-set showfulltag " show both the tag name and a tidied-up form of the search
-	        " pattern (if there is one) as possible matches.
-set laststatus=2    "always show a status line
+set complete-=i  " do not scan included files for completions because it slows
+                 " down autocompletion with large codebases
+set complete-=t  " Do not scan tags. Use i_CTRL-X_CTRL-].
+set showfulltag  " show both the tag name and a tidied-up form of the search
+	             " pattern (if there is one) as possible matches.
+set laststatus=2 " always show a status line
 
 " Load bg keyboard and switch back to no keymap, so later if I need to enter
 " bulgarian letters I can just press CTRL-^ to switch to INSERT(lang) as
@@ -310,3 +314,12 @@ runtime myplugins.vim
 "https://unix.stackexchange.com/questions/196098/copy-paste-in-xfce4-terminal-adds-0-and-1
 set t_BE=
 
+" !!!Automatically leave insert mode after 'updatetime' milliseconds of
+" inaction. I do not have to press constantly ESC ANYMORE... EVER
+au CursorHoldI * stopinsert
+" If you find that this event fires too quickly, you can adjust 'updatetime'
+" to suit your needs, but you might want to consider doing so only when you
+" enter insert mode:
+" set 'updatetime' to 2600 miliseconds when in insert mode
+au InsertEnter * let updaterestore=&updatetime | set updatetime=2600
+au InsertLeave * let &updatetime=updaterestore

@@ -3,7 +3,7 @@
 " colorscheme is loaded via a plugin managed by vim-plug
 "colorscheme  peachpuff "koehler distinguished industry desert murphy slate molokai apprentice
 "set cursorcolumn
-set guifont=Liberation\ Mono\ 14
+set guifont=Liberation\ Mono\ 12
 "set guifont=PT\ Mono:h18 "on MAC
 "set linespace=5 "more vertical space between lines
 "set ch=2		" Make command line two lines high
@@ -40,4 +40,6 @@ amenu Tools.My.Copy\ File\ Name :let @+=expand('%:p')<CR>
 " Uze common shotcuts available usually in Windows
 " Such as Ctrl+C, Ctrl+X, Ctrl+V Ctrl+S
 so $VIMRUNTIME/mswin.vim
+" https://vim.fandom.com/wiki/Make_arrow_keys_work_in_visual_mode_under_Windows
+set keymodel-=stopsel
 

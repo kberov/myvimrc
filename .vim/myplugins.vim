@@ -39,8 +39,8 @@ call plug#begin('~/.vim/plugged')
 "    "Plug 'suan/vim-instant-markdown'
 "	Plug 'tpope/vim-vinegar' "Press '-' to open the directory of the current file
     Plug 'tpope/vim-fugitive' "Use Git
-" Show current branch in status line
-set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
+    " Show current branch in status line
+    set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
 "    "Plug 'fholgado/minibufexpl.vim'
 "    "Plug '~/Downloads/Vim/taglist_46'
     Plug 'majutsushi/tagbar'
@@ -59,6 +59,12 @@ set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
 "    Plug 'kadimisetty/vim-simplebar'
     Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp mason highlight-all-pragmas moose test-more try-tiny' }
     Plug 'yko/mojo.vim'
+    Plug 'udalov/kotlin-vim'
+    Plug 'mileszs/ack.vim'
+    "fall back to Ack in case you use your vimrc on a system without Ag available
+    if executable('ag')
+        let g:ackprg = 'ag --vimgrep'
+    endif
     "Highlight embedded Perl code in __DATA__ sections of your Perl files.
     let mojo_highlight_data = 1
     "Don't highlight html inside __DATA__ templates - Perl code only.
@@ -71,7 +77,8 @@ set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
     "Plug 'Quramy/tsuquyomi'
     Plug 'clausreinke/typescript-tools.vim', { 'do': 'npm install' }
     " Plug 'Shougo/vimproc.vim'
-
+    " Vala
+    Plug 'arrufat/vala.vim'
     " Rust support
 "    Plug 'rust-lang/rust.vim'
 "    let g:rustfmt_autosave = 1
@@ -100,9 +107,19 @@ set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
     "let g:UltiSnipsJumpBackwardTrigger="<c-z>"
     " If you want :UltiSnipsEdit to split your window.
     "let g:UltiSnipsEditSplit="vertical"
-
     "Plug '~/.vim/plugged/dbext_2600'
-    "Plug 'Valloric/YouCompleteMe'
+    Plug 'ajh17/VimCompletesMe'
+    Plug 'ludovicchabant/vim-gutentags'
+    Plug 'skywind3000/gutentags_plus'
+    " enable gtags module
+    let g:gutentags_modules = ['ctags', 'gtags_cscope']
+    " config project root markers.
+    let g:gutentags_project_root = ['.root']
+    " generate datebases in my cache directory, prevent gtags files polluting my project
+    let g:gutentags_cache_dir = expand('~/.cache/tags')
+    " change focus to quickfix window after search (optional).
+    let g:gutentags_plus_switch = 1
+
 " Colorschemes:
     Plug 'nightsense/vimspectr'
     Plug 'altercation/vim-colors-solarized'
@@ -122,21 +139,43 @@ call plug#end()
 if has("gui_running")
     if strftime("%H") < 7 || strftime("%H") >= 19
       set background=dark
+      " 'vimspectrgrey-dark', 'base16-apathy', 'thermopylae', 'base16-black-metal',
+      " 'blue', 'spartan', 
       let themes = [
-        \ 'vimspectrgrey-dark',
-        \ 'blue', 'darkblue', 'desert', 'distinguished',
+        \ 'darkblue', 'desert', 'distinguished', 'apprentice',
         \ 'heman', 'elflord', 'evening', 'jellybeans', 'koehler', 'murphy',
-        \ 'pablo', 'ron', 'slate', 'solarized', 'torte', 'farout',
-        \ 'spartan', 'thermopylae', 'dracula', 'base16-3024', 'base16-apathy',
-        \ 'base16-ashes', 'base16-atelier-dune', 'base16-atelier-heath'
+        \ 'pablo', 'ron', 'slate', 'solarized', 'torte', 'farout', 'industry',
+        \ 'dracula', 'base16-3024', 'base16-chalk', 'base16-classic-dark',
+        \ 'base16-ashes', 'base16-atlas', 'base16-atelier-dune',
+        \ 'base16-atelier-heath', 'base16-atelier-estuary', 'base16-flat',
+        \ 'base16-atelier-forest', 'base16-atelier-sulphurpool',
+        \ 'base16-black-metal-bathory', 'base16-brewer', 'base16-dracula',
+        \ 'base16-porple', 'base16-pop', 'base16-greenscreen',
+        \ 'base16-gruvbox-dark-hard', 'base16-harmonic-dark',
+        \ 'base16-heetch', 'base16-horizon-dark', 'base16-materia',
+        \ 'base16-irblack', 'base16-zenburn',
+        \ 'base16-mocha', 'base16-nord', 'base16-outrun-dark',
+        \ 'base16-paraiso', 'base16-phd', 'vimspectr0-dark',
+        \ 'vimspectr180-dark', 'vimspectr210-dark', 'vimspectr270-dark'
         \ ]
     else
       set background=light
       let themes = [
         \ 'vimspectrgrey-light',
-        \ 'default', 'delek', 'morning', 'peachpuff', 'shine', 'solarized',
-        \ 'zellner', 'base16-atelier-dune-light', 'base16-cupertino',
-        \ 'base16-atelier-heath-light'
+        \ 'default', 'delek', 'peachpuff', 'solarized', 'zellner',
+        \ 'base16-atelier-dune-light', 'base16-atelier-cave-light',
+        \ 'base16-atelier-estuary-light', 'base16-atelier-forest-light',
+        \ 'base16-atelier-heath-light', 'base16-atelier-lakeside-light',
+        \ 'base16-atelier-plateau-light', 'base16-atelier-savanna-light',
+        \ 'base16-atelier-seaside-light', 'base16-atelier-sulphurpool-light',
+        \ 'base16-cupcake', 'base16-cupertino', 'base16-gruvbox-light-hard',
+        \ 'base16-gruvbox-light-medium', 'base16-gruvbox-light-soft',
+        \ 'base16-harmonic-light', 'base16-heetch-light',
+        \ 'base16-ia-light', 'base16-mexico-light', 'base16-solarized-light',
+        \ 'base16-tomorrow', 'vimspectr0-light', 'vimspectr120-light',
+        \ 'vimspectr150-light', 'vimspectr210-light', 'vimspectr240-light',
+        \ 'vimspectr180-light', 'vimspectr270-light', 'vimspectr30-light',
+        \ 'vimspectr300-light', 'vimspectr330-light', 'zellner',
         \ ]
     endif
     exe 'colorscheme '.themes[localtime() % len(themes)]
