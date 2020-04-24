@@ -283,14 +283,14 @@ if has("statusline")
     set statusline+=\ %{toupper(g:currentmode[mode()])}
     set statusline+=%#LineNr#
     set statusline+=\ %n\ %f%m%r%w%k
-    set statusline+=\ [%04B]%y[%{&ff}]
+    set statusline+=\ [0x%B]%y[%{&ff}]
     " file encoding and byte order mask
     set statusline+=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\"}
     set statusline+=%#CursorColumn#
     set statusline+=%{fugitive#statusline()}
     " Align items to right
     set statusline+=%=
-    set statusline+=%-14.(%l:%c%V%)\ %P
+    set statusline+=%(%l:%c%V%)\ %P
     " The mode at the bottom is unnecessary anymore because it is
     " displayed in the statusline.
     set noshowmode
