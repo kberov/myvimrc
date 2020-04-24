@@ -39,8 +39,6 @@ call plug#begin('~/.vim/plugged')
 "    "Plug 'suan/vim-instant-markdown'
 "	Plug 'tpope/vim-vinegar' "Press '-' to open the directory of the current file
     Plug 'tpope/vim-fugitive' "Use Git
-    " Show current branch in status line
-    set statusline=%f%m%r\ %y[%{&ff}]\ %{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
 "    "Plug 'fholgado/minibufexpl.vim'
 "    "Plug '~/Downloads/Vim/taglist_46'
     Plug 'majutsushi/tagbar'
@@ -140,7 +138,7 @@ if has("gui_running")
     if strftime("%H") < 7 || strftime("%H") >= 19
       set background=dark
       " 'vimspectrgrey-dark', 'base16-apathy', 'thermopylae', 'base16-black-metal',
-      " 'blue', 'spartan', 
+      " 'blue', 'spartan',
       let themes = [
         \ 'darkblue', 'desert', 'distinguished', 'apprentice',
         \ 'heman', 'elflord', 'evening', 'jellybeans', 'koehler', 'murphy',
@@ -251,4 +249,36 @@ let g:tagbar_type_perl = {
     \ ],
 	\ 'ctagsbin'  : 'perl_ctags_for_tagbar'
 \ }
+
+    " Custom status line and show current branch in status line. Depends on
+    " fugitive#statusline.
+    " See :help statusline for details АЛАБАЛѧ
+    " https://shapeshed.com/vim-statuslines/
+    " See https://jdhao.github.io/2019/11/03/vim_custom_statusline/
+    " See https://vim.fandom.com/wiki/Show_fileencoding_and_bomb_in_the_status_line
+    if has("statusline")
+        let g:currentmode={
+       \ 'n'  : 'NORMAL',
+       \ 'v'  : 'VISUAL',
+       \ 'V'  : 'V·Line',
+       \ '' : 'V·Block',
+       \ 'i'  : 'INSERT',
+       \ 'R'  : 'R',
+       \ 'Rv' : 'V·Replace',
+       \ 'c'  : 'Command',
+       \}
+        set statusline=
+        set statusline+=%#PmenuSel#
+        set statusline+=%{toupper(g:currentmode[mode()])}
+        set statusline+=%#LineNr#
+        set statusline+=\ %n\ %f%m%r%w%k
+        set statusline+=\ [%04B]%y[%{&ff}]
+        " file encoding and byte order mask
+        set statusline+=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\"}
+        set statusline+=%#CursorColumn#
+        set statusline+=%{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
+        " The mode at the bottom is unnecessary anymore because the mode
+        " information is displayed in the statusline.
+        set noshowmode
+    endif
 
