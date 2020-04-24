@@ -250,35 +250,49 @@ let g:tagbar_type_perl = {
 	\ 'ctagsbin'  : 'perl_ctags_for_tagbar'
 \ }
 
-    " Custom status line and show current branch in status line. Depends on
-    " fugitive#statusline.
-    " See :help statusline for details АЛАБАЛѧ
-    " https://shapeshed.com/vim-statuslines/
-    " See https://jdhao.github.io/2019/11/03/vim_custom_statusline/
-    " See https://vim.fandom.com/wiki/Show_fileencoding_and_bomb_in_the_status_line
-    if has("statusline")
-        let g:currentmode={
-       \ 'n'  : 'NORMAL',
-       \ 'v'  : 'VISUAL',
-       \ 'V'  : 'V·Line',
-       \ '' : 'V·Block',
-       \ 'i'  : 'INSERT',
-       \ 'R'  : 'R',
-       \ 'Rv' : 'V·Replace',
-       \ 'c'  : 'Command',
-       \}
-        set statusline=
-        set statusline+=%#PmenuSel#
-        set statusline+=%{toupper(g:currentmode[mode()])}
-        set statusline+=%#LineNr#
-        set statusline+=\ %n\ %f%m%r%w%k
-        set statusline+=\ [%04B]%y[%{&ff}]
-        " file encoding and byte order mask
-        set statusline+=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\"}
-        set statusline+=%#CursorColumn#
-        set statusline+=%{fugitive#statusline()}%=%-14.(%l:%c%V%)\ %P
-        " The mode at the bottom is unnecessary anymore because the mode
-        " information is displayed in the statusline.
-        set noshowmode
-    endif
+" Custom status line and show current branch in status line. Depends on
+" fugitive#statusline.
+" See :help statusline for details АЛАБАЛѧ
+" https://shapeshed.com/vim-statuslines/
+" See https://jdhao.github.io/2019/11/03/vim_custom_statusline/
+" See https://vim.fandom.com/wiki/Show_fileencoding_and_bomb_in_the_status_line
+if has("statusline")
+    let g:currentmode={
+        \'n' : 'Normal ',
+        \'no' : 'N·Operator Pending ',
+        \'v' : 'Visual ',
+        \'V' : 'V·Line ',
+        \'^V' : 'V·Block ',
+        \'s' : 'Select ',
+        \'S': 'S·Line ',
+        \'^S' : 'S·Block ',
+        \'i' : 'Insert ',
+        \'R' : 'Replace ',
+        \'Rv' : 'V·Replace ',
+        \'c' : 'Command ',
+        \'cv' : 'Vim Ex ',
+        \'ce' : 'Ex ',
+        \'r' : 'Prompt ',
+        \'rm' : 'More ',
+        \'r?' : 'Confirm ',
+        \'!' : 'Shell ',
+        \'t' : 'Terminal '
+    \}
+    set statusline=
+    set statusline+=%#PmenuSel#
+    set statusline+=\ %{toupper(g:currentmode[mode()])}
+    set statusline+=%#LineNr#
+    set statusline+=\ %n\ %f%m%r%w%k
+    set statusline+=\ [%04B]%y[%{&ff}]
+    " file encoding and byte order mask
+    set statusline+=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\"}
+    set statusline+=%#CursorColumn#
+    set statusline+=%{fugitive#statusline()}
+    " Align items to right
+    set statusline+=%=
+    set statusline+=%-14.(%l:%c%V%)\ %P
+    " The mode at the bottom is unnecessary anymore because it is
+    " displayed in the statusline.
+    set noshowmode
+endif
 
