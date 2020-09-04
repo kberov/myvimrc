@@ -1,13 +1,15 @@
-" Vim keymap file for Old Bulgarian, known as Old Church Slavonic, "phonetic"
+" Vim keymap file for Old Bulgarian, AKA Old Church Slavonic, "phonetic"
 " layout. It is intended to be used in utf-8 encoded txt files. This file
 " itself is in utf-8. It is based on the bulgarian-phonetic.vim, created by
 " Boyko Bantchev. I wanted to be able to write using the so called “Иванчовски
 " правопис”, but after discovering the possibilities, I decided to add all the
-" missing letters from the old alphabet.
+" missing letters from the old alphabet. It helped me a lot for my master
+" thesis in Medieval Bulgarian Studies
+" in Sofia Univercity "St. Kliment Ochridski"
 
 " Maintainer: Krasimir Berov <berov@cpan.org>
 " URI: https://raw.githubusercontent.com/kberov/myvimrc/master/.vim/keymap/old-bulgarian-phonetic.vim
-" Last Changed: 2018 February 23
+" Last Changed: 2020 September 04
 
 " This keymap corresponds to what is called "phonetic layout" in Bulgaria:
 " Cyrillic letters tend to be mapped to their Latin homophones wherever
@@ -27,7 +29,7 @@
 "        ¤, €, ‰, †, ‡, and ¶.
 "     –  The characters from the old Bulgarian alphabet which are not present
 "        today in the alphabet. These are:
-"        Sѕ / Ꙃ ꙃ, І і / Ї ї, Ѹ ѹ / Ꙋ ꙋ, Ѡ ѡ, Ѣ ѣ, Ꙗ ꙗ, Ѥ ѥ, Ѧ ѧ, Ѩ ѩ, Ѫ ѫ, Ѭ ѭ,
+"        Ꙁꙁ Sѕ / Ꙃ ꙃ, І і / Ї ї, Ѹ ѹ / Ꙋ ꙋ, Ѡ ѡ, Ѣ ѣ, Ꙗ ꙗ, Ѥ ѥ, Ѧ ѧ, Ѩ ѩ, Ѫ ѫ, Ѭ ѭ,
 "         Ѯ ѯ, Ѱ ѱ, Ѳ ѳ, Ѵ ѵ Ѷ ѷ, Ҁ ҁ, Ѿ ѿ
 "        The letters and the order in which they are put in the table below
 "        are taken from https://bg.wikipedia.org/wiki/Старобългарска_азбука
@@ -144,16 +146,20 @@ $$      €       EURO SIGN
 "My added letters
 DZ      S       CYRILLIC CAPITAL LETTER DZE
 DZZ     Ꙃ       CYRILLIC CAPITAL LETTER DZELO
+ZZ      Ꙁ       CYRILLIC CAPITAL LETTER ZEMLYA
 I.      І       CYRILLIC CAPITAL LETTER BYELORUSSIAN-UKRAINIAN I
 I:      Ї       CYRILLIC CAPITAL LETTER YI
 OU      Ѹ       CYRILLIC CAPITAL LETTER UK
 UK      Ꙋ       CYRILLIC CAPITAL LETTER MONOGRAPH UK
 WT      Ѡ       CYRILLIC CAPITAL LETTER OMEGA
+OO      Ѡ       CYRILLIC CAPITAL LETTER OMEGA
 EQ      Ѣ       CYRILLIC CAPITAL LETTER YAT
 IA      Ꙗ       CYRILLIC CAPITAL LETTER IOTIFIED A
 IE      Ѥ       CYRILLIC CAPITAL LETTER IOTIFIED E
 EY      Ѧ       CYRILLIC CAPITAL LETTER LITTLE YUS
-IEY     Ѩ       CYRILLIC CAPITAL LETTER IOTIFIED LITTLE YUS
+EA      Ѧ       CYRILLIC CAPITAL LETTER LITTLE YUS
+EIY     Ѩ       CYRILLIC CAPITAL LETTER IOTIFIED LITTLE YUS
+EIA     Ѩ       CYRILLIC CAPITAL LETTER IOTIFIED LITTLE YUS
 YA      Ѫ       CYRILLIC CAPITAL LETTER BIG YUS
 IY      Ѭ       CYRILLIC CAPITAL LETTER IOTIFIED BIG YUS
 KS      Ѯ       CYRILLIC CAPITAL LETTER KSI
@@ -165,16 +171,20 @@ CO      Ҁ       CYRILLIC CAPITAL LETTER KOPPA
 OT      Ѿ       CYRILLIC CAPITAL LETTER OT
 dz      ѕ       CYRILLIC SMALL LETTER DZE
 dzz     ꙃ       CYRILLIC SMALL LETTER DZELO
+zz      ꙁ       CYRILLIC SMALL LETTER ZEMLYA
 i.      і       CYRILLIC SMALL LETTER BYELORUSSIAN-UKRAINIAN I
 i:      ї       CYRILLIC SMALL LETTER YI
 ou      ѹ       CYRILLIC SMALL LETTER UK
 uk      ꙋ       CYRILLIC SMALL LETTER MONOGRAPH UK
 wt      ѡ       CYRILLIC SMALL LETTER OMEGA
+oo      ѡ       CYRILLIC SMALL LETTER OMEGA
 eq      ѣ       CYRILLIC SMALL LETTER YAT
 ia      ꙗ       CYRILLIC SMALL LETTER IOTIFIED A
 ie      ѥ       CYRILLIC SMALL LETTER IOTIFIED E
 ey      ѧ       CYRILLIC SMALL LETTER LITTLE YUS
-eyi     ѩ       CYRILLIC SMALL LETTER IOTIFIED LITTLE YUS
+ea      ѧ       CYRILLIC SMALL LETTER LITTLE YUS
+eiy     ѩ       CYRILLIC SMALL LETTER IOTIFIED LITTLE YUS
+eia     ѩ       CYRILLIC SMALL LETTER IOTIFIED LITTLE YUS
 ya      ѫ       CYRILLIC SMALL LETTER BIG YUS
 iy      ѭ       CYRILLIC SMALL LETTER IOTIFIED BIG YUS
 ks      ѯ       CYRILLIC SMALL LETTER KSI
