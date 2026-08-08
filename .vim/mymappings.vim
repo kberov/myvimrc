@@ -23,6 +23,13 @@ nnoremap <leader>ev :split $MYVIMRC<cr>
 " Use % to find occurennces in the current file only
 map <Leader>f :noautocmd vimgrep! //j **/*.* <Bar> cw<C-Left><C-Left><C-Left><C-Left><Right>
 
+" Find and replace in files in the current project/folder!!!
+" 1. Use "Find in Files" as above
+" 2. Use `cdo %s/searchPttErN/ReplaceText/gc` or let make a mapping to write
+" this for us.
+map <Leader>r :cfdo %s///gc<C-Left><C-Left><C-Left><C-Left>
+" 3. To save the changes, do `:cdo update`
+"
 "" Press \ff to search/find in all files of the same type for the current
 "" word (the word under the cursor) and open the list of found occurences
 "" (quickfix). Example: find usages of a method in all files!!!
@@ -108,6 +115,8 @@ map <silent> <C-l> :wincmd l<CR>
 "Move entire line up and down https://stackoverflow.com/questions/741814
 noremap <c-s-up> :call feedkeys( line('.')==1 ? '' : 'ddkP' )<CR>
 noremap <c-s-down> ddp
+inoremap <c-s-up> <ESC>:call feedkeys( line('.')==1 ? '' : 'ddkP' )<CR>
+inoremap <c-s-down> <ESC>ddp
 
 "http://vim.wikia.com/wiki/Toggle_Insert-Normal_Mode_via_ctrl-space
 " from insert mode to normal mode
@@ -132,9 +141,9 @@ inoremap <leader>: <Esc>:
 ""cnoremap nn <ESC>
 "cnoremap <Space><Space> <Esc>
 " exit - close current window while in insert mode
-inoremap <leader>q <Esc> :q<CR>
+inoremap <leader>q <Esc>:q<CR>
 " exit - close all windows while in insert mode
-inoremap <leader>qa <Esc> :qa<CR>
+inoremap <leader>qa <Esc>:qa<CR>
 " exit - close current window while in normal mode
 noremap <leader>q :q<CR>
 "" exit - close all windows while in normal mode
@@ -162,7 +171,7 @@ nmap - :Ex<CR>
 inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-Space>
 
-" switch keymap: Ctrl+l
+" switch keymap: Ctrl+l, Think "switch language".
 inoremap <Leader>l <C-^>
 noremap <Leader>l a<C-^>
 
@@ -170,3 +179,21 @@ noremap <Leader>l a<C-^>
 ""Clean starting, trailing and multiple spaces from a file!
 "nnoremap <leader>cl  :%s/^\s\+//g<CR>:%s/\s\+$//g<CR>:%s/\s\+/ /g<CR>
 "
+" https://vi.stackexchange.com/questions/11609/automatically-rewrap-lines-when-writing-markdown-in-vim
+" When the 'a' flag is present in 'formatoptions', text is formatted
+" automatically when inserting text or deleting text.  This works nicely for
+" editing text paragraphs.
+" - Add the 'c' flag to only auto-format comments(already added by default).
+"   Useful in source code.
+" Note!!! Does not work as all this rewraps even contiguous lines in source
+" code, so better simply use gwap<CR>
+" set formatoptions+=a
+" augroup rewrapparagraph
+" autocmd!
+" autocmd InsertLeave * normal gwap<CR>
+" augroup END
+
+" Save a file which needs root privileges for writing to it and I opened it as
+" a normal user.
+" https://linuxvox.com/blog/can-i-gain-root-permission-without-leaving-vim/
+cnoremap ww w !sudo dd of=% if=/dev/stdin

@@ -26,19 +26,19 @@ set nomodeline
 set nrformats=bin,hex
 set printoptions=paper:a4
 set ruler
-set scrolloff=5
+" Minimal number of screen lines to keep above and below the cursor.
+set scrolloff=1
 set showcmd
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
-set ttimeout
-set ttimeoutlen=100
+set timeout timeoutlen=1001 ttimeoutlen=100
+
 set wildmenu
 
 " Here start my (Krasi Berov's) settings.
-
 set modeline
 set wildchar=<Tab> " Character you have to type to start wildcard expansion in
-
 " the command-line, as specified with 'wildmode'.
+
 " Completion mode that is used for the character specified with 'wildchar'.
 set wildmode=list:longest " When more than one match, list all matches and
 " complete till longest common string.
@@ -57,6 +57,7 @@ set fileencodings=ucs-bom,utf-8,cp1251,cp1250,latin1
 filetype plugin indent on
 
 " insertmode use Insert mode as the default mode
+"set insertmode
 set noim "im
 
 " backupdir - list of directories to put backup files in
@@ -187,8 +188,14 @@ set completeopt=menu,menuone,popup,noselect,noinsert
 " See https://stackoverflow.com/questions/3776728/#3777557
 " See also /usr/share/vim/vim74/keymap/bulgarian-phonetic.vim
 " my keymap old-bulgarian-phonetic from ~/.vim/keymap/
-" One can change the switching coombination inoremap <c-l> <c-^>
-set keymap=oldbgph
+" One can change the switching combination inoremap <c-l> <c-^>
+ set keymap=oldbgph
+
+" Now we will use langmap!!!! Proved to not working well for me.
+" set langmap=АA,БB,ВW,ГG,ДD,ЕE,ЖV,ЗZ,ИI,ЙJ,КK,ЛL,МM,НN,ОO,ПP,РR,СS,ТT,УU,ФF,ХH,Ч~,ЦC,Ш{,Щ},Ю\|,ЯQ,ЪY,ьx,аa,бb,вw,гg,дd,еe,жv,зz,иi,йj,кk,лl,мm,нn,оo,пp,рr,сs,тt,уu,фf,хh,ч`,цc,ш[,щ],ю\\,яq
+" set nolangremap
+" Use ; as map leader to avoid conflict with ю.
+" let mapleader = ";"
 " The following are needed when the keymap above is in use. iminsert
 " specifies whether :lmap or an Input Method (IM) is to be used in Insert
 " mode. imsearch specifies whether :lmap or an Input Method (IM) is to be
@@ -236,6 +243,7 @@ set t_BE=
 " :qall", ":exit", ":xit", ":recover" and closing the Vim window.
 set autowriteall
 
+"colorscheme peachpuff
 colorscheme darkblue
 
 "https://vim.fandom.com/wiki/To_switch_back_to_normal_mode_automatically_after_inaction
@@ -249,7 +257,10 @@ colorscheme darkblue
 " au InsertEnter * let updaterestore=&updatetime | set updatetime=4600
 " au InsertLeave * let &updatetime=updaterestore
 
-"set mousemodel=popup
+set mousemodel=popup
+" Delete comment character when joining commented lines.
+" https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim
+set formatoptions+=j
 
 runtime mymappings.vim
 runtime myplugins.vim

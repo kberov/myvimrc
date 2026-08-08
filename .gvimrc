@@ -1,15 +1,21 @@
+gui
 "Gvim reads ~/.vimrc then a ~/.gvimrc file located in the same place as .vimrc.
 "Setting in this file are applied only 'if has("gui_running")'
 " Start it maximized
 " https://stackoverflow.com/questions/4722684/how-do-i-start-gvim-with-a-maximized-window
 " Another option is to add the option -geometry on the command line.
 " For example: gvim -geometry 500x500
-set lines=999 columns=999
-
+ set lines=28 columns=132
+" Now I maximise my screen using the specific keyboard shortcut,
+" f.e. on MXLinux: (Super+x). On Windows Super+Up arrow
+"
 " colorscheme may be loaded via a plugin managed by vim-plug 
 " (already initialized)
-colorscheme darkblue "murphy base16-solarized-light dracula   base16-gruvbox-light-hard koehler desert industry 
-set background=dark
+colorscheme darkblue
+" base16-atlas base16-3024 dracula darkblue murphy peachpuff
+" base16-solarized-light  base16-gruvbox-light-hard koehler desert industry
+" base16-ocean base16-grayscale-dark base16-gruvbox-dark-pale
+" set background=dark
 " Some themes
 " Dark
 " murphy evening koehler desert elflord pablo blue  darkblue dracula
@@ -22,9 +28,11 @@ set background=dark
 
 " set cursorcolumn
 " set cursorline
-:set guifont=Noto\ Mono\ 16
-"set guifont=JetBrainsMonoNL\ Nerd\ Font\ 15
-"set guifont=SpaseMono\ Nerd\ Font\ Mono\ 15
+" set guifont=Noto\ Mono\ 16
+ set guifont=Roboto\ Mono\ 16
+" set guifont=Terminalia\ Regular\ 18
+" set guifont=JetBrainsMonoNL\ Nerd\ Font\ 17
+" set guifont=SpaseMono\ Nerd\ Font\ Mono\ 15
 "set guifont=Bukyvede\ 20
 "set guifont=PT\ Mono:h18 "on MAC
 "set linespace=5 "more vertical space between lines
@@ -41,7 +49,7 @@ set guioptions+=g
 " to get the menu back.
 " set guioptions-=m
 " Use dark Theme
-" set guioptions+=d
+"set guioptions+=d
 " Use text-based tabs instead of graphical ones
 " set go-=e
 

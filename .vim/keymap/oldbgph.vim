@@ -1,13 +1,15 @@
-" Vim keymap file for Old Bulgarian, known as Old Church Slavonic, "phonetic"
+" Vim keymap file for Old Bulgarian, AKA Old Church Slavonic, "phonetic"
 " layout. It is intended to be used in utf-8 encoded txt files. This file
 " itself is in utf-8. It is based on the bulgarian-phonetic.vim, created by
 " Boyko Bantchev. I wanted to be able to write using the so called “Иванчовски
 " правопис”, but after discovering the possibilities, I decided to add all the
-" missing letters from the old alphabet.
+" missing letters from the old alphabet. It helped me a lot for my master
+" thesis in Medieval Bulgarian Studies
+" in Sofia University "St. Kliment Ochridski"
 
 " Maintainer: Krasimir Berov <berov@cpan.org>
 " URI: https://raw.githubusercontent.com/kberov/myvimrc/master/.vim/keymap/old-bulgarian-phonetic.vim
-" Last Changed: 2018 February 23
+" Last Changed: Двадесет и седми февруару 2026
 
 " This keymap corresponds to what is called "phonetic layout" in Bulgaria:
 " Cyrillic letters tend to be mapped to their Latin homophones wherever
@@ -15,8 +17,8 @@
 " left unmapped, so they retain their usual (QWERTY) meanings when typing
 " Cyrillic.
 "
-" In addition to the contemporary Bulgarian alphabet, the keymap makes
-" accessible the following characters:
+" In addition to the contemporary Bulgarian alphabet, the keymap provides
+" the following characters:
 "     —  The letters Ё and ё, Э and э, and Ы and ы (in pairs of capital and
 "        small).  These are the letters in the Russian alphabet that are not
 "        present in contemporary Bulgarian, so using the
@@ -27,7 +29,7 @@
 "        ¤, €, ‰, †, ‡, and ¶.
 "     –  The characters from the old Bulgarian alphabet which are not present
 "        today in the alphabet. These are:
-"        Sѕ / Ꙃ ꙃ, І і / Ї ї, Ѹ ѹ / Ꙋ ꙋ, Ѡ ѡ, Ѣ ѣ, Ꙗ ꙗ, Ѥ ѥ, Ѧ ѧ, Ѩ ѩ, Ѫ ѫ, Ѭ ѭ,
+"        Ꙁꙁ Sѕ / Ꙃ ꙃ, І і / Ї ї, Ѹ ѹ / Ꙋ ꙋ, Ѡ ѡ, Ѣ ѣ, Ꙗ ꙗ, Ѥ ѥ, Ѧ ѧ, Ѩ ѩ, Ѫ ѫ, Ѭ ѭ,
 "         Ѯ ѯ, Ѱ ѱ, Ѳ ѳ, Ѵ ѵ Ѷ ѷ, Ҁ ҁ, Ѿ ѿ
 "        The letters and the order in which they are put in the table below
 "        are taken from https://bg.wikipedia.org/wiki/Старобългарска_азбука
@@ -74,7 +76,8 @@ C       Ц       CYRILLIC CAPITAL LETTER TSE
 {       Ш       CYRILLIC CAPITAL LETTER SHA
 }       Щ       CYRILLIC CAPITAL LETTER SHCHA
 Y       Ъ       CYRILLIC CAPITAL LETTER HARD SIGN
-YI      Ы       CYRILLIC CAPITAL LETTER YERU
+YI      Ꙑ       CYRILLIC CAPITAL LETTER YERU WITH BACK YER 
+XI      Ы       CYRILLIC CAPITAL LETTER YERU
 X       Ь       CYRILLIC CAPITAL LETTER SOFT SIGN
 YE      Э       CYRILLIC CAPITAL LETTER REVERSED E
 |       Ю       CYRILLIC CAPITAL LETTER YU
@@ -107,7 +110,8 @@ c       ц       CYRILLIC SMALL LETTER TSE
 [       ш       CYRILLIC SMALL LETTER SHA
 ]       щ       CYRILLIC SMALL LETTER SHCHA
 y       ъ       CYRILLIC SMALL LETTER HARD SIGN
-yi      ы       CYRILLIC SMALL LETTER YERU
+yi      ꙑ       CYRILLIC SMALL LETTER YERU WITH BACK YER
+xi      ы       CYRILLIC SMALL LETTER YERU
 x       ь       CYRILLIC SMALL LETTER SOFT SIGN
 ye      э       CYRILLIC SMALL LETTER REVERSED E
 \\      ю       CYRILLIC SMALL LETTER YU
@@ -141,22 +145,26 @@ $$      €       EURO SIGN
 " to the immediate right of that letter.
 ^`      <char-0x300>    COMBINING GRAVE ACCENT
 ^'      <char-0x301>    COMBINING ACUTE ACCENT
-"My (Красимир Беров)added letters
-ZE      Ꙁ       CYRILLIC CAPITAL LETTER ZEMLYA
+"My added letters
 DZ      S       CYRILLIC CAPITAL LETTER DZE
 DZZ     Ꙃ       CYRILLIC CAPITAL LETTER DZELO
+ZZ      Ꙁ       CYRILLIC CAPITAL LETTER ZEMLYA
 I.      І       CYRILLIC CAPITAL LETTER BYELORUSSIAN-UKRAINIAN I
 I:      Ї       CYRILLIC CAPITAL LETTER YI
 OU      Ѹ       CYRILLIC CAPITAL LETTER UK
-UK      Ꙋ       CYRILLIC CAPITAL LETTER MONOGRAPH UK
+UU      Ꙋ       CYRILLIC CAPITAL LETTER MONOGRAPH UK
 WT      Ѡ       CYRILLIC CAPITAL LETTER OMEGA
+OO      Ѡ       CYRILLIC CAPITAL LETTER OMEGA
 EQ      Ѣ       CYRILLIC CAPITAL LETTER YAT
 IA      Ꙗ       CYRILLIC CAPITAL LETTER IOTIFIED A
 IE      Ѥ       CYRILLIC CAPITAL LETTER IOTIFIED E
-EN      Ѧ       CYRILLIC CAPITAL LETTER LITTLE YUS
-IEN     Ѩ       CYRILLIC CAPITAL LETTER IOTIFIED LITTLE YUS
+EY      Ѧ       CYRILLIC CAPITAL LETTER LITTLE YUS
+EA      Ѧ       CYRILLIC CAPITAL LETTER LITTLE YUS
+EIY     Ѩ       CYRILLIC CAPITAL LETTER IOTIFIED LITTLE YUS
+EIA     Ѩ       CYRILLIC CAPITAL LETTER IOTIFIED LITTLE YUS
 YA      Ѫ       CYRILLIC CAPITAL LETTER BIG YUS
-IYA     Ѭ       CYRILLIC CAPITAL LETTER IOTIFIED BIG YUS
+IY      Ѭ       CYRILLIC CAPITAL LETTER IOTIFIED BIG YUS
+YI      Ꙑ       CYRILLIC CAPITAL LETTER YERU WITH BACK YER
 KS      Ѯ       CYRILLIC CAPITAL LETTER KSI
 PS      Ѱ       CYRILLIC CAPITAL LETTER PSI
 TH      Ѳ       CYRILLIC CAPITAL LETTER FITA
@@ -164,26 +172,43 @@ IV      Ѵ       CYRILLIC CAPITAL LETTER IZHITSA
 IVI     Ѷ       CYRILLIC CAPITAL LETTER IZHITSA WITH DOUBLE GRAVE ACCENT
 CO      Ҁ       CYRILLIC CAPITAL LETTER KOPPA
 OT      Ѿ       CYRILLIC CAPITAL LETTER OT
-ze      ꙁ       CYRILLIC SMALL LETTER ZEMLYA
 dz      ѕ       CYRILLIC SMALL LETTER DZE
 dzz     ꙃ       CYRILLIC SMALL LETTER DZELO
+zz      ꙁ       CYRILLIC SMALL LETTER ZEMLYA
 i.      і       CYRILLIC SMALL LETTER BYELORUSSIAN-UKRAINIAN I
 i:      ї       CYRILLIC SMALL LETTER YI
-ou      ѹ       CYRILLIC SMALL LETTER UK
-uk      ꙋ       CYRILLIC SMALL LETTER MONOGRAPH UK
-wt      ѡ       CYRILLIC SMALL LETTER OMEGA
+":ou    ѹ       CYRILLIC SMALL LETTER UK
+uu      ꙋ       CYRILLIC SMALL LETTER MONOGRAPH UK
+"wt     ѡ       CYRILLIC SMALL LETTER OMEGA
+oo      ѡ       CYRILLIC SMALL LETTER OMEGA
 eq      ѣ       CYRILLIC SMALL LETTER YAT
-ia      ꙗ       CYRILLIC SMALL LETTER IOTIFIED A
-ie      ѥ       CYRILLIC SMALL LETTER IOTIFIED E
-en      ѧ       CYRILLIC SMALL LETTER LITTLE YUS
-ien     ѩ       CYRILLIC SMALL LETTER IOTIFIED LITTLE YUS
+"ia      ꙗ       CYRILLIC SMALL LETTER IOTIFIED A
+"ie      ѥ       CYRILLIC SMALL LETTER IOTIFIED E
+ey      ѧ       CYRILLIC SMALL LETTER LITTLE YUS
+ea      ѧ       CYRILLIC SMALL LETTER LITTLE YUS
+eiy     ѩ       CYRILLIC SMALL LETTER IOTIFIED LITTLE YUS
+eia     ѩ       CYRILLIC SMALL LETTER IOTIFIED LITTLE YUS
 ya      ѫ       CYRILLIC SMALL LETTER BIG YUS
-iya     ѭ       CYRILLIC SMALL LETTER IOTIFIED BIG YUS
-ks      ѯ       CYRILLIC SMALL LETTER KSI
-ps      ѱ       CYRILLIC SMALL LETTER PSI
-th      ѳ       CYRILLIC SMALL LETTER FITA
-iv      ѵ       CYRILLIC SMALL LETTER IZHITSA
-ivi     ѷ       CYRILLIC SMALL LETTER IZHITSA WITH DOUBLE GRAVE ACCENT
-co      ҁ       CYRILLIC SMALL LETTER KOPPA
-ot      ѿ       CYRILLIC SMALL LETTER OT
+yi      ꙑ       CYRILLIC SMALL LETTER YERU WITH BACK YER
+iy      ѭ       CYRILLIC SMALL LETTER IOTIFIED BIG YUS
+"ks      ѯ       CYRILLIC SMALL LETTER KSI
+"ps      ѱ       CYRILLIC SMALL LETTER PSI
+th       ѳ       CYRILLIC SMALL LETTER FITA
+"iv      ѵ       CYRILLIC SMALL LETTER IZHITSA
+"ivi     ѷ       CYRILLIC SMALL LETTER IZHITSA WITH DOUBLE GRAVE ACCENT
+co       ҁ       CYRILLIC SMALL LETTER KOPPA
+"ot      ѿ       CYRILLIC SMALL LETTER OT
+" vowels with grave accents, denoting a stressed sylable
+"A`      А̀       CYRILLIC CAPITAL LETTER A
+"E`      Ѐ       CYRILLIC CAPITAL LETTER IE
+"I`      Ѝ       CYRILLIC CAPITAL LETTER I
+"O`      О̀       CYRILLIC CAPITAL LETTER O
+"U`      У̀       CYRILLIC CAPITAL LETTER U
+"Y`      Ъ̀       CYRILLIC CAPITAL LETTER HARD SIGN
+"a`      а̀       CYRILLIC SMALL LETTER A
+"y`      ъ̀       CYRILLIC SMALL LETTER HARD SIGN
+"e`      ѐ       CYRILLIC SMALL LETTER IE
+"i`      ѝ       CYRILLIC SMALL LETTER I WITH GRAVE
+"o`      о̀       CYRILLIC SMALL LETTER O
+"u`      у̀       CYRILLIC SMALL LETTER U
 

@@ -8,7 +8,12 @@ let mojo_highlight_data = 1
 autocmd FileType go nmap <leader>gb  <Plug>(go-build)
 autocmd FileType go nmap <leader>gr  <Plug>(go-run)
 autocmd FileType go nmap <leader>go  <Plug>(go-test)
+"let g:go_play_browser_command = 'firefox %URL% &'
+"let g:go_def_mode='gopls'
+"let g:go_info_mode='gopls'
 "https://github.com/fatih/vim-go/wiki/Tutorial
+" We now use .golangci.yaml
+let g:go_metalinter_command = "golangci-lint"
 let g:go_metalinter_autosave = 1
 let g:go_list_type = "quickfix"
 let g:go_fmt_command = "goimports"
@@ -16,7 +21,9 @@ let g:go_code_completion_enabled = 1
 let g:go_code_completion_icase = 1
 let g:go_gopls_matcher = "fuzzy"
 let g:mucomplete#enable_auto_at_startup = 1
-
+let g:go_doc_url = 'http://localhost:6060/pkg/'
+let g:go_doc_popup_window = 1
+let g:go_imports_mode = 'goimports'
 "Plug 'idanarye/vim-dutyl'
 "let g:dutyl_stdImportPaths=['/usr/include/dmd']
 "call dutyl#register#tool('dcd-client', expand('$HOME/bin/dcd-client'))
@@ -33,26 +40,27 @@ endif
 map <Leader>O :NERDTreeToggle<CR>
 map <Leader>nf :NERDTreeFind<CR>
 
-let NERDTreeIgnore=['^\.git', '\~$']
+let NERDTreeIgnore=['\~$',"tags"]
+" let NERDTreeIgnore=['^\.git', '\~$',"tags"]
 
 "ALE
 " Enable completion where available.
-let g:ale_hover_to_preview = 0
-let g:ale_hover_cursor = 1
-let g:ale_hover_to_floating_preview = 1
-let g:ale_fixers = { 'rust': ['rustfmt', 'trim_whitespace', 'remove_trailing_lines'] }
+" let g:ale_hover_to_preview = 0
+" let g:ale_hover_cursor = 1
+" let g:ale_hover_to_floating_preview = 1
+" let g:ale_fixers = { 'rust': ['rustfmt', 'trim_whitespace', 'remove_trailing_lines'] }
 " a hack to disable gopls in ALE , because we already use vim-go
 " plugin for Go
-let g:ale_linters = {
-            \ 'rust': ['analyzer', 'cargo'],
-            "\ 'go': ['staticcheck'],
-            \}
+" let g:ale_linters = {
+"            \ 'rust': ['analyzer', 'cargo'],
+"            "\ 'go': ['staticcheck'],
+"            \}
 " When set to `1`, only the linters from |g:ale_linters| and |b:ale_linters|
 " will be enabled. The default behavior for ALE is to enable as many linters
 " as possible, unless otherwise specified.
-let g:ale_linters_explicit = 1
+" let g:ale_linters_explicit = 1
 " ignore most errors regarding failed imports
-let g:ale_rust_ignore_error_codes = ['E0432', 'E0433']
+" let g:ale_rust_ignore_error_codes = ['E0432', 'E0433']
 
 let g:airline#extensions#ale#enabled = 1
 set omnifunc=ale#completion#OmniFunc

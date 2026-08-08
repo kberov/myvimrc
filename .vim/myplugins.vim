@@ -12,13 +12,14 @@ call plug#begin('~/.vim/plugged')
     Plug 'sainnhe/everforest'
     Plug 'sainnhe/gruvbox-material'
     Plug 'sainnhe/edge'
-    Plug 'chriskempson/base16-vim'
+    "Plug 'chriskempson/base16-vim'
     " Error during updates
     "Plug 'nightsense/vimspectr'
     Plug 'vim-airline/vim-airline'
 " Languages
     " Mojolicous(Perl)
     Plug 'yko/mojo.vim'
+    " Plug 'vim-scripts/dbext.vim'
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'othree/html5.vim'    
     "Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
@@ -26,21 +27,21 @@ call plug#begin('~/.vim/plugged')
     Plug 'ollykel/v-vim'
     Plug 'rust-lang/rust.vim'
     " Plug 'JamshedVesuna/vim-markdown-preview'
-    "ALE obsoletes all lsp...
+    " ALE obsoletes all lsp_...
     " See myplugins_settings.vim for settings for ALE
     " This setting must be set before ALE is loaded.
-    let g:ale_completion_enabled = 1
-    Plug 'dense-analysis/ale'
+    " let g:ale_completion_enabled = 1
+    " Plug 'dense-analysis/ale'
     "Plug 'udalov/kotlin-vim'
     "Plug '~/opt/chapel-1.27.0/highlight/vim'
     "Plug 'cheap-glitch/vim-v'
-    "Plug 'ziglang/zig.vim'
+    " Plug 'ziglang/zig.vim'
     "Plug 'arrufat/vala.vim'
     " D
     "Plug 'idanarye/vim-dutyl'
     "Search/Navigate
-    " help Ack
-    Plug 'mileszs/ack.vim'
+    " help Ack (I now use my mapping \f)
+    " Plug 'mileszs/ack.vim'
     Plug 'tpope/vim-fugitive' "Use Git
 
     Plug 'scrooloose/nerdtree' " , { 'on': 'NERDTreeToggle' }
@@ -51,8 +52,8 @@ call plug#begin('~/.vim/plugged')
     "Tagbar: a class outline viewer for Vim
     Plug 'preservim/tagbar'
     "It will (re)generate tag files as you work while staying completely out
-    "of your way. 
-    Plug 'ludovicchabant/vim-gutentags'
+    "of your way. commented out for big projects like lazarus
+    " Plug 'ludovicchabant/vim-gutentags'
     "Icons
     Plug 'ryanoasis/vim-devicons'
     " auto complete menu popups immediately
