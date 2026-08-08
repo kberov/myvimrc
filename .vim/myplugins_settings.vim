@@ -63,7 +63,7 @@ let NERDTreeIgnore=['\~$',"tags"]
 " let g:ale_rust_ignore_error_codes = ['E0432', 'E0433']
 
 let g:airline#extensions#ale#enabled = 1
-set omnifunc=ale#completion#OmniFunc
+" set omnifunc=ale#completion#OmniFunc
 nnoremap <C-LeftMouse> :ALEGoToDefinition<CR>
 map <Leader>h :ALEHover<CR>
 
