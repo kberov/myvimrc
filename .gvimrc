@@ -59,12 +59,6 @@ set guioptions+=g
 " set go-=e
 
 
-"More mappings working only in gvim!!!
-"
-" Ctr+S to save the document
-"http://stackoverflow.com/questions/3446320/in-vim-how-to-map-save-to-ctrl-s#3448551
-" This works even if mswin.vim below is not sourced
-noremap <silent> <C-S>          :update<CR>
-vnoremap <silent> <C-S>         <C-C>:update<CR>
-inoremap <silent> <C-S>         <C-O>:update<CR>
+" Ctrl+S (запис) е преместено в .vim/mymappings.vim, за да работи и в
+" терминалния Vim, а не само в GVim.
 

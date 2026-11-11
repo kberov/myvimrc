@@ -5,13 +5,16 @@
 if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
-inoremap <C-U> u
+" Ctrl+U в режим на въвеждане трие до началото на реда. <C-G>u първо
+" прекъсва поредицата за отмяна (undo), така че с `u` можеш да върнеш
+" изтритото. (Тук преди имаше два реда с объркани контролни знаци, останали
+" от :mkvimrc, които правеха същото.)
+inoremap <C-U> <C-G>u<C-U>
 map Q gq
 vmap gx <Plug>NetrwBrowseXVis
 nmap gx <Plug>NetrwBrowseX
 vnoremap <silent> <Plug>NetrwBrowseXVis :call netrw#BrowseXVis()
 nnoremap <silent> <Plug>NetrwBrowseX :call netrw#BrowseX(expand((exists("g:netrw_gx")? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())
-inoremap  u
 let &cpo=s:cpo_save
 unlet s:cpo_save
 set backspace=indent,eol,start

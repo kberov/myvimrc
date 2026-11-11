@@ -64,8 +64,11 @@ let NERDTreeIgnore=['\~$',"tags"]
 
 let g:airline#extensions#ale#enabled = 1
 " set omnifunc=ale#completion#OmniFunc
-nnoremap <C-LeftMouse> :ALEGoToDefinition<CR>
-map <Leader>h :ALEHover<CR>
+" Изключени, докато ALE не е инсталиран (иначе дават грешка „Not an editor
+" command“). Ще ги върнем, когато включим ALE.
+" Ctrl+ляв клик – към дефиницията; \h – описание на думата под курсора.
+" nnoremap <C-LeftMouse> :ALEGoToDefinition<CR>
+" map <Leader>h :ALEHover<CR>
 
 "Plug 'rust-lang/rust.vim'
 let g:rustfmt_autosave = 1

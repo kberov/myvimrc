@@ -70,9 +70,26 @@ vnoremap <leader>d "_d
 vnoremap <leader>p "_dP
 "
 " Update/Save the file
+" :update записва само ако файлът е променен.
+" \w работи в нормален и визуален режим. В режим на въвеждане НЕ го
+" задаваме: при включена кирилица (keymap oldbgph) `\` става `ю` и
+" съответствието никога не се задейства. Там ползвай Ctrl+S (виж по-долу).
 nnoremap <silent> <leader>w :update<CR>
 vnoremap <silent> <leader>w <ESC>:update<CR>
-inoremap <silent> <leader>w <ESC>:update<CR>a
+
+" Ctrl+S – запис във всички режими, и в GVim, и в терминала.
+" Работи и при включена кирилица, защото keymap не превежда Ctrl-клавишите.
+" (Преместено от .gvimrc.)
+" Ако в терминала Ctrl+S „замразява“ екрана (размразява се с Ctrl+Q),
+" добави в ~/.bashrc:  [ -t 0 ] && stty -ixon
+" http://stackoverflow.com/questions/3446320/in-vim-how-to-map-save-to-ctrl-s#3448551
+" Нормален режим: просто записва.
+nnoremap <silent> <C-S> :update<CR>
+" Визуален режим: <C-C> излиза от избора, после записва.
+vnoremap <silent> <C-S> <C-C>:update<CR>
+" Режим на въвеждане: <C-O> изпълнява една команда и те връща обратно в
+" режим на въвеждане – курсорът остава на място.
+inoremap <silent> <C-S> <C-O>:update<CR>
 
 " To quickly switch/jump to windows
 " Ctrl+leftarrow (or Ctrl+h) will go one window left, etc.
@@ -124,26 +141,28 @@ inoremap <c-s-down> <ESC>ddp
 "inoremap <leader>i <Esc>
 "inoremap <leader>a <Esc>
 "inoremap jj <Esc>
+" ;; – излизане от режим на въвеждане. Работи и на кирилица, защото keymap
+" оставя `;` непроменено. Вградена алтернатива: Ctrl+[ (същото като Esc).
+" Махнато: inoremap \\ – на кирилица `\` става `ю` и то не се задейства.
 inoremap ;; <Esc>
-inoremap <leader><leader> <Esc>
 " from normal mode to insert mode
-noremap ;; i
+" Махнати: noremap ;; i  и  noremap ;a a – те закриваха `;`, която в
+" нормален режим повтаря последното f/t/F/T (а `,` го повтаря назад).
+" Ползвай просто i и a (или \\ и \a по-долу).
 noremap <leader><leader> i
 "noremap <Space><Space>  i
 "" from normal mode to insert mode - after the current letter
-noremap ;a a
 noremap <leader>a a
 " go out of insert mode to the command line
+" ;: – от режим на въвеждане направо в командния ред. Работи и на кирилица.
+" Махнато: inoremap \: (не работи на кирилица).
 inoremap ;: <Esc>:
-inoremap <leader>: <Esc>:
 "" Press ii or nn when in Command mode, to go back to  insert or normal mode
 ""cnoremap ii <ESC> i
 ""cnoremap nn <ESC>
 "cnoremap <Space><Space> <Esc>
-" exit - close current window while in insert mode
-inoremap <leader>q <Esc>:q<CR>
-" exit - close all windows while in insert mode
-inoremap <leader>qa <Esc>:qa<CR>
+" Махнати: inoremap \q и \qa (не работят на кирилица).
+" От режим на въвеждане: ;; и после \q или \qa.
 " exit - close current window while in normal mode
 noremap <leader>q :q<CR>
 "" exit - close all windows while in normal mode
@@ -163,16 +182,27 @@ let g:netrw_list_hide = &wildignore "ignore the same files as wildignore
 "      autocmd!
 "      autocmd VimEnter * :Vexplore
 "    augroup END
-map <Leader>E :Lexplore<CR>  " Split left and explore
-map <Leader>nf :Lexplore<CR>  " Split left and explore
+" \E и \nf – отварят Netrw (вградения файлов изследовател) отляво.
+" \nf е резервен вариант без добавки: когато се зарежда
+" myplugins_settings.vim, там \nf се пренасочва към :NERDTreeFind.
+" Ако спреш добавките, \nf пак отваря файловете – чрез Netrw.
+" Забележка: коментарът вече е на отделен ред. При :map всичко след
+" командата (и `" ...`) става част от съответствието и се „натиска“.
+map <Leader>E :Lexplore<CR>
+map <Leader>nf :Lexplore<CR>
 nmap - :Ex<CR>
 " Ctrl+Space or Ctrl+@ for autocompletion
 " https://stackoverflow.com/questions/7722177/how-do-i-map-ctrl-x-ctrl-o-to-ctrl-space-in-terminal-vim
 inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-Space>
 
-" switch keymap: \l,  Think "switch language".
-inoremap <Leader>l <C-^>
+" Смяна на езика (латиница ↔ кирилица). Think "switch language".
+" Режим на въвеждане: Ctrl+L (или вграденото Ctrl+^). Ctrl-клавишите не се
+" превеждат от keymap, затова работят и в двете посоки.
+" Махнато: inoremap \l – на кирилица `\` става `ю`, затова с него можеше
+" да включиш кирилицата, но не и да я изключиш.
+inoremap <C-L> <C-^>
+" Нормален режим: \l влиза в режим на въвеждане след курсора и сменя езика.
 noremap <Leader>l a<C-^>
 
 ""My macros
@@ -196,4 +226,11 @@ noremap <Leader>l a<C-^>
 " Save a file which needs root privileges for writing to it and I opened it as
 " a normal user.
 " https://linuxvox.com/blog/can-i-gain-root-permission-without-leaving-vim/
-cnoremap ww w !sudo dd of=% if=/dev/stdin
+" Употреба:  :SudoW
+" Пише буфера през sudo тук, в терминала, в който работиш (sudo може да поиска парола).
+" В GVim няма терминал за паролата, затова там работи само ако sudo не пита за нея.
+" Преди беше `cnoremap ww …`, което се задействаше навсякъде в командния
+" ред – включително при търсене с / (например /www).
+" Името на файла се огражда с кавички (shellescape), за да работи и с интервали.
+" Накрая edit! презарежда файла, за да не мисли Vim, че е още непроменен/незаписан.
+command! SudoW execute 'write !sudo tee ' . shellescape(expand('%'), 1) . ' >/dev/null' | edit!
