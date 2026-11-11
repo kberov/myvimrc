@@ -1,0 +1,81 @@
+#!/bin/sh
+# Пуска автоматичните проверки на конфигурацията на Vim.
+# Употреба:  sh tests/run            – всички тестове
+#            sh tests/run test_rtp   – само един (с или без разширение)
+#
+# Видове тестове (по името на файла):
+#   tests/test_*_noplugins.vim – Vim без добавки: -u NONE + само папките
+#                                .vim и .vim/after от хранилището.
+#   tests/test_*.vim           – Vim с истинския .vimrc на хранилището
+#                                (и всички добавки от ~/.vim/plugged).
+#   tests/test_*.sh            – обикновен POSIX shell скрипт; провал = код ≠ 0.
+#
+# Всеки .vim тест трупа грешките си в v:errors (assert_*) и накрая ги пише
+# във файла $TEST_OUT. Празен файл = успех; липсващ файл = Vim се е
+# провалил преди края на теста.
+
+set -u
+
+REPO=$(cd "$(dirname "$0")/.." && pwd -P)
+export REPO
+OUTDIR=$(mktemp -d)
+trap 'rm -rf "$OUTDIR"' EXIT INT TERM
+
+only=${1:-}
+failed=0
+count=0
+
+for t in "$REPO"/tests/test_*.vim "$REPO"/tests/test_*.sh; do
+    [ -e "$t" ] || continue
+    name=$(basename "$t")
+    base=${name%.*}
+    if [ -n "$only" ] && [ "$only" != "$name" ] && [ "$only" != "$base" ]; then
+        continue
+    fi
+    count=$((count + 1))
+    TEST_OUT="$OUTDIR/$base.out"
+    log="$OUTDIR/$base.log"
+    export TEST_OUT
+    rm -f "$TEST_OUT"
+
+    # Пускаме Vim от временна папка, за да не се намеси 'exrc'.
+    case $name in
+        *_noplugins.vim)
+            (cd "$OUTDIR" && vim -N -u NONE -i NONE -es \
+                --cmd "set rtp^=$REPO/.vim rtp+=$REPO/.vim/after" \
+                --cmd 'filetype plugin on' \
+                -S "$t" </dev/null >"$log" 2>&1)
+            ;;
+        *.vim)
+            (cd "$OUTDIR" && vim -N -u "$REPO/.vimrc" -i NONE -es \
+                -S "$t" </dev/null >"$log" 2>&1)
+            ;;
+        *.sh)
+            if (cd "$OUTDIR" && sh "$t" >"$log" 2>&1); then
+                : >"$TEST_OUT"
+            else
+                cp "$log" "$TEST_OUT"
+            fi
+            ;;
+    esac
+
+    if [ -f "$TEST_OUT" ] && [ ! -s "$TEST_OUT" ]; then
+        echo "PASS $base"
+    else
+        failed=$((failed + 1))
+        echo "FAIL $base"
+        if [ -f "$TEST_OUT" ]; then
+            sed 's/^/    /' "$TEST_OUT"
+        else
+            echo "    (Vim не стигна до края на теста; изход:)"
+            sed 's/^/    /' "$log"
+        fi
+    fi
+done
+
+if [ "$count" -eq 0 ]; then
+    echo "Няма тестове${only:+ с име $only}" >&2
+    exit 1
+fi
+echo "$((count - failed))/$count успешни"
+[ "$failed" -eq 0 ]
