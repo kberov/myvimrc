@@ -11,7 +11,7 @@ gui
 "
 " colorscheme may be loaded via a plugin managed by vim-plug 
 " (already initialized)
-colorscheme darkblue
+colorscheme elflord
 " base16-atlas base16-3024 dracula darkblue murphy peachpuff
 " base16-solarized-light  base16-gruvbox-light-hard koehler desert industry
 " base16-ocean base16-grayscale-dark base16-gruvbox-dark-pale
@@ -26,10 +26,15 @@ colorscheme darkblue
 " base16-ia-light base16-shapeshifter base16-solarized-light
 " base16-summerfruit-light
 
+" Test cyrillic
+" „Аште ли къто речетъ ꙗко нѣстъ ѹстроилъ добрѣ, пон҄еже сѧ постраꙗѭтъ и ѥште…“
+" –„Ако ли пък някой рече, че не ги е нагласил добре, понеже и сега още се
+" нагласяват“ както и „…сѫтъ бо ѥште живи, иже сѫтъ видѣли ихъ.“ – Още са живи
+" тези, които са ги виждали.. 
 " set cursorcolumn
 " set cursorline
-" set guifont=Noto\ Mono\ 16
- set guifont=Roboto\ Mono\ 16
+set guifont=NotoSansM\ Nerd\ Font\ Mono\ Regular\ 16
+" set guifont=Roboto\ Mono\ 16
 " set guifont=Terminalia\ Regular\ 18
 " set guifont=JetBrainsMonoNL\ Nerd\ Font\ 17
 " set guifont=SpaseMono\ Nerd\ Font\ Mono\ 15

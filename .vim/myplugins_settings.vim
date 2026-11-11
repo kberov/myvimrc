@@ -15,7 +15,7 @@ autocmd FileType go nmap <leader>go  <Plug>(go-test)
 " We now use .golangci.yaml
 let g:go_metalinter_command = "golangci-lint"
 let g:go_metalinter_autosave = 1
-let g:go_list_type = "quickfix"
+" let g:go_list_type = "locationlist"
 let g:go_fmt_command = "goimports"
 let g:go_code_completion_enabled = 1
 let g:go_code_completion_icase = 1

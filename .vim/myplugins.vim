@@ -58,5 +58,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'ryanoasis/vim-devicons'
     " auto complete menu popups immediately
     Plug 'lifepillar/vim-mucomplete'
+    " AI
+    Plug 'keitheis/claude-code.vim'
 " Initialize plugin system
 call plug#end()

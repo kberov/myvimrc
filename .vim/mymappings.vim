@@ -171,7 +171,7 @@ nmap - :Ex<CR>
 inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-Space>
 
-" switch keymap: Ctrl+l, Think "switch language".
+" switch keymap: \l,  Think "switch language".
 inoremap <Leader>l <C-^>
 noremap <Leader>l a<C-^>
 

@@ -244,7 +244,7 @@ set t_BE=
 set autowriteall
 
 "colorscheme peachpuff
-colorscheme darkblue
+colorscheme elflord
 
 "https://vim.fandom.com/wiki/To_switch_back_to_normal_mode_automatically_after_inaction
 " !!!Automatically leave insert mode after 'updatetime' milliseconds of
@@ -261,6 +261,8 @@ set mousemodel=popup
 " Delete comment character when joining commented lines.
 " https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim
 set formatoptions+=j
+" but insert comment leader on each next wrapped line
+" https://vimtricks.wiki/posts/formatoptions-control-auto-wrap
 
 runtime mymappings.vim
 runtime myplugins.vim
