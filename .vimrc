@@ -17,6 +17,22 @@ vnoremap <silent> <Plug>NetrwBrowseXVis :call netrw#BrowseXVis()
 nnoremap <silent> <Plug>NetrwBrowseX :call netrw#BrowseX(expand((exists("g:netrw_gx")? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())
 let &cpo=s:cpo_save
 unlet s:cpo_save
+
+" Къде е хранилището с настройките (myvimrc)?
+" ~/.vimrc е връзка (symlink) към .vimrc в хранилището. resolve() минава
+" през връзката и дава истинския файл, а :h – папката му. Така няма зашит
+" път и всичко работи, където и да е клонирано хранилището (напр. в WSL).
+let g:myvimrc_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+" Слагаме <хранилище>/.vim най-отпред в runtimepath: оттам се зареждат
+" mymappings.vim, keymap/, autoload/ и т.н. А <хранилище>/.vim/after – най-
+" отзад: файловете там (after/ftplugin/…) се изпълняват последни и имат
+" последната дума пред добавките. -= преди ^=/+= пази от дублиране, когато
+" .vimrc се зареди повторно (:source $MYVIMRC).
+execute 'set rtp-=' . fnameescape(g:myvimrc_dir . '/.vim')
+execute 'set rtp-=' . fnameescape(g:myvimrc_dir . '/.vim/after')
+execute 'set rtp^=' . fnameescape(g:myvimrc_dir . '/.vim')
+execute 'set rtp+=' . fnameescape(g:myvimrc_dir . '/.vim/after')
+
 set backspace=indent,eol,start
 set display=truncate
 set fileencodings=ucs-bom,utf-8,default,latin1
