@@ -286,5 +286,7 @@ set formatoptions+=j
 runtime mymappings.vim
 runtime myplugins.vim
 runtime myplugins_settings.vim
+" Настройките на ALE (проверки, форматиране, езикови сървъри) – отделно.
+runtime ale_settings.vim
 
 " vim: set ft=vim :

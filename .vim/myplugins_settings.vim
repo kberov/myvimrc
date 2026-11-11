@@ -44,31 +44,11 @@ let NERDTreeIgnore=['\~$',"tags"]
 " let NERDTreeIgnore=['^\.git', '\~$',"tags"]
 
 "ALE
-" Enable completion where available.
-" let g:ale_hover_to_preview = 0
-" let g:ale_hover_cursor = 1
-" let g:ale_hover_to_floating_preview = 1
-" let g:ale_fixers = { 'rust': ['rustfmt', 'trim_whitespace', 'remove_trailing_lines'] }
-" a hack to disable gopls in ALE , because we already use vim-go
-" plugin for Go
-" let g:ale_linters = {
-"            \ 'rust': ['analyzer', 'cargo'],
-"            "\ 'go': ['staticcheck'],
-"            \}
-" When set to `1`, only the linters from |g:ale_linters| and |b:ale_linters|
-" will be enabled. The default behavior for ALE is to enable as many linters
-" as possible, unless otherwise specified.
-" let g:ale_linters_explicit = 1
-" ignore most errors regarding failed imports
-" let g:ale_rust_ignore_error_codes = ['E0432', 'E0433']
-
+" Всички настройки на ALE са в .vim/ale_settings.vim. Клавишите (gd, K, \h,
+" Ctrl+клик …) са буферни и се задават от .vim/after/ftplugin/*.vim чрез
+" myide#AleKeys() в .vim/autoload/myide.vim.
+" Грешките от ALE – в лентата на airline.
 let g:airline#extensions#ale#enabled = 1
-" set omnifunc=ale#completion#OmniFunc
-" Изключени, докато ALE не е инсталиран (иначе дават грешка „Not an editor
-" command“). Ще ги върнем, когато включим ALE.
-" Ctrl+ляв клик – към дефиницията; \h – описание на думата под курсора.
-" nnoremap <C-LeftMouse> :ALEGoToDefinition<CR>
-" map <Leader>h :ALEHover<CR>
 
 "Plug 'rust-lang/rust.vim'
 let g:rustfmt_autosave = 1

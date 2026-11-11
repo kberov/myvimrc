@@ -27,11 +27,14 @@ call plug#begin('~/.vim/plugged')
     Plug 'ollykel/v-vim'
     Plug 'rust-lang/rust.vim'
     " Plug 'JamshedVesuna/vim-markdown-preview'
-    " ALE obsoletes all lsp_...
-    " See myplugins_settings.vim for settings for ALE
-    " This setting must be set before ALE is loaded.
-    " let g:ale_completion_enabled = 1
-    " Plug 'dense-analysis/ale'
+    " ALE – проверки, форматиране и езикови сървъри за Perl, Shell,
+    " JavaScript и HTML/HTMX. Go остава на vim-go (ALE не го пипа).
+    " Останалите настройки са в .vim/ale_settings.vim.
+    " Тази настройка трябва да е ПРЕДИ зареждането на ALE: собственото
+    " довършване на ALE е изключено – довършването остава на vim-mucomplete,
+    " а ALE само му подава думите чрез omnifunc (виж autoload/myide.vim).
+    let g:ale_completion_enabled = 0
+    Plug 'dense-analysis/ale'
     "Plug 'udalov/kotlin-vim'
     "Plug '~/opt/chapel-1.27.0/highlight/vim'
     "Plug 'cheap-glitch/vim-v'
