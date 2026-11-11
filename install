@@ -1,0 +1,107 @@
+#!/bin/sh
+# Свързва настройките на Vim в домашната папка с това хранилище и казва
+# кои инструменти (програми) липсват. НИЩО не инсталира и не ползва sudo.
+#
+# Употреба:  ./install      (може да се пуска многократно)
+#
+# Какво прави:
+#   1. ~/.vimrc и ~/.gvimrc стават връзки (symlinks) към файловете тук.
+#      Ако там вече има обикновен файл или друга връзка, първо го
+#      преименува на ~/.vimrc.bak.<дата-час> (нищо не се губи).
+#   2. Старите КОПИЯ на файловете от хранилището в ~/.vim (mymappings.vim,
+#      keymap/ …) ги мести в ~/.vim/backup-<дата-час>/. Иначе Vim би имал
+#      два екземпляра. ~/.vim/plugged, sessions, spell … не се пипат.
+#   3. Изписва ред „ЛИПСВА <програма>: <команда за инсталиране>“ за всяка
+#      липсваща програма.
+#
+# Само POSIX sh (без bash): проверява се с `shellcheck -s sh install` и
+# работи с dash. Дизайн: docs/superpowers/specs/2026-11-11-vim-ide-design.md
+# `~` в съобщенията е само текст, не път – затова SC2088 е изключено.
+# shellcheck disable=SC2088
+
+set -eu
+
+# Папката на хранилището = папката на този скрипт (абсолютен, истински път).
+REPO=$(cd "$(dirname "$0")" && pwd -P)
+STAMP=$(date +%Y%m%d-%H%M%S)
+
+# 1. Връзки ----------------------------------------------------------------
+
+# link_file ИМЕ: прави ~/ИМЕ връзка към $REPO/ИМЕ.
+link_file() {
+    target="$REPO/$1"
+    dest="$HOME/$1"
+    if [ -L "$dest" ] && [ "$(readlink "$dest")" = "$target" ]; then
+        echo "OK ~/$1"
+        return 0
+    fi
+    # -L: и „счупена“ връзка (сочеща към нищо) се запазва.
+    if [ -e "$dest" ] || [ -L "$dest" ]; then
+        mv "$dest" "$dest.bak.$STAMP"
+        echo "ЗАПАЗЕН ~/$1 → ~/$1.bak.$STAMP"
+    fi
+    ln -s "$target" "$dest"
+    echo "ВРЪЗКА ~/$1 → $target"
+}
+
+link_file .vimrc
+link_file .gvimrc
+
+# 2. Старите копия в ~/.vim -----------------------------------------------
+
+backup=""
+for name in mymappings.vim myplugins.vim myplugins_settings.vim \
+    myabbreviations.vim filetype.vim essential.vim keymap; do
+    old="$HOME/.vim/$name"
+    # Само истински файлове/папки; връзки не пипаме.
+    if [ -e "$old" ] && [ ! -L "$old" ]; then
+        # Папката за резервни копия се създава само ако има какво да се мести.
+        if [ -z "$backup" ]; then
+            backup="$HOME/.vim/backup-$STAMP"
+            mkdir -p "$backup"
+        fi
+        mv "$old" "$backup/"
+        echo "ПРЕМЕСТЕН ~/.vim/$name → ~/.vim/backup-$STAMP/"
+    fi
+done
+
+# 3. Липсващи инструменти -------------------------------------------------
+
+# hint ПРОГРАМА: как се инсталира.
+hint() {
+    case $1 in
+        perl) echo "perlbrew install perl-5.44.0  (или: sudo apt install perl)" ;;
+        perlnavigator) echo "npm i -g perlnavigator-server" ;;
+        perltidy) echo "cpanm Perl::Tidy" ;;
+        perlcritic) echo "cpanm Perl::Critic" ;;
+        bash-language-server) echo "npm i -g bash-language-server" ;;
+        shellcheck) echo "sudo apt install shellcheck" ;;
+        shfmt) echo "sudo apt install shfmt" ;;
+        # TypeScript 7 вече няма tsserver, а ALE работи с него – затова 5.
+        tsserver) echo "npm i -g typescript@5  (TypeScript 7 няма tsserver)" ;;
+        vscode-html-language-server) echo "npm i -g vscode-langservers-extracted" ;;
+        htmx-lsp) echo "cargo install htmx-lsp" ;;
+        go) echo "https://go.dev/dl/" ;;
+        gopls) echo "go install golang.org/x/tools/gopls@latest" ;;
+        *) echo "?" ;;
+    esac
+}
+
+missing=0
+for tool in perl perlnavigator perltidy perlcritic \
+    bash-language-server shellcheck shfmt \
+    tsserver vscode-html-language-server htmx-lsp \
+    go gopls; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
+        echo "ЛИПСВА $tool: $(hint "$tool")"
+        missing=$((missing + 1))
+    fi
+done
+if [ ! -f "$HOME/.vim/autoload/plug.vim" ]; then
+    echo "ЛИПСВА vim-plug: curl -fLo ~/.vim/autoload/plug.vim --create-dirs" \
+        "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    missing=$((missing + 1))
+fi
+[ "$missing" -eq 0 ] && echo "Всички инструменти са налице."
+
+echo "Накрая пусни във Vim:  :PlugInstall"
