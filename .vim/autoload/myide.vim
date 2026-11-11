@@ -31,6 +31,24 @@ function! myide#AleKeys() abort
     " <LeftMouse> първо мести курсора там, където е щракнато.
     nnoremap <buffer> <silent> <C-LeftMouse> <LeftMouse>:ALEGoToDefinition<CR>
     setlocal omnifunc=ale#completion#OmniFunc
+    " Ако видът на буфера се смени (:set ft=…), Vim изпълнява
+    " b:undo_ftplugin – там казваме как да се махне всичко горе.
+    call myide#AddUndo(myide#UnmapCmd(['gd', 'K', '<leader>h', 'gr',
+          \ '<leader>rn', ']e', '[e', '<C-LeftMouse>']) . '| setlocal omnifunc<')
+endfunction
+
+" Команда, която маха буферните съответствия keys в нормален режим.
+" ВНИМАНИЕ: преди `|` не бива да има интервал – при :unmap интервалът става
+" част от клавиша („gd “ вместо „gd“) и Vim дава E31: No such mapping.
+function! myide#UnmapCmd(keys) abort
+    return join(map(copy(a:keys), '"silent! nunmap <buffer> " . v:val . "|"'), '')
+endfunction
+
+" Добавя команди към b:undo_ftplugin, без да изтрива написаното там от
+" ftplugin-ите на Vim и на добавките.
+function! myide#AddUndo(cmd) abort
+    let l:old = get(b:, 'undo_ftplugin', '')
+    let b:undo_ftplugin = empty(l:old) ? a:cmd : l:old . ' | ' . a:cmd
 endfunction
 
 " Кои езици вече са проверени в тази сесия на Vim (за да няма повторения).
