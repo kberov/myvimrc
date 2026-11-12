@@ -8,6 +8,8 @@ ln -s "$REPO/.vimrc" "$d/link_vimrc"
 OUTF="$d/out"
 export OUTF
 cd "$d"
+# $OUTF се разгъва от Vim, не от обвивката – затова е в единични кавички.
+# shellcheck disable=SC2016
 vim -N -u "$d/link_vimrc" -i NONE -es \
     -c 'call writefile([get(g:, "myvimrc_dir", "")], $OUTF)' -c 'qa!' \
     </dev/null >/dev/null 2>&1 || true

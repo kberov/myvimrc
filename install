@@ -50,8 +50,20 @@ link_file .gvimrc
 # 2. Старите копия в ~/.vim -----------------------------------------------
 
 backup=""
-for name in mymappings.vim myplugins.vim myplugins_settings.vim \
-    myabbreviations.vim filetype.vim essential.vim keymap; do
+# Ако ~/.vim е връзка към <хранилище>/.vim, „старите копия“ там са самите
+# файлове на хранилището – тогава няма какво да се мести.
+olds="mymappings.vim myplugins.vim myplugins_settings.vim myabbreviations.vim filetype.vim essential.vim keymap"
+# Личните речници (spell/*.add и *.add.spl) вече са в хранилището – старите
+# им копия в ~/.vim/spell също се местят. Главните речници (*.spl, *.sug)
+# остават в ~/.vim/spell.
+for f in "$REPO"/.vim/spell/*.add "$REPO"/.vim/spell/*.add.spl; do
+    [ -e "$f" ] && olds="$olds spell/$(basename "$f")"
+done
+if [ "$(cd "$HOME/.vim" 2>/dev/null && pwd -P)" = "$REPO/.vim" ]; then
+    echo "OK ~/.vim е самото хранилище – нищо не се мести"
+    olds=""
+fi
+for name in $olds; do
     old="$HOME/.vim/$name"
     # Само истински файлове/папки; връзки не пипаме.
     if [ -e "$old" ] && [ ! -L "$old" ]; then
@@ -60,8 +72,13 @@ for name in mymappings.vim myplugins.vim myplugins_settings.vim \
             backup="$HOME/.vim/backup-$STAMP"
             mkdir -p "$backup"
         fi
-        mv "$old" "$backup/"
-        echo "ПРЕМЕСТЕН ~/.vim/$name → ~/.vim/backup-$STAMP/"
+        # Подпапката (напр. spell/) се запазва и в резервното копие.
+        sub=$(dirname "$name")
+        [ "$sub" = . ] && sub=""
+        dest="$backup${sub:+/$sub}"
+        mkdir -p "$dest"
+        mv "$old" "$dest/"
+        echo "ПРЕМЕСТЕН ~/.vim/$name → ~/.vim/backup-$STAMP${sub:+/$sub}/"
     fi
 done
 

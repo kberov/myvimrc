@@ -11,10 +11,9 @@ set cpo&vim
 " от :mkvimrc, които правеха същото.)
 inoremap <C-U> <C-G>u<C-U>
 map Q gq
-vmap gx <Plug>NetrwBrowseXVis
-nmap gx <Plug>NetrwBrowseX
-vnoremap <silent> <Plug>NetrwBrowseXVis :call netrw#BrowseXVis()
-nnoremap <silent> <Plug>NetrwBrowseX :call netrw#BrowseX(expand((exists("g:netrw_gx")? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())
+" gx (отвори адреса/файла под курсора) идва от вградения в Vim 9.1
+" plugin/openPlugin.vim – без добавки. Старите редове от :mkvimrc за
+" netrw#BrowseX бяха остарели и (след загубен ^M) счупени, затова са махнати.
 let &cpo=s:cpo_save
 unlet s:cpo_save
 
@@ -32,6 +31,10 @@ execute 'set rtp-=' . fnameescape(g:myvimrc_dir . '/.vim')
 execute 'set rtp-=' . fnameescape(g:myvimrc_dir . '/.vim/after')
 execute 'set rtp^=' . fnameescape(g:myvimrc_dir . '/.vim')
 execute 'set rtp+=' . fnameescape(g:myvimrc_dir . '/.vim/after')
+" Netrw пише историята на разглежданите папки (.netrwhist) в ПЪРВАТА папка
+" от runtimepath – вече хранилището. Това е състояние, не настройка, и не
+" бива да попада в git, затова го държим в ~/.vim, както преди.
+let g:netrw_home = expand('~/.vim')
 
 set backspace=indent,eol,start
 set display=truncate

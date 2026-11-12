@@ -30,7 +30,11 @@ call assert_notmatch('ALE', maparg('gd', 'n'), 'go без ALE')
 call assert_equal([], s:InsertLeaderMaps(), 'go без \ в режим на въвеждане')
 
 " Смяна на вида на буфера маха нашите клавиши (b:undo_ftplugin).
+" `||` в него е празна команда `:|`, която изписва текущия ред при всяко :e.
+call s:Open('x.go')
+call assert_notmatch('||', get(b:, 'undo_ftplugin', ''), 'go: без || в undo_ftplugin')
 call s:Open('x.pl')
+call assert_notmatch('||', get(b:, 'undo_ftplugin', ''), 'perl: без || в undo_ftplugin')
 setfiletype text
 set filetype=text
 call assert_notmatch('ALEGoToDefinition', maparg('gd', 'n'), 'undo_ftplugin')

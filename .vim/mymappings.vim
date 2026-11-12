@@ -232,5 +232,8 @@ noremap <Leader>l a<C-^>
 " Преди беше `cnoremap ww …`, което се задействаше навсякъде в командния
 " ред – включително при търсене с / (например /www).
 " Името на файла се огражда с кавички (shellescape), за да работи и с интервали.
-" Накрая edit! презарежда файла, за да не мисли Vim, че е още непроменен/незаписан.
-command! SudoW execute 'write !sudo tee ' . shellescape(expand('%'), 1) . ' >/dev/null' | edit!
+" Накрая edit! презарежда файла, за да знае Vim, че е записан – но САМО ако
+" sudo е успял (v:shell_error == 0). Иначе (грешна парола, Ctrl-C, GVim без
+" терминал) edit! би изтрил незаписаните промени.
+command! SudoW execute 'write !sudo tee ' . shellescape(expand('%'), 1) . ' >/dev/null'
+      \ | if !v:shell_error | edit! | endif

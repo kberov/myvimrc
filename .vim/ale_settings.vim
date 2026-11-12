@@ -28,7 +28,9 @@
 let g:ale_linters_explicit = 1
 
 " Кои проверки/езикови сървъри за кой filetype.
-"   perl          – `perl -c` (синтаксис) + Perl Navigator (дефиниция,
+"   perl          – perlsave: `perl -c` (синтаксис) САМО при запис – виж
+"                   .vim/ale_linters/perl/perlsave.vim (perl -c изпълнява
+"                   BEGIN/use кода); + Perl Navigator (дефиниция,
 "                   описание, употреби, perlcritic).
 "   sh            – shellcheck + bash-language-server.
 "   javascript    – tsserver (от npm пакета typescript); работи и с
@@ -41,7 +43,7 @@ let g:ale_linters_explicit = 1
 "                   шаблоните получават само двата сървъра от html.
 "   go            – нищо: Go е на vim-go.
 let g:ale_linters = {
-      \ 'perl': ['perl', 'perlnavigator'],
+      \ 'perl': ['perlsave', 'perlnavigator'],
       \ 'sh': ['shellcheck', 'language_server'],
       \ 'javascript': ['tsserver'],
       \ 'html': ['vscodehtml', 'htmx'],
@@ -68,15 +70,25 @@ let g:ale_set_quickfix = 0
 
 " Perl Navigator (езиковият сървър за Perl).
 "   perlcriticEnabled  – perlcritic при всяка промяна/запис.
-"   perlCompileEnabled – изключено: `perl -c` го пуска ALE (проверката
-"                        `perl` по-горе), иначе синтактичните грешки
-"                        излизат двойно. Така `perl -c` работи и когато
+"   perlCompileEnabled – изключено: `perl -c` го пуска само ALE и само при
+"                        запис (perlsave по-горе). Иначе Perl Navigator би
+"                        го пускал при всяка промяна, а и грешките биха
+"                        излизали двойно. Така `perl -c` работи и когато
 "                        perlnavigator липсва.
-" Профилите (.perlcriticrc, .perltidyrc) не се задават изрично: perlcritic
-" и perltidy сами търсят първо в текущата папка (проекта), после в ~.
+" Профилът на perltidy се избира за всеки буфер в .vim/after/ftplugin/perl.vim
+" (проектният .perltidyrc нагоре от файла, иначе ~/.perltidyrc).
+" perlcritic сам търси .perlcriticrc в текущата папка, после в ~.
 let g:ale_perl_perlnavigator_config = {
       \ 'perlnavigator': {
       \   'perlcriticEnabled': 1,
       \   'perlCompileEnabled': 0,
       \ },
+      \ }
+
+" Корен на проекта за bash-language-server и HTML сървъра: вградените в ALE
+" правила искат .git и без него сървърът изобщо не тръгва. myide#ProjectRoot
+" дава .git корена, а извън git – папката на файла.
+let g:ale_root = {
+      \ 'language_server': function('myide#ProjectRoot'),
+      \ 'vscodehtml': function('myide#ProjectRoot'),
       \ }

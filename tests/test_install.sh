@@ -82,6 +82,32 @@ run_install || fail test_old_copies "код $?"
 [ -L "$HOME/.vim/myplugins.vim" ] || fail test_old_copies "връзката е преместена"
 rm -rf "$HOME"
 
+# --- test_vim_dir_is_repo_link: ~/.vim → <хранилище>/.vim не се „чисти“ ---
+# Работи върху копие на хранилището, за да не пипне истинските файлове.
+newhome
+CLONE=$(mktemp -d)
+cp -R "$REPO/." "$CLONE/"
+rm -rf "$HOME/.vim"
+ln -s "$CLONE/.vim" "$HOME/.vim"
+"$CLONE/install" >/dev/null 2>&1 || fail test_vim_dir_is_repo_link "код $?"
+[ -f "$CLONE/.vim/mymappings.vim" ] || fail test_vim_dir_is_repo_link "mymappings.vim от хранилището е преместен"
+[ -d "$CLONE/.vim/keymap" ] || fail test_vim_dir_is_repo_link "keymap/ от хранилището е преместена"
+[ "$(count "$CLONE"/.vim/backup-*)" -eq 0 ] || fail test_vim_dir_is_repo_link "backup-* в хранилището"
+rm -rf "$HOME" "$CLONE"
+
+# --- test_spell_add_files: старите *.add в ~/.vim/spell → backup; речниците остават ---
+newhome
+mkdir -p "$HOME/.vim/spell"
+echo dumi >"$HOME/.vim/spell/bg.utf-8.add"
+echo bin >"$HOME/.vim/spell/bg.utf-8.add.spl"
+echo big >"$HOME/.vim/spell/bg.utf-8.spl"
+run_install || fail test_spell_add_files "код $?"
+[ ! -e "$HOME/.vim/spell/bg.utf-8.add" ] || fail test_spell_add_files "bg.utf-8.add не е преместен"
+[ ! -e "$HOME/.vim/spell/bg.utf-8.add.spl" ] || fail test_spell_add_files "bg.utf-8.add.spl не е преместен"
+[ "$(count "$HOME"/.vim/backup-*/spell/bg.utf-8.add)" -eq 1 ] || fail test_spell_add_files "bg.utf-8.add не е в backup-*/spell/"
+[ -f "$HOME/.vim/spell/bg.utf-8.spl" ] || fail test_spell_add_files "главният речник е пипнат"
+rm -rf "$HOME"
+
 # --- test_no_backup_dir_when_nothing_to_move ---
 newhome
 run_install

@@ -5,6 +5,11 @@
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 "    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " Make sure you use single quotes
+" Без vim-plug (нова машина, Vim без добавки) – спри тук, без грешки.
+" ./install казва как се инсталира vim-plug.
+if empty(globpath(&runtimepath, 'autoload/plug.vim'))
+    finish
+endif
 call plug#begin('~/.vim/plugged')
 
 " Colorschemes:

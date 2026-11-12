@@ -4,7 +4,7 @@
 " --- Стойности ---
 call assert_equal(1, get(g:, 'ale_linters_explicit', 0), 'ale_linters_explicit')
 call assert_equal({
-      \ 'perl': ['perl', 'perlnavigator'],
+      \ 'perl': ['perlsave', 'perlnavigator'],
       \ 'sh': ['shellcheck', 'language_server'],
       \ 'javascript': ['tsserver'],
       \ 'html': ['vscodehtml', 'htmx'],
@@ -45,7 +45,7 @@ call assert_equal('go', &filetype, 'filetype на .go')
 call assert_equal([], s:Names(), '.go')
 
 call s:Open('x.pl')
-call assert_equal(['perl', 'perlnavigator'], s:Names(), '.pl')
+call assert_equal(['perlnavigator', 'perlsave'], s:Names(), '.pl')
 call s:Open('x.sh')
 call assert_equal(['language_server', 'shellcheck'], s:Names(), '.sh')
 call s:Open('x.js')
