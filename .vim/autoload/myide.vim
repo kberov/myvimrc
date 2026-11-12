@@ -7,13 +7,13 @@
 " текущия буфер (<buffer>), затова в Go (vim-go) и в обикновените текстове
 " не пречат. Само нормален режим: в режим на въвеждане <leader> (`\`) при
 " кирилица става `ю` и не би работил.
-"   gd          – към дефиницията       (закрива вграденото gd „локална
-"                                         дефиниция“, но само тук)
-"   K, \h       – описание на думата под курсора
+"   gd          – към определението  (закрива вграденото gd „локално
+"                                    определение“, но само тук)
+"   K, \h       – описание на думата под показалеца
 "   gr          – всички употреби      (закрива вграденото gr, само тук)
 "   \rn         – преименуване
 "   ]e / [e     – следваща / предишна грешка (с превъртане в края)
-"   Ctrl+клик   – към дефиницията на думата, върху която щракнеш
+"   Ctrl+клик   – към определението на думата, върху която щракнете
 " Освен това omnifunc идва от ALE, така че Ctrl+Space (<C-x><C-o>) и
 " vim-mucomplete предлагат думите от езиковия сървър.
 " Ако ALE не е инсталиран (Vim без добавки), не прави нищо.
@@ -28,7 +28,7 @@ function! myide#AleKeys() abort
     nnoremap <buffer> <silent> <leader>rn :ALERename<CR>
     nmap <buffer> <silent> ]e <Plug>(ale_next_wrap)
     nmap <buffer> <silent> [e <Plug>(ale_previous_wrap)
-    " <LeftMouse> първо мести курсора там, където е щракнато.
+    " <LeftMouse> първо мести показалеца там, където е щракнато.
     nnoremap <buffer> <silent> <C-LeftMouse> <LeftMouse>:ALEGoToDefinition<CR>
     setlocal omnifunc=ale#completion#OmniFunc
     " Ако видът на буфера се смени (:set ft=…), Vim изпълнява
@@ -59,12 +59,12 @@ let s:checked = {}
 " Проверява дали инструментите (програмите) от tools се намират в PATH.
 " Връща списък с липсващите. Първия път за даден език (lang), ако има
 " липсващи, изписва ЕДНО кратко съобщение (:messages го пази), напр.
-"   Perl: липсват perlnavigator, perltidy (виж install)
+"   Perl: липсват perlnavigator, perltidy (вижте install)
 " Нищо не инсталира и не пипа PATH.
 function! myide#CheckTools(lang, tools) abort
     let l:missing = filter(copy(a:tools), '!executable(v:val)')
     if !empty(l:missing) && !has_key(s:checked, a:lang)
-        echomsg printf('%s: липсват %s (виж install)', a:lang, join(l:missing, ', '))
+        echomsg printf('%s: липсват %s (вижте install)', a:lang, join(l:missing, ', '))
     endif
     let s:checked[a:lang] = 1
     return l:missing

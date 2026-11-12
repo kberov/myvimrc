@@ -121,4 +121,4 @@ if [ ! -f "$HOME/.vim/autoload/plug.vim" ]; then
 fi
 [ "$missing" -eq 0 ] && echo "Всички инструменти са налице."
 
-echo "Накрая пусни във Vim:  :PlugInstall"
+echo "Накрая пуснете във Vim:  :PlugInstall"

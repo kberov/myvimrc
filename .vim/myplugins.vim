@@ -5,7 +5,7 @@
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 "    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 " Make sure you use single quotes
-" Без vim-plug (нова машина, Vim без добавки) – спри тук, без грешки.
+" Без vim-plug (нова машина, Vim без добавки) – спираме тук, без грешки.
 " ./install казва как се инсталира vim-plug.
 if empty(globpath(&runtimepath, 'autoload/plug.vim'))
     finish
@@ -37,7 +37,7 @@ call plug#begin('~/.vim/plugged')
     " Останалите настройки са в .vim/ale_settings.vim.
     " Тази настройка трябва да е ПРЕДИ зареждането на ALE: собственото
     " довършване на ALE е изключено – довършването остава на vim-mucomplete,
-    " а ALE само му подава думите чрез omnifunc (виж autoload/myide.vim).
+    " а ALE само му подава думите чрез omnifunc (вижте autoload/myide.vim).
     let g:ale_completion_enabled = 0
     Plug 'dense-analysis/ale'
     "Plug 'udalov/kotlin-vim'

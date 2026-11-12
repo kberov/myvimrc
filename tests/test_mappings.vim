@@ -1,6 +1,6 @@
 " Общи съответствия и команди от .vimrc / mymappings.vim.
 
-" gx (отвори адреса под курсора) сочи към нещо, което съществува.
+" gx (отваря адреса под показалеца) сочи към нещо, което съществува.
 let s:rhs = maparg('gx', 'n')
 call assert_notequal('', s:rhs, 'gx е зададено')
 let s:plug = matchstr(s:rhs, '<Plug>\S\+')

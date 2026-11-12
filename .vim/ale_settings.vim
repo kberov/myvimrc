@@ -12,7 +12,7 @@
 "        \ 'rust': ['analyzer'],   (rust-analyzer)
 "        \ 'c':    ['clangd'],
 "        \ 'v':    ['v'],
-"      и ако искаш форматиране при запис – ред в g:ale_fixers.
+"      и ако искате форматиране при запис – ред в g:ale_fixers.
 "      Имената на проверките: :help ale-supported-languages-and-tools
 "   2. Нов файл .vim/after/ftplugin/<filetype>.vim по образеца на perl.vim:
 "      еднаквите клавиши (myide#AleKeys) + проверка за инструментите
@@ -28,9 +28,9 @@
 let g:ale_linters_explicit = 1
 
 " Кои проверки/езикови сървъри за кой filetype.
-"   perl          – perlsave: `perl -c` (синтаксис) САМО при запис – виж
+"   perl          – perlsave: `perl -c` (синтаксис) САМО при запис – вижте
 "                   .vim/ale_linters/perl/perlsave.vim (perl -c изпълнява
-"                   BEGIN/use кода); + Perl Navigator (дефиниция,
+"                   BEGIN/use кода); + Perl Navigator (определение,
 "                   описание, употреби, perlcritic).
 "   sh            – shellcheck + bash-language-server.
 "   javascript    – tsserver (от npm пакета typescript); работи и с

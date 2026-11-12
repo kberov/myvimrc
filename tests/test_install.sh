@@ -43,7 +43,7 @@ newhome
 run_install || fail test_fresh "код $?"
 is_repo_link .vimrc || fail test_fresh "~/.vimrc не е връзка към хранилището"
 is_repo_link .gvimrc || fail test_fresh "~/.gvimrc не е връзка към хранилището"
-grep -q ':PlugInstall' "$OUT" || fail test_fresh "няма напомняне за :PlugInstall"
+grep -q 'Накрая пуснете във Vim:  :PlugInstall' "$OUT" || fail test_fresh "няма напомняне за :PlugInstall"
 rm -rf "$HOME"
 
 # --- test_backup_plain: обикновен ~/.vimrc и чужда връзка ~/.gvimrc ---

@@ -1,7 +1,7 @@
 " Perl (perl) – еднаквите клавиши към ALE и проверка за инструментите.
 " Файлът е в after/ftplugin: изпълнява се след ftplugin-ите на Vim и на
 " добавките, затова нашите клавиши имат последната дума.
-" Клавишите (gd, K, \h, gr, \rn, ]e/[e, Ctrl+клик) – виж
+" Клавишите (gd, K, \h, gr, \rn, ]e/[e, Ctrl+клик) – вижте
 " .vim/autoload/myide.vim. Проверките/форматирането – .vim/ale_settings.vim.
 " perltidy форматира при запис; perlcritic проверява чрез Perl Navigator.
 call myide#AleKeys()
@@ -18,7 +18,7 @@ endif
 let b:ale_perl_perltidy_options = empty(s:rc) ? '' : '-pro=' . shellescape(s:rc)
 call myide#AddUndo('unlet! b:ale_perl_perltidy_options')
 
-" perl -c само при запис (виж .vim/ale_linters/perl/perlsave.vim): отбелязваме,
+" perl -c само при запис (вижте .vim/ale_linters/perl/perlsave.vim): отбелязваме,
 " че в тази сесия файлът е записван. BufWritePre, а не BufWritePost: ALE
 " проверява при запис веднага, в своя BufWritePost, т.е. преди нашия.
 augroup myide_perl_save
