@@ -71,24 +71,24 @@ vnoremap <leader>p "_dP
 "
 " Update/Save the file
 " :update записва само ако файлът е променен.
-" \w работи в нормален и визуален режим. В режим на въвеждане НЕ го
+" \w работи в нормален и визуален лад. В лад за въвеждане НЕ го
 " задаваме: при включена кирилица (keymap oldbgph) `\` става `ю` и
 " съответствието никога не се задейства. Там ползвайте Ctrl+S (вижте по-долу).
 nnoremap <silent> <leader>w :update<CR>
 vnoremap <silent> <leader>w <ESC>:update<CR>
 
-" Ctrl+S – запис във всички режими, и в GVim, и в терминала.
+" Ctrl+S – запис във всички ладове, и в GVim, и в терминала.
 " Работи и при включена кирилица, защото keymap не превежда Ctrl-клавишите.
 " (Преместено от .gvimrc.)
 " Ако в терминала Ctrl+S „замразява“ екрана (размразява се с Ctrl+Q),
 " добавете в ~/.bashrc:  [ -t 0 ] && stty -ixon
 " http://stackoverflow.com/questions/3446320/in-vim-how-to-map-save-to-ctrl-s#3448551
-" Нормален режим: просто записва.
+" Нормален лад: просто записва.
 nnoremap <silent> <C-S> :update<CR>
-" Визуален режим: <C-C> излиза от избора, после записва.
+" Визуален лад: <C-C> излиза от избора, после записва.
 vnoremap <silent> <C-S> <C-C>:update<CR>
-" Режим на въвеждане: <C-O> изпълнява една команда и те връща обратно в
-" режим на въвеждане – показалецът остава на място.
+" Лад за въвеждане: <C-O> изпълнява една команда и те връща обратно в
+" лад за въвеждане – показалецът остава на място.
 inoremap <silent> <C-S> <C-O>:update<CR>
 
 " To quickly switch/jump to windows
@@ -141,20 +141,20 @@ inoremap <c-s-down> <ESC>ddp
 "inoremap <leader>i <Esc>
 "inoremap <leader>a <Esc>
 "inoremap jj <Esc>
-" ;; – излизане от режим на въвеждане. Работи и на кирилица, защото keymap
+" ;; – излизане от лад за въвеждане. Работи и на кирилица, защото keymap
 " оставя `;` непроменено. Вградена алтернатива: Ctrl+[ (същото като Esc).
 " Махнато: inoremap \\ – на кирилица `\` става `ю` и то не се задейства.
 inoremap ;; <Esc>
 " from normal mode to insert mode
 " Махнати: noremap ;; i  и  noremap ;a a – те закриваха `;`, която в
-" нормален режим повтаря последното f/t/F/T (а `,` го повтаря назад).
+" нормален лад повтаря последното f/t/F/T (а `,` го повтаря назад).
 " Ползвай просто i и a (или \\ и \a по-долу).
 noremap <leader><leader> i
 "noremap <Space><Space>  i
 "" from normal mode to insert mode - after the current letter
 noremap <leader>a a
 " go out of insert mode to the command line
-" ;: – от режим на въвеждане направо в командния ред. Работи и на кирилица.
+" ;: – от лад за въвеждане направо в командния ред. Работи и на кирилица.
 " Махнато: inoremap \: (не работи на кирилица).
 inoremap ;: <Esc>:
 "" Press ii or nn when in Command mode, to go back to  insert or normal mode
@@ -162,7 +162,7 @@ inoremap ;: <Esc>:
 ""cnoremap nn <ESC>
 "cnoremap <Space><Space> <Esc>
 " Махнати: inoremap \q и \qa (не работят на кирилица).
-" От режим на въвеждане: ;; и после \q или \qa.
+" От лад за въвеждане: ;; и после \q или \qa.
 " exit - close current window while in normal mode
 noremap <leader>q :q<CR>
 "" exit - close all windows while in normal mode
@@ -197,12 +197,12 @@ inoremap <C-Space> <C-x><C-o>
 inoremap <C-@> <C-Space>
 
 " Смяна на езика (латиница ↔ кирилица). Think "switch language".
-" Режим на въвеждане: Ctrl+L (или вграденото Ctrl+^). Ctrl-клавишите не се
+" Лад за въвеждане: Ctrl+L (или вграденото Ctrl+^). Ctrl-клавишите не се
 " превеждат от keymap, затова работят и в двете посоки.
 " Махнато: inoremap \l – на кирилица `\` става `ю`, затова с него можехте
 " да включите кирилицата, но не и да я изключите.
 inoremap <C-L> <C-^>
-" Нормален режим: \l влиза в режим на въвеждане след показалеца и сменя езика.
+" Нормален лад: \l влиза в лад за въвеждане след показалеца и сменя езика.
 noremap <Leader>l a<C-^>
 
 ""My macros

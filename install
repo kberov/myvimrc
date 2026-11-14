@@ -18,18 +18,19 @@
 # работи с dash. Дизайн: docs/superpowers/specs/2026-11-11-vim-ide-design.md
 # `~` в съобщенията е само текст, не път – затова SC2088 е изключено.
 # shellcheck disable=SC2088
+# Вижте https://www.shellcheck.net/wiki/SC2088
 
 set -eu
 
 # Папката на хранилището = папката на този скрипт (абсолютен, истински път).
-REPO=$(cd "$(dirname "$0")" && pwd -P)
+LOCAL_REPO=$(cd "$(dirname "$0")" && pwd -P)
 STAMP=$(date +%Y%m%d-%H%M%S)
 
 # 1. Връзки ----------------------------------------------------------------
 
-# link_file ИМЕ: прави ~/ИМЕ връзка към $REPO/ИМЕ.
+# link_file ИМЕ: прави ~/ИМЕ връзка към $LOCAL_REPO/ИМЕ.
 link_file() {
-    target="$REPO/$1"
+    target="$LOCAL_REPO/$1"
     dest="$HOME/$1"
     if [ -L "$dest" ] && [ "$(readlink "$dest")" = "$target" ]; then
         echo "OK ~/$1"
@@ -56,10 +57,10 @@ olds="mymappings.vim myplugins.vim myplugins_settings.vim myabbreviations.vim fi
 # Личните речници (spell/*.add и *.add.spl) вече са в хранилището – старите
 # им копия в ~/.vim/spell също се местят. Главните речници (*.spl, *.sug)
 # остават в ~/.vim/spell.
-for f in "$REPO"/.vim/spell/*.add "$REPO"/.vim/spell/*.add.spl; do
+for f in "$LOCAL_REPO"/.vim/spell/*.add "$LOCAL_REPO"/.vim/spell/*.add.spl; do
     [ -e "$f" ] && olds="$olds spell/$(basename "$f")"
 done
-if [ "$(cd "$HOME/.vim" 2>/dev/null && pwd -P)" = "$REPO/.vim" ]; then
+if [ "$(cd "$HOME/.vim" 2>/dev/null && pwd -P)" = "$LOCAL_REPO/.vim" ]; then
     echo "OK ~/.vim е самото хранилище – нищо не се мести"
     olds=""
 fi

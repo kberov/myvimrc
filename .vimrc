@@ -5,7 +5,7 @@
 if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
-" Ctrl+U в режим на въвеждане трие до началото на реда. <C-G>u първо
+" Ctrl+U в лад за въвеждане трие до началото на реда. <C-G>u първо
 " прекъсва поредицата за отмяна (undo), така че с `u` можете да върнете
 " изтритото. (Тук преди имаше два реда с объркани контролни знаци, останали
 " от :mkvimrc, които правеха същото.)
@@ -205,8 +205,8 @@ set showfulltag " show both the tag name and a tidied-up form of the search
 set completeopt=menu,menuone,popup,noselect,noinsert
 
 " Load bg keyboard and switch back to no keymap, so later if I need to enter
-" bulgarian letters I can just press CTRL-^ to switch to INSERT(lang) as
-" opposed to just INSERT
+" bulgarian letters I can just press Ctrl-L or Ctrl-^ to switch to
+" INSERT(lang) as opposed to just INSERT
 " See https://stackoverflow.com/questions/3776728/#3777557
 " See also /usr/share/vim/vim74/keymap/bulgarian-phonetic.vim
 " my keymap old-bulgarian-phonetic from ~/.vim/keymap/
