@@ -30,7 +30,7 @@ function! s:Open(name) abort
   execute 'edit' fnameescape($REPO . '/tests/fixtures/' . a:name)
 endfunction
 
-" test_ale_html_epl_only_lsp: шаблоните – само двата езикови сървъра.
+" test_ale_html_epl_only_lsp: образците – само двата езикови сървъра.
 call s:Open('x.html.ep')
 call assert_equal('html.epl', &filetype, 'filetype на .html.ep')
 call assert_equal(['htmx', 'vscodehtml'], s:Names(), '.html.ep')

@@ -40,7 +40,7 @@ set backspace=indent,eol,start
 set display=truncate
 set fileencodings=ucs-bom,utf-8,default,latin1
 set helplang=bg
-set history=200
+set history=1000
 set incsearch
 set langnoremap
 set nolangremap
@@ -180,9 +180,10 @@ set spelllang=en,bg
 " See: http://vim.wikia.com/wiki/Browsing_programs_with_tags
 set tags+=../**/tags
 
-" Search recursively for filenames!
-" Now you can do :fin {partial-filename}<Tab> to quickly find and open files
-" deep under the current directory.
+" Търсене на файлове в дълбочина!
+" Благодарение на следващата настройка можете да напишете
+" :fin {частично-име-на-файл}<Tab>, за да търсите и намирате бързо файлове в
+" дълбочина в текущата папка, за да ги отворите.
 " No CtrlP required. See also https://stackoverflow.com/questions/16082991
 " This is a list of directories which will be searched when using the
 " |gf|, [f, ]f, ^Wf, |:find|, |:sfind|, |:tabfind| and other commands,

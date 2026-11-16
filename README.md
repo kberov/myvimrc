@@ -12,7 +12,7 @@
 | Perl (и Mojolicious) | към определението, описание, употреби, perlcritic; perltidy при запис; `perl -c` само при запис | [ALE](https://github.com/dense-analysis/ale) + Perl Navigator |
 | Shell | shellcheck, езиков сървър; shfmt (`-i 4 -ci`) при запис | ALE |
 | JavaScript | към определението, описание, употреби | ALE + tsserver |
-| HTML, HTMX, шаблони (`.html.ep`, fasttemplate) | довършване и описание на етикети и `hx-*` атрибути, без проверки и без форматиране | ALE + HTML сървъра на VS Code + htmx-lsp |
+| HTML, HTMX, образци (`.html.ep`, fasttemplate) | довършване и описание на етикети и `hx-*` атрибути, без проверки и без форматиране | ALE + HTML сървъра на VS Code + htmx-lsp |
 | Go | всичко на vim-go (GoDef, GoReferrers, GoCallers, GoRename, GoMetaLinter…) | [vim-go](https://github.com/fatih/vim-go) |
 
 Във всички тези езици **клавишите са едни и същи**. Действат само в
@@ -69,7 +69,7 @@
 | **Езици** | |
 | [ALE](https://github.com/dense-analysis/ale) | проверки, форматиране и езикови сървъри за Perl, Shell, JS и HTML/HTMX (`gd`, `K`, `gr`, `\rn`) |
 | [vim-go](https://github.com/fatih/vim-go) | всичко за Go: определения, употреби, преименуване, build, test |
-| [mojo.vim](https://github.com/yko/mojo.vim) | осветяване на вградения Perl в шаблоните на Mojolicious (`.html.ep`) |
+| [mojo.vim](https://github.com/yko/mojo.vim) | осветяване на вградения Perl в образците на Mojolicious (`.html.ep`) |
 | [html5.vim](https://github.com/othree/html5.vim) | осветяване, отстъпи и довършване за HTML5 и вграден SVG |
 | [rust.vim](https://github.com/rust-lang/rust.vim) | поддръжка на Rust |
 | [v-vim](https://github.com/ollykel/v-vim) | поддръжка на езика V |

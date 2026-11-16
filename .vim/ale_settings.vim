@@ -23,7 +23,7 @@
 "                   :ALEFix   – форматирай сега.
 
 " Пускай САМО изрично изброените проверки. Без това ALE пуска всичко,
-" което намери – напр. tidy/htmlhint върху шаблоните (.html.ep), които
+" което намери – напр. tidy/htmlhint върху образците (.html.ep), които
 " съдържат Perl код и биха изсипали десетки фалшиви грешки.
 let g:ale_linters_explicit = 1
 
@@ -40,7 +40,7 @@ let g:ale_linters_explicit = 1
 "                   .vim/ale_linters/html/htmx.vim.
 "   epl           – втората част на filetype `html.epl` (.html.ep от
 "                   mojo.vim). ALE разделя html.epl на html + epl, затова
-"                   шаблоните получават само двата сървъра от html.
+"                   образците получават само двата сървъра от html.
 "   go            – нищо: Go е на vim-go.
 let g:ale_linters = {
       \ 'perl': ['perlsave', 'perlnavigator'],
