@@ -80,6 +80,8 @@ GoRename, GoMetaLinter, форматиране при запис. За Perl ня
 | `]e` / `[e` | следваща/предишна грешка | `:lnext` / `:lprevious` (списъкът на vim-go) | `<Plug>(ale_next_wrap)` / `<Plug>(ale_previous_wrap)` |
 | Ctrl+клик | към дефиницията | `<Plug>(go-def)` | `:ALEGoToDefinition` |
 
+- Изключение: в Perl `K` и `\h` викат `perldoc`, защото Perl::LanguageServer
+  няма описание (раздел 6, Perl).
 - Съществуващите `\gb`, `\gr`, `\go` за Go остават.
 - `\h` (ALEHover) от досегашните, сега изключени, редове се връща като синоним
   на `K` за не-Go буфери.
@@ -96,22 +98,62 @@ GoRename, GoMetaLinter, форматиране при запис. За Perl ня
 20.10.2026).
 
 ### Perl (`perl`)
-- Сървър: **Perl Navigator** (`perlnavigator`, ALE linter `perlnavigator`).
-  Дава дефиниция, hover, употреби и вградени проверки с perlcritic.
-- Настройка: `g:ale_perl_perlnavigator_config` с `perlcriticEnabled: 1`. Като
-  профили се ползват `.perlcriticrc` и `.perltidyrc` от проекта, ако ги има, а
-  иначе `~/.perlcriticrc` и `~/.perltidyrc` (и двата съществуват).
-- Проверки: `perl` (`perl -c`) + `perlnavigator`. Отделният `perlcritic` linter
-  на ALE **не** се включва, защото Perl Navigator вече го прави; иначе
-  грешките ще са двойни.
-- В Perl Navigator `perlCompileEnabled: 0`: компилационната проверка я прави
-  само ALE (`perl`), за да няма двойни грешки и тя да работи и когато
-  `perlnavigator` липсва. **Мое решение.**
+
+Решено на 2026-11-16 (вж. „Изборът на езиков сървър за Perl“ по-долу).
+
+- **Принцип на автора:** инструментите за даден език да са написани на същия
+  език. За Perl – на Perl, без Node.
+- Сървър: **Perl::LanguageServer** (CPAN, `cpanm Perl::LanguageServer`), чрез
+  вградения в ALE linter `languageserver`. ALE го пуска като
+  `perl -MPerl::LanguageServer -ePerl::LanguageServer::run`. Дава
+  определение (`gd`) и употреби (`gr`). **Не дава** описание (hover),
+  довършване и perlcritic.
+- Настройка `g:ale_perl_languageserver_config` (без нея сървърът не тръгва,
+  ALE подава поне `{'perl': {'enable': 1}}`):
+  - `perlCmd` – празна програма (`true`). Сървърът пуска `perl -c` при всяко
+    отваряне и всяка промяна на файла и няма настройка, която да го спре.
+    `perl -c` изпълнява `BEGIN` и `use` кода, затова тук той трябва да тръгва
+    само при запис (`perlsave`). `perlCmd` сървърът ползва само за проверката
+    на синтаксиса и за дебъгера (който във Vim не ползваме). **Мое решение.**
+  - `cacheDir` – `~/.cache/perl-lang`. Иначе сървърът пише кеша си в
+    `<проект>/.vscode/perl-lang`. В кеша влиза пълният път на файла, така че
+    проектите не се смесват. **Мое решение.**
+- Проверки: `perlsave` (`perl -c` само при запис) + `languageserver` +
+  `perlcritic` (отделният linter на ALE; той също е на Perl). Профилите:
+  `.perlcriticrc` и `.perltidyrc` от проекта, ако ги има, а иначе
+  `~/.perlcriticrc` и `~/.perltidyrc` (и двата съществуват).
 - Форматиране при запис: `perltidy` (ALE fixer).
-- `PERL5LIB` вече съдържа пътищата на проектите (Slovo, mojo…). Perl Navigator
-  трябва да ги вижда. Ако не стига, добавяме `includePaths`.
-- Perl идва от perlbrew (в момента се преминава към perl 5.44.0, в който се
-  инсталират Perl::Tidy и Perl::Critic). `perlnavigator` още липсва.
+- `K` (описание): сървърът няма hover, затова в Perl буферите `K` вика
+  `perldoc` – за модул, ако думата под показалеца съдържа `::`, иначе
+  `perldoc -f`. Точният начин – за изпълнителя.
+- `gd` върху име на модул (`use Slovo::Model::Celini`) сървърът не намира.
+  За това е вграденото `gf` (ftplugin/perl.vim на Vim търси модула по
+  `path`). Отбелязва се в cheatsheet.md.
+- `PERL5LIB` вече съдържа пътищата на проектите (Slovo, mojo…), а сървърът го
+  наследява. Ако не стига, има `perlInc`.
+- Perl идва от perlbrew (perl 5.44.0, в който са Perl::Tidy и Perl::Critic).
+  Perl::LanguageServer още липсва.
+
+#### Изборът на езиков сървър за Perl
+
+Сравнени на 2026-11-16 с опит върху `Slovo/lib/Slovo/Model/Stranici.pm`
+(perl 5.44.0, временна инсталация с `cpanm -L`):
+
+| | Perl Navigator | PLS 0.906 | Perl::LanguageServer 2.6.2 |
+|---|---|---|---|
+| Написан на | TypeScript (Node) | Perl | Perl (Coro, AnyEvent, Moose) |
+| `gd` метод в същия файл | – (не е пробван) | ✔ | ✔ |
+| `gd` модул от `use` | – | ✔ | ✘ |
+| `gr` употреби | няма (не е в списъка му) | няма | ✔ (един от трите резултата с ред по-надолу) |
+| `K` описание | да | обявено, но връща празно | няма |
+| довършване, perlcritic | да | да | няма |
+| В ALE | вграден | няма (трябва свой linter) | вграден |
+
+- Perl Navigator отпадна заради принципа (Node). По-ранното твърдение тук, че
+  дава „употреби“, беше невярно.
+- PLS отпадна: няма `gr`, а `K` не работи.
+- Coro 6.57 минава всичките си тестове на perl 5.44.0, така че рискът
+  „Coro не върви на нов perl“ отпадна.
 
 ### Shell (`sh`, `bash`)
 - Сървър: `bash-language-server` (ALE linter `language_server`).
@@ -219,7 +261,9 @@ myvimrc/
 - Първия път, когато в сесията се отвори буфер от даден език, Vim проверява
   с `executable()` нужните инструменти за този език. Ако някой липсва,
   изписва **едно** кратко съобщение (`echomsg`, без да спира работата),
-  например: `Perl: липсват perlnavigator, perltidy (виж install)`.
+  например: `Perl: липсват Perl::LanguageServer, perltidy (виж install)`.
+  Perl::LanguageServer е модул, а не изпълним файл, затова за него проверката
+  е `perl -MPerl::LanguageServer -e1`, а не `executable()`.
   Нищо не инсталира и не пипа пътищата. **Мое решение** за вида на
   съобщението, по молба на автора да се разбира, когато инструмент липсва.
 
@@ -231,7 +275,7 @@ myvimrc/
   (може да се пуска многократно).
 - Мести старите копия от `~/.vim` (раздел 7) в `~/.vim/backup-<дата>/`. Не ги
   трие.
-- Проверява за `perlnavigator`, `perltidy`, `perlcritic`,
+- Проверява за Perl::LanguageServer (модул), `perltidy`, `perlcritic`,
   `bash-language-server`, `shellcheck`, `shfmt`, `tsserver`,
   `vscode-html-language-server`, `htmx-lsp`, `gopls` и за всеки липсващ
   изписва командата за инсталиране. **Нищо не инсталира.**
@@ -240,13 +284,11 @@ myvimrc/
 
 Очаквани команди за инсталиране (за съобщенията на скрипта):
 ```
-npm i -g perlnavigator-server bash-language-server typescript vscode-langservers-extracted
-cpanm Perl::Tidy Perl::Critic
+npm i -g bash-language-server typescript vscode-langservers-extracted
+cpanm Perl::Tidy Perl::Critic Perl::LanguageServer
 cargo install htmx-lsp
 ```
-(Изпълнителят да провери точните имена на npm пакетите. Изпълнимият файл на
-Perl Navigator трябва да се казва `perlnavigator`; ако не е така, задава се
-`g:ale_perl_perlnavigator_executable`.)
+(Изпълнителят да провери точните имена на npm пакетите.)
 
 ## 9. Почистване (в обхвата)
 
