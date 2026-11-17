@@ -28,4 +28,8 @@ augroup myide_perl_save
     autocmd! * <buffer>
     autocmd BufWritePre <buffer> let b:myide_saved = 1
 augroup END
-call myide#AddUndo('silent! autocmd! myide_perl_save * <buffer>|unlet! b:myide_saved')
+" `autocmd` смята `|` за част от своята команда, затова е в execute: иначе
+" `autocmd! … |unlet!…` би опитал да зададе unlet! за всички събития (E1155),
+" и нито автокомандата се маха, нито unlet! се изпълнява.
+call myide#AddUndo("silent! execute 'autocmd! myide_perl_save * <buffer>'"
+            \ . '|unlet! b:myide_saved')

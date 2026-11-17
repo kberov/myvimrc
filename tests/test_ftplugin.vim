@@ -62,6 +62,15 @@ setfiletype text
 set filetype=text
 call assert_notmatch('ALEGoToDefinition', maparg('gd', 'n'), 'undo_ftplugin')
 
+" test_perl_undo_save_mark: смяната на вида маха и отметката за запис на
+" perl.vim, и автокомандата ѝ (за perlsave).
+call s:Open('x.pl')
+let b:myide_saved = 1
+set filetype=text
+call assert_false(exists('b:myide_saved'), 'perl undo: b:myide_saved')
+call assert_false(exists('#myide_perl_save#BufWritePre#<buffer>'),
+      \ 'perl undo: автокомандата BufWritePre')
+
 " Съобщение за липсващ инструмент (htmx-lsp още не е инсталиран тук).
 if !executable('htmx-lsp')
   call assert_match('HTML: липсват .*htmx-lsp', execute('messages'), 'CheckTools HTML')
