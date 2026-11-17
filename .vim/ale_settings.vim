@@ -30,8 +30,10 @@ let g:ale_linters_explicit = 1
 " Кои проверки/езикови сървъри за кой filetype.
 "   perl          – perlsave: `perl -c` (синтаксис) САМО при запис – вижте
 "                   .vim/ale_linters/perl/perlsave.vim (perl -c изпълнява
-"                   BEGIN/use кода); + Perl::LanguageServer (определение,
-"                   употреби); + perlcritic (вграденият в ALE).
+"                   BEGIN/use кода); + perlls: Perl::LanguageServer без
+"                   собствения му `perl -c` (определение, употреби) – вижте
+"                   .vim/ale_linters/perl/perlls.vim; + perlcritic
+"                   (вграденият в ALE).
 "   sh            – shellcheck + bash-language-server.
 "   javascript    – tsserver (от npm пакета typescript); работи и с
 "                   обикновен JS без package.json.
@@ -43,7 +45,7 @@ let g:ale_linters_explicit = 1
 "                   образците получават само двата сървъра от html.
 "   go            – нищо: Go е на vim-go.
 let g:ale_linters = {
-      \ 'perl': ['perlsave', 'languageserver', 'perlcritic'],
+      \ 'perl': ['perlsave', 'perlls', 'perlcritic'],
       \ 'sh': ['shellcheck', 'language_server'],
       \ 'javascript': ['tsserver'],
       \ 'html': ['vscodehtml', 'htmx'],
@@ -68,24 +70,24 @@ let g:ale_sh_shfmt_options = '-i 4 -ci'
 let g:ale_set_loclist = 1
 let g:ale_set_quickfix = 0
 
-" Perl::LanguageServer (езиковият сървър за Perl; linter-ът на ALE се казва
+" Perl::LanguageServer (езиковият сървър за Perl) – за linter-а perlls
+" (.vim/ale_linters/perl/perlls.vim; там е и защо не вграденият
 " `languageserver`). Подробно – раздел 6 на замисъла
 " (docs/superpowers/specs/2026-11-11-vim-ide-design.md).
 "   enable   – сървърът е включен.
-"   perlCmd  – 'true' вместо perl: иначе сървърът сам пуска `perl -c` при
-"              всяко отваряне и промяна (а `perl -c` изпълнява BEGIN/use
-"              кода). Така `perl -c` го пуска само ALE и само при запис
-"              (perlsave по-горе), и грешките не излизат двойно.
 "   cacheDir – кешът на сървъра; иначе той пише в <проект>/.vscode/perl-lang.
-" perlcritic не е в сървъра, а е отделна проверка на ALE (списъкът по-горе).
+"              С $HOME, не с expand('~/…'): expand() спазва 'wildignore' (там е
+"              */tmp/*) и при $HOME под /tmp връща ''.
+" `perl -c` на сървъра го спира perlls, не настройка: `perlCmd` е за VS Code
+" и сървърът не го чете. perlcritic не е в сървъра, а е отделна проверка на
+" ALE (списъкът по-горе).
 " Профилът на perltidy се избира за всеки буфер в .vim/after/ftplugin/perl.vim
 " (проектният .perltidyrc нагоре от файла, иначе ~/.perltidyrc).
 " perlcritic сам търси .perlcriticrc в текущата папка, после в ~.
 let g:ale_perl_languageserver_config = {
       \ 'perl': {
       \   'enable': 1,
-      \   'perlCmd': 'true',
-      \   'cacheDir': expand('~/.cache/perl-lang'),
+      \   'cacheDir': $HOME . '/.cache/perl-lang',
       \ },
       \ }
 

@@ -4,7 +4,7 @@
 " --- Стойности ---
 call assert_equal(1, get(g:, 'ale_linters_explicit', 0), 'ale_linters_explicit')
 call assert_equal({
-      \ 'perl': ['perlsave', 'languageserver', 'perlcritic'],
+      \ 'perl': ['perlsave', 'perlls', 'perlcritic'],
       \ 'sh': ['shellcheck', 'language_server'],
       \ 'javascript': ['tsserver'],
       \ 'html': ['vscodehtml', 'htmx'],
@@ -20,8 +20,8 @@ call assert_equal(0, get(g:, 'ale_set_quickfix', -1), 'ale_set_quickfix')
 call assert_equal(0, get(g:, 'ale_completion_enabled', -1), 'ale_completion_enabled')
 let s:ls = get(get(g:, 'ale_perl_languageserver_config', {}), 'perl', {})
 call assert_equal(1, get(s:ls, 'enable', 0), 'languageserver enable')
-call assert_equal('true', get(s:ls, 'perlCmd', ''), 'perlCmd – без perl -c от сървъра')
-call assert_equal(expand('~/.cache/perl-lang'), get(s:ls, 'cacheDir', ''), 'cacheDir')
+call assert_false(has_key(s:ls, 'perlCmd'), 'perlCmd е за VS Code, сървърът не го чете')
+call assert_equal($HOME . '/.cache/perl-lang', get(s:ls, 'cacheDir', ''), 'cacheDir')
 call assert_false(exists('g:ale_perl_perlnavigator_config'), 'няма perlnavigator')
 
 " --- Кои проверки се пускат в буфер от даден вид ---
@@ -47,7 +47,11 @@ call assert_equal('go', &filetype, 'filetype на .go')
 call assert_equal([], s:Names(), '.go')
 
 call s:Open('x.pl')
-call assert_equal(['languageserver', 'perlcritic', 'perlsave'], s:Names(), '.pl')
+call assert_equal(['perlcritic', 'perlls', 'perlsave'], s:Names(), '.pl')
+" test_perlls_command: сървърът тръгва с $^X = "true" (без perl -c от него).
+let s:pl = filter(ale#linter#Get('perl'), 'v:val.name ==# "perlls"')
+call assert_match('BEGIN { \$^X = "true" } use Perl::LanguageServer;',
+      \ get(get(s:pl, 0, {}), 'command', ''), 'perlls командата')
 call s:Open('x.sh')
 call assert_equal(['language_server', 'shellcheck'], s:Names(), '.sh')
 call s:Open('x.js')

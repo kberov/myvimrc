@@ -4,7 +4,7 @@
 
 **Цел:** `gd`, `gr` и perlcritic за Perl чрез инструменти на Perl (Perl::LanguageServer + perlcritic на ALE), `K` чрез `perldoc`, без Node.
 
-**Архитектура:** ALE пуска вградения си linter `languageserver` с настройка, която спира собствения `perl -c` на сървъра (`perlCmd: 'true'`) и изнася кеша му извън проекта (`cacheDir`). `perl -c` остава само при запис (`perlsave`). `K` в Perl буферите вика нова функция `myide#PerlDoc()`. Липсващ модул се открива с бърза проверка по `@INC`, без да се зарежда.
+**Архитектура:** ALE пуска собствения linter `perlls` – Perl::LanguageServer с `BEGIN { $^X = "true" }` преди зареждането, което спира собствения `perl -c` на сървъра; настройката изнася кеша му извън проекта (`cacheDir`). (Първоначално: вграденият `languageserver` с `perlCmd: 'true'` – вж. бележката в задача 2.) `perl -c` остава само при запис (`perlsave`). `K` в Perl буферите вика нова функция `myide#PerlDoc()`. Липсващ модул се открива с бърза проверка по `@INC`, без да се зарежда.
 
 **Технологии:** Vim 9.1, ALE, vim-plug, Perl 5.44 (perlbrew), Perl::LanguageServer 2.6.2, POSIX sh.
 
@@ -73,11 +73,19 @@ Expected: `15/15 успешни`
 
 - [ ] **Стъпка 5: `git diff` за преглед от автора**
 
+> **Изпълнено (0bf2463), после поправено в задача 2:** `languageserver` → `perlls`; `perlCmd` махнат; `cacheDir` е `$HOME . '/.cache/perl-lang'` (не `expand()`, което спазва `'wildignore'`).
+
 ---
 
 ### Задача 2: Сървърът наистина не пуска `perl -c` и не пише в проекта
 
 Проверка срещу истинския Perl::LanguageServer, с настройката, взета от Vim. Клиентът е на Perl (принципът на автора).
+
+> **Изпълнено на 2026-11-17. Какво показа тестът:**
+> - `perlCmd` не върши нищо: сървърът не го чете (настройка на VS Code). `perl -c` тръгваше при отваряне.
+> - `expand('~/.cache/perl-lang')` даваше `''` при `$HOME` под `/tmp` (`'wildignore'` с `*/tmp/*`), и кешът отиваше в `<проект>/.vscode`.
+>
+> **Решение:** собствен linter `.vim/ale_linters/perl/perlls.vim`, който пуска сървъра с `BEGIN { $^X = "true" }` преди `use Perl::LanguageServer` (стойността по подразбиране на `perlcmd` е `$^X` при зареждането). `cacheDir` – с `$HOME`. Тестът взима командата от linter-а `perlls` (с истинския `$HOME`, защото ALE е в `~/.vim/plugged`), а контролата е голият сървър. Името `languageserver` по-долу вече е `perlls`.
 
 **Файлове:**
 - Създаване: `tests/lsp_client.pl` – малък LSP клиент през stdio (само ядрото на Perl: `IPC::Open3`, `JSON::PP`, `IO::Select`)
@@ -127,7 +135,7 @@ Run: `sh tests/run test_perl_ls` (с Perl::LanguageServer) → PASS; `sh tests/r
 **Интерфейси:**
 - `myide#HasPerlModule(name: String) -> Number` (1/0). Бърза проверка: `perl -e 'exit !grep { -f "$_/<път>.pm" } @INC'` (`::` → `/`), **не** `-M` (зарежда Moose и Coro: ~0,3 с). Резултатът се пази в `s:` за сесията.
 - `myide#CheckTools(lang, tools)`: елемент с `::` се проверява с `myide#HasPerlModule`, останалите – с `executable()`. Всичко друго е както досега.
-- `myide#PerlLinters(has_ls: Number) -> List`: `['perlsave', 'languageserver', 'perlcritic']` или без `'languageserver'`.
+- `myide#PerlLinters(has_ls: Number) -> List`: `['perlsave', 'perlls', 'perlcritic']` или без `'perlls'`.
 - В `after/ftplugin/perl.vim`: `CheckTools('Perl', ['perl', 'Perl::LanguageServer', 'perltidy', 'perlcritic'])`; `let b:ale_linters = myide#PerlLinters(myide#HasPerlModule('Perl::LanguageServer'))` + `AddUndo('unlet! b:ale_linters')`.
 
 - [ ] **Стъпка 1: Тестовете**
@@ -141,7 +149,7 @@ call assert_equal(0, myide#HasPerlModule('No::Such::ModXyz'), 'липсващ м
 call assert_equal(['No::Such::ModXyz'],
       \ myide#CheckTools('M', ['sh', 'File::Spec', 'No::Such::ModXyz']), 'CheckTools модул')
 " test_perl_linters
-call assert_equal(['perlsave', 'languageserver', 'perlcritic'], myide#PerlLinters(1), 'със сървър')
+call assert_equal(['perlsave', 'perlls', 'perlcritic'], myide#PerlLinters(1), 'със сървър')
 call assert_equal(['perlsave', 'perlcritic'], myide#PerlLinters(0), 'без сървър')
 ```
 
@@ -252,5 +260,5 @@ Run: `git grep -n -i navigator -- . ':!docs/superpowers/plans/2026-11-11-vim-ide
 
 1. `cpanm Perl::LanguageServer` в perlbrew perl-5.44.0.
 2. `sh tests/run test_perl_ls` – вече не SKIP, а PASS.
-3. Във Vim, в `Slovo/lib/Slovo/Model/Stranici.pm`: `gd` и `gr` върху `where_domain_is` (ред 70), `K` върху `Mojo::Base`, `gf` върху `Slovo::Model::Celini`; `:ALEInfo` показва `languageserver`, `perlcritic`, `perlsave`.
+3. Във Vim, в `Slovo/lib/Slovo/Model/Stranici.pm`: `gd` и `gr` върху `where_domain_is` (ред 70), `K` върху `Mojo::Base`, `gf` върху `Slovo::Model::Celini`; `:ALEInfo` показва `perlls`, `perlcritic`, `perlsave`.
 4. Продължаване с останалите инструменти по `./install`.
