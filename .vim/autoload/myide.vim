@@ -101,6 +101,39 @@ function! myide#PerlLinters(has_ls) abort
                 \ : ['perlsave', 'perlcritic']
 endfunction
 
+" Описанието (perldoc) на думата word в прозорец над текущия. За Perl
+" буферите – K и \h (Perl::LanguageServer няма описание, hover).
+"   word с `::` (Foo::Bar) – описанието на модула: perldoc Foo::Bar;
+"   иначе – на вградената функция: perldoc -f join.
+" Прозорецът е един: следващото K го ползва отново. Буферът е драскалка
+" (nofile), само за четене, изчезва при затваряне. Ако perldoc няма какво
+" да каже (напр. за метод от проекта) – кратко съобщение, без прозорец.
+" Връща 1 при успех, иначе 0.
+function! myide#PerlDoc(word) abort
+    let l:out = empty(a:word) ? [] : systemlist('perldoc -otext -T '
+                \ . (a:word =~# '::' ? '' : '-f ') . shellescape(a:word)
+                \ . ' 2>/dev/null')
+    if v:shell_error || empty(l:out)
+        echomsg 'perldoc: няма описание за ' . a:word
+        return 0
+    endif
+    let l:win = filter(getwininfo(), {_, w -> w.tabnr == tabpagenr()
+                \ && has_key(w.variables, 'myide_perldoc')})
+    if empty(l:win)
+        aboveleft new
+        let w:myide_perldoc = 1
+    else
+        call win_gotoid(l:win[0].winid)
+        " Старият буфер изчезва сам (bufhidden=wipe).
+        enew
+    endif
+    setlocal buftype=nofile bufhidden=wipe noswapfile
+    execute 'silent file' fnameescape('perldoc://' . a:word)
+    call setline(1, l:out)
+    setlocal nomodifiable nomodified
+    return 1
+endfunction
+
 " Търси name (файл или папка) нагоре от папката dir до /. Връща пълния
 " път до намереното или ''. Нарочно НЕ ползва findfile()/finddir(): те
 " спазват 'wildignore', а в .vimrc то съдържа */tmp/*, bin/** и т.н., така

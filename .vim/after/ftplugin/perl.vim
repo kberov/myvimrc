@@ -10,6 +10,12 @@ call myide#CheckTools('Perl', ['perl', 'Perl::LanguageServer', 'perltidy', 'perl
 let b:ale_linters = myide#PerlLinters(myide#HasPerlModule('Perl::LanguageServer'))
 call myide#AddUndo('unlet! b:ale_linters')
 
+" K и \h – perldoc (сървърът няма описание): модул при Foo::Bar (в Perl
+" iskeyword съдържа `:`), иначе вградена функция. Вижте myide#PerlDoc.
+nnoremap <buffer> <silent> K :call myide#PerlDoc(expand('<cword>'))<CR>
+nnoremap <buffer> <silent> <leader>h :call myide#PerlDoc(expand('<cword>'))<CR>
+call myide#AddUndo(myide#UnmapCmd(['K', '<leader>h']))
+
 " perltidy при запис: профилът на проекта (най-близкият .perltidyrc нагоре
 " от файла), иначе ~/.perltidyrc. ALE пуска perltidy върху временно копие
 " от текущата папка на Vim, затова perltidy сам не би намерил проекта, ако

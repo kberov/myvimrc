@@ -284,8 +284,9 @@ export LANG=bg_BG.UTF-8            # за текущата обвивка; за 
 | Клавиши | Къде | Какво прави | Помощ |
 |---|---|---|---|
 | `gd`, Ctrl+клик | Perl, Shell, JS, HTML, Go | към определението | `:help :ALEGoToDefinition` |
-| `K`, `\h` | Perl, Shell, JS, HTML, Go | описание на думата под показалеца | `:help :ALEHover` |
+| `K`, `\h` | Perl, Shell, JS, HTML, Go | описание на думата под показалеца; в Perl – `perldoc` (модул при `Foo::Bar`, иначе вградена функция) | `:help :ALEHover`, `:help K` |
 | `gr` | Perl, Shell, JS, HTML, Go | всички употреби | `:help :ALEFindReferences` |
+| `gf` | Perl | към файла на модула под показалеца (`use Foo::Bar`); `gd` модули не намира | `:help gf` |
 | `\rn` | Perl, Shell, JS, HTML, Go | преименуване | `:help :ALERename` |
 | `]e` / `[e` | Perl, Shell, JS, HTML, Go | следваща / предишна грешка | `:help ale-navigation-commands` |
 | `:ALEInfo` | навсякъде | какво работи за текущия файл | `:help :ALEInfo` |
@@ -295,8 +296,9 @@ export LANG=bg_BG.UTF-8            # за текущата обвивка; за 
 | Ctrl+P | навсякъде | търсене на файл по име | `:help ctrlp` |
 
 В Go същите клавиши викат vim-go (`:GoDef`, `:GoReferrers`, `:GoRename`).
-Perl и Shell се форматират при запис (perltidy, shfmt); `perl -c` се пуска
-само при запис.
+Perl и Shell се форматират при запис (perltidy, shfmt). В Perl perlcritic
+проверява при всяка промяна, а `perl -c` – само при запис (той изпълнява
+`BEGIN` и `use` кода).
 
 ## Помощта на Vim
 
