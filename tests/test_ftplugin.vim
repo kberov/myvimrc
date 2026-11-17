@@ -35,6 +35,12 @@ for s:f in ['x.pl', 'x.sh', 'x.js', 'x.html', 'x.html.ep', 'x.htm']
   call assert_equal([], s:InsertLeaderMaps(), s:f . ' без \ в режим на въвеждане')
 endfor
 
+"" test_perl_buffer_linters: в Perl буфер проверките зависят от това дали
+" Perl::LanguageServer е инсталиран.
+call s:Open('x.pl')
+call assert_equal(myide#PerlLinters(myide#HasPerlModule('Perl::LanguageServer')),
+      \ get(b:, 'ale_linters', 'няма'), 'perl b:ale_linters')
+
 " Go: vim-go.
 call s:Open('x.go')
 call assert_match('GoDef', maparg('gd', 'n'), 'go gd')

@@ -57,14 +57,16 @@ endfunction
 let s:checked = {}
 
 " Проверява дали инструментите (програмите) от tools се намират в PATH.
-" Връща списък с липсващите. Първия път за даден език (lang), ако има
+" Елемент с `::` (напр. Perl::LanguageServer) е Perl модул и се проверява с
+" myide#HasPerlModule. Връща списък с липсващите. Първия път за даден език (lang), ако има
 " липсващи, изписва ЕДНО кратко съобщение (:messages го пази), напр.
 "   Perl: липсват perltidy (как се инсталират – вижте ~/opt/dev/myvimrc/README.md)
 " В README.md е таблицата „По желание: инструментите за езиците“ с
 " командите. Не сочи към install: той пипа домашната папка.
 " Нищо не инсталира и не пипа PATH.
 function! myide#CheckTools(lang, tools) abort
-    let l:missing = filter(copy(a:tools), '!executable(v:val)')
+    let l:missing = filter(copy(a:tools), 'v:val =~# "::"'
+                \ . ' ? !myide#HasPerlModule(v:val) : !executable(v:val)')
     if !empty(l:missing) && !has_key(s:checked, a:lang)
         echomsg printf('%s: липсват %s (как се инсталират – вижте %s)',
                     \ a:lang, join(l:missing, ', '),
@@ -72,6 +74,31 @@ function! myide#CheckTools(lang, tools) abort
     endif
     let s:checked[a:lang] = 1
     return l:missing
+endfunction
+
+" Perl модулите, вече проверени в тази сесия: име → 1/0.
+let s:perl_modules = {}
+
+" Има ли Perl модул name (напр. 'Perl::LanguageServer') в @INC на perl от
+" PATH. Връща 1 или 0; резултатът се пази за сесията. Само търси файла
+" (Perl/LanguageServer.pm), без да зарежда модула: `perl -M…` би заредил
+" Moose и Coro (~0,3 с) при всяко отваряне на Perl файл. Без perl – 0.
+function! myide#HasPerlModule(name) abort
+    if !has_key(s:perl_modules, a:name)
+        let l:path = substitute(a:name, '::', '/', 'g') . '.pm'
+        call system('perl -e ' . shellescape(
+                    \ 'exit !grep { -f "$_/' . l:path . '" } @INC'))
+        let s:perl_modules[a:name] = executable('perl') && v:shell_error == 0
+    endif
+    return s:perl_modules[a:name]
+endfunction
+
+" Проверките на ALE за Perl буфер. Без Perl::LanguageServer (has_ls = 0)
+" perlls отпада: иначе ALE би се опитвал да пуска сървъра при всяко
+" отваряне. За липсата съобщава CheckTools – веднъж.
+function! myide#PerlLinters(has_ls) abort
+    return a:has_ls ? ['perlsave', 'perlls', 'perlcritic']
+                \ : ['perlsave', 'perlcritic']
 endfunction
 
 " Търси name (файл или папка) нагоре от папката dir до /. Връща пълния

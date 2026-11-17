@@ -34,4 +34,17 @@ call assert_equal('ale#completion#OmniFunc', &l:omnifunc, 'omnifunc')
 enew
 call assert_notmatch('ALEGoToDefinition', maparg('gd', 'n'), 'gd в друг буфер')
 
+" test_has_perl_module: бърза проверка по @INC, без да се зарежда модулът.
+call assert_equal(1, myide#HasPerlModule('File::Spec'), 'File::Spec е в ядрото')
+call assert_equal(0, myide#HasPerlModule('No::Such::ModXyz'), 'липсващ модул')
+
+" test_checktools_module: елемент с :: е Perl модул, другите – програми.
+call assert_equal(['No::Such::ModXyz'],
+      \ myide#CheckTools('M', ['sh', 'File::Spec', 'No::Such::ModXyz']), 'CheckTools модул')
+
+" test_perl_linters: без Perl::LanguageServer ALE не пуска perlls (иначе
+" би сипал грешки при всяко отваряне); съобщението е от CheckTools.
+call assert_equal(['perlsave', 'perlls', 'perlcritic'], myide#PerlLinters(1), 'със сървър')
+call assert_equal(['perlsave', 'perlcritic'], myide#PerlLinters(0), 'без сървър')
+
 call writefile(v:errors, $TEST_OUT) | qa!

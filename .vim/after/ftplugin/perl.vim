@@ -3,9 +3,12 @@
 " добавките, затова нашите клавиши имат последната дума.
 " Клавишите (gd, K, \h, gr, \rn, ]e/[e, Ctrl+клик) – вижте
 " .vim/autoload/myide.vim. Проверките/форматирането – .vim/ale_settings.vim.
-" perltidy форматира при запис; perlcritic проверява чрез Perl Navigator.
+"" perltidy форматира при запис; perlcritic е отделна проверка на ALE;
+" Perl::LanguageServer (perlls) дава gd и gr – само ако е инсталиран.
 call myide#AleKeys()
-call myide#CheckTools('Perl', ['perl', 'perlnavigator', 'perltidy', 'perlcritic'])
+call myide#CheckTools('Perl', ['perl', 'Perl::LanguageServer', 'perltidy', 'perlcritic'])
+let b:ale_linters = myide#PerlLinters(myide#HasPerlModule('Perl::LanguageServer'))
+call myide#AddUndo('unlet! b:ale_linters')
 
 " perltidy при запис: профилът на проекта (най-близкият .perltidyrc нагоре
 " от файла), иначе ~/.perltidyrc. ALE пуска perltidy върху временно копие
