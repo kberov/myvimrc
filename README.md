@@ -9,9 +9,9 @@
 
 | Език | Какво дава | Чрез |
 |---|---|---|
-| Perl (и Mojolicious) | към определението, описание, употреби, perlcritic; perltidy при запис; `perl -c` само при запис | [ALE](https://github.com/dense-analysis/ale) + Perl Navigator |
+| Perl (и Mojolicious) | отиване до определение на функции и пакети, употреби, perlcritic; perltidy при запис; `perl -c` само при запис | [ALE](https://github.com/dense-analysis/ale) + Perl::LanguageServer |
 | Shell | shellcheck, езиков сървър; shfmt (`-i 4 -ci`) при запис | ALE |
-| JavaScript | към определението, описание, употреби | ALE + tsserver |
+| JavaScript | към определението, описание[^opisanie], употреби | ALE + tsserver |
 | HTML, HTMX, образци (`.html.ep`, fasttemplate) | довършване и описание на етикети и `hx-*` атрибути, без проверки и без форматиране | ALE + HTML сървъра на VS Code + htmx-lsp |
 | Go | всичко на vim-go (GoDef, GoReferrers, GoCallers, GoRename, GoMetaLinter…) | [vim-go](https://github.com/fatih/vim-go) |
 
@@ -271,3 +271,9 @@ sh tests/run test_rtp   # една
 
 [^lad]: **Лад** е нашият превод на *mode* (обикн. „режим“). Защо – вижте
     бележката под линия в [Бележки за Vim](cheatsheet.md#езикът-на-vim).
+
+[^opisanie]: **Описание** е превод на *hover*: справката, която езиковият
+    сървър показва за думата под показалеца – заглавието на функцията,
+    документацията ѝ, вида данни. Вика се с `K` или `\h` (`:ALEHover`).
+    Perl::LanguageServer не дава описание, затова в Perl `K` ще отваря
+    `perldoc`.
