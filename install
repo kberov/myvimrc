@@ -12,7 +12,7 @@
 #      keymap/ …) ги мести в ~/.vim/backup-<дата-час>/. Иначе Vim би имал
 #      два екземпляра. ~/.vim/plugged, sessions, spell … не се пипат.
 #   3. Изписва ред „ЛИПСВА <програма>: <команда за инсталиране>“ за всяка
-#      липсваща програма.
+#      липсваща програма (и за модула Perl::LanguageServer).
 #
 # Само POSIX sh (без bash): проверява се с `shellcheck -s sh install` и
 # работи с dash. Дизайн: docs/superpowers/specs/2026-11-11-vim-ide-design.md
@@ -88,8 +88,7 @@ done
 # hint ПРОГРАМА: как се инсталира.
 hint() {
     case $1 in
-        perl) echo "perlbrew install perl-5.44.0  (или: sudo apt install perl)" ;;
-        perlnavigator) echo "npm i -g perlnavigator-server" ;;
+        perl) echo "perlbrew install perl-5.44.0  (или ползвайте local::lib)" ;;
         perltidy) echo "cpanm Perl::Tidy" ;;
         perlcritic) echo "cpanm Perl::Critic" ;;
         bash-language-server) echo "npm i -g bash-language-server" ;;
@@ -106,7 +105,7 @@ hint() {
 }
 
 missing=0
-for tool in perl perlnavigator perltidy perlcritic \
+for tool in perl perltidy perlcritic \
     bash-language-server shellcheck shfmt \
     tsserver vscode-html-language-server htmx-lsp \
     go gopls; do
@@ -115,6 +114,14 @@ for tool in perl perlnavigator perltidy perlcritic \
         missing=$((missing + 1))
     fi
 done
+# Perl::LanguageServer е модул, не програма: търсим файла му в @INC на perl
+# от PATH, без да го зареждаме (както myide#HasPerlModule във Vim). Без perl
+# – също липсва.
+# shellcheck disable=SC2016
+if ! perl -e 'exit !grep { -f "$_/Perl/LanguageServer.pm" } @INC' 2>/dev/null; then
+    echo "ЛИПСВА Perl::LanguageServer: cpanm Perl::LanguageServer"
+    missing=$((missing + 1))
+fi
 if [ ! -f "$HOME/.vim/autoload/plug.vim" ]; then
     echo "ЛИПСВА vim-plug: curl -fLo ~/.vim/autoload/plug.vim --create-dirs" \
         "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"

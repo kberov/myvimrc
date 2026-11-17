@@ -117,9 +117,15 @@ rm -rf "$HOME"
 # --- test_missing_tools: с беден PATH изписва какво липсва и как се инсталира ---
 newhome
 OUT=$(mktemp)
-PATH=/usr/bin:/bin "$REPO/install" >"$OUT" 2>&1 || fail test_missing_tools "код $?"
+# PERL5LIB= – за предвидимост: системният perl без модулите от perlbrew.
+PATH=/usr/bin:/bin PERL5LIB= "$REPO/install" >"$OUT" 2>&1 || fail test_missing_tools "код $?"
 grep -q '^ЛИПСВА htmx-lsp: cargo install htmx-lsp' "$OUT" || fail test_missing_tools "няма ред за htmx-lsp"
 grep -q '^ЛИПСВА tsserver: npm i -g typescript@5' "$OUT" || fail test_missing_tools "няма ред за tsserver"
+grep -q '^ЛИПСВА Perl::LanguageServer: cpanm Perl::LanguageServer' "$OUT" ||
+    fail test_missing_tools "няма ред за Perl::LanguageServer"
+if grep -q 'perlnavigator' "$OUT"; then
+    fail test_missing_tools "още споменава perlnavigator"
+fi
 rm -rf "$HOME"
 
 [ "$fails" -eq 0 ]

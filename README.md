@@ -9,7 +9,7 @@
 
 | Език | Какво дава | Чрез |
 |---|---|---|
-| Perl (и Mojolicious) | отиване до определение на функции и пакети, употреби, perlcritic; perltidy при запис; `perl -c` само при запис | [ALE](https://github.com/dense-analysis/ale) + Perl::LanguageServer |
+| Perl (и Mojolicious) | отиване до определение на функции и пакети, употреби, perlcritic; описание чрез `perldoc`; perltidy при запис; `perl -c` само при запис | [ALE](https://github.com/dense-analysis/ale) + Perl::LanguageServer |
 | Shell | shellcheck, езиков сървър; shfmt (`-i 4 -ci`) при запис | ALE |
 | JavaScript | към определението, описание[^opisanie], употреби | ALE + tsserver |
 | HTML, HTMX, образци (`.html.ep`, fasttemplate) | довършване и описание на етикети и `hx-*` атрибути, без проверки и без форматиране | ALE + HTML сървъра на VS Code + htmx-lsp |
@@ -146,7 +146,7 @@ Copyright (c) Красимир Беров.
 | Език | Програма | Как се инсталира |
 |---|---|---|
 | Perl | `perl` | обикновено е налице; или чрез [perlbrew](https://perlbrew.pl/) |
-| Perl | `perlnavigator` | `npm i -g perlnavigator-server` |
+| Perl | `Perl::LanguageServer` (модул) | `cpanm Perl::LanguageServer` |
 | Perl | `perltidy`, `perlcritic` | `cpanm Perl::Tidy Perl::Critic` |
 | Shell | `shellcheck`, `shfmt` | `sudo apt install shellcheck shfmt` |
 | Shell | `bash-language-server` | `npm i -g bash-language-server` |
