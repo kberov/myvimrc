@@ -5,7 +5,9 @@ call assert_equal(['no-such-tool-xyz'],
       \ myide#CheckTools('T', ['sh', 'no-such-tool-xyz']), 'CheckTools липсващ')
 call myide#CheckTools('T', ['sh', 'no-such-tool-xyz'])
 let s:msgs = split(execute('messages'), "\n")
-call assert_equal(1, count(s:msgs, 'T: липсват no-such-tool-xyz (вижте install)'),
+let s:readme = fnamemodify(g:myvimrc_dir . '/README.md', ':~')
+call assert_equal(1, count(s:msgs,
+      \ 'T: липсват no-such-tool-xyz (как се инсталират – вижте ' . s:readme . ')'),
       \ 'съобщението веднъж')
 
 " test_checktools_all_present: нищо не липсва – нищо не се изписва.

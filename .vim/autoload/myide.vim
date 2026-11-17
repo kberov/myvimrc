@@ -59,12 +59,16 @@ let s:checked = {}
 " Проверява дали инструментите (програмите) от tools се намират в PATH.
 " Връща списък с липсващите. Първия път за даден език (lang), ако има
 " липсващи, изписва ЕДНО кратко съобщение (:messages го пази), напр.
-"   Perl: липсват perlnavigator, perltidy (вижте install)
+"   Perl: липсват perltidy (как се инсталират – вижте ~/opt/dev/myvimrc/README.md)
+" В README.md е таблицата „По желание: инструментите за езиците“ с
+" командите. Не сочи към install: той пипа домашната папка.
 " Нищо не инсталира и не пипа PATH.
 function! myide#CheckTools(lang, tools) abort
     let l:missing = filter(copy(a:tools), '!executable(v:val)')
     if !empty(l:missing) && !has_key(s:checked, a:lang)
-        echomsg printf('%s: липсват %s (вижте install)', a:lang, join(l:missing, ', '))
+        echomsg printf('%s: липсват %s (как се инсталират – вижте %s)',
+                    \ a:lang, join(l:missing, ', '),
+                    \ fnamemodify(get(g:, 'myvimrc_dir', '.') . '/README.md', ':~'))
     endif
     let s:checked[a:lang] = 1
     return l:missing

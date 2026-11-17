@@ -10,8 +10,25 @@ function! s:InsertLeaderMaps() abort
         \ && m.lhs[0] ==# get(g:, 'mapleader', '\')})
 endfunction
 
+"" test_ftplugin_not_via_runtime: ftplugin-ите на Vim за markdown, php,
+" javascriptreact… зареждат ftplugin/html.vim или javascript.vim с
+" `runtime!`, а това хваща и нашите after/ftplugin файлове. Там – нищо наше.
+" Преди всеки HTML буфер: CheckTools съобщава само веднъж на сесия.
+for [s:f, s:ft] in [['x.md', 'markdown'], ['x.jsx', 'javascriptreact']]
+  call s:Open(s:f)
+  call assert_equal(s:ft, &filetype, s:f . ' filetype')
+  call assert_notmatch('ALE', maparg('gd', 'n'), s:f . ' gd – не към ALE')
+endfor
+call assert_notmatch('HTML: липсват', execute('messages'), '.md – без съобщение за HTML')
+call assert_notmatch('JavaScript: липсват', execute('messages'), '.jsx – без съобщение за JS')
+
+" test_ftplugin_htm: .htm е HTML, дори Vim да познае htmldjango по {% %}
+" (образците на Go с прост двигател – заместителите са обикновен текст).
+call s:Open('x.htm')
+call assert_equal('html', &filetype, '.htm filetype')
+
 " ALE езиците: gd → ALE.
-for s:f in ['x.pl', 'x.sh', 'x.js', 'x.html', 'x.html.ep']
+for s:f in ['x.pl', 'x.sh', 'x.js', 'x.html', 'x.html.ep', 'x.htm']
   call s:Open(s:f)
   call assert_match('ALEGoToDefinition', maparg('gd', 'n'), s:f . ' gd')
   call assert_match('ALEFindReferences', maparg('gr', 'n'), s:f . ' gr')
